@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ICICI-Home Page</title>
+  </head>
+  <style>
+    :root {
+      --primary-color: #e3530f;
+      --background: white;
+      --foreground: #363636;
+      --muted-foreground: #747474;
+      --disabled: #f2f2f2;
+      --border: #d4d4d4;
+      --max-width: 1366px;
+    }
+
+    body {
+      font-family: "Mulish", sans-serif;
+      margin: 0;
+      padding: 0;
+      max-height: 100vh;
+      color: var(--foreground);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 20px 0px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding-top: 20px;
+    }
+
+    h1 {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--primary-color);
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      color: var(--muted-foreground);
+      font-weight: 400;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 350px), 1fr));
+      gap: clamp(20px, 3vw, 30px);
+      align-items: start;
+    }
+
+    .section-card {
+      background-color: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: clamp(20px, 3vw, 24px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      height: 100%;
+    }
+
+    .section-card:hover {
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .section-title {
+      font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+      font-weight: 600;
+      margin-bottom: clamp(16px, 3vw, 20px);
+      padding-bottom: clamp(10px, 2vw, 12px);
+      border-bottom: 2px solid var(--primary-color);
+      color: var(--foreground);
+    }
+
+    .link-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .link-item {
+      margin-bottom: clamp(12px, 2vw, 16px);
+    }
+
+    .link-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .page-link {
+      display: flex;
+      align-items: center;
+      padding: clamp(12px, 2vw, 14px) clamp(14px, 2vw, 16px);
+      background-color: var(--disabled);
+      border: 1px solid transparent;
+      border-radius: 8px;
+      color: var(--foreground);
+      text-decoration: none;
+      font-weight: 500;
+      min-height: 56px;
+    }
+
+    .page-link:hover,
+    .page-link:focus-visible {
+      background-color: var(--primary-color);
+      color: white;
+      border-color: var(--primary-color);
+      text-decoration: none;
+      outline: none;
+    }
+
+    .page-link:active {
+      transform: scale(0.98);
+    }
+
+    .link-icon {
+      margin-right: clamp(10px, 2vw, 12px);
+      font-size: clamp(1.1rem, 2vw, 1.2rem);
+      min-width: 24px;
+      text-align: center;
+    }
+
+    .link-text {
+      flex-grow: 1;
+      font-size: clamp(0.9rem, 1.5vw, 1rem);
+    }
+
+    .link-count {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: var(--primary-color);
+      font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      min-width: 24px;
+      text-align: center;
+    }
+
+    .page-link:hover .link-count,
+    .page-link:focus-visible .link-count {
+      background-color: rgba(255, 255, 255, 0.3);
+      color: white;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 16px;
+      }
+
+      .main-grid {
+        gap: 16px;
+      }
+
+      .section-card {
+        padding: 18px;
+      }
+
+      .page-link {
+        padding: 12px;
+      }
+
+      .link-icon {
+        margin-right: 10px;
+      }
+    }
+
+    @media (min-width: 768px) and (max-width: 1024px) {
+      .main-grid {
+        grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+      }
+    }
+
+    @media (min-width: 1025px) {
+      .main-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+  </style>
+  <body>
+    <div class="container">
+      <div class="main-grid">
+        <div class="section-card">
+          <div>
+            <h2 class="section-title">Dashboard</h2>
+            <ul class="link-list">
+              <li class="link-item">
+                <a
+                  href="./src/dealer-dashboard-partnership/dealer-dashboard-partnership.html"
+                  class="page-link"
+                >
+                  <span class="link-icon">💰</span>
+                  <span class="link-text"
+                    >Dealer dashboard - Partnership flow</span
+                  >
+                  <span class="link-count">1</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

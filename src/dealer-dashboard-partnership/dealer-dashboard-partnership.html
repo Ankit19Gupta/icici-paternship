@@ -1,0 +1,4383 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="../assets/css/plugins.css" />
+    <link rel="stylesheet" href="../assets/css/global.css" />
+    <link rel="stylesheet" href="../assets/css/material-icons.css" />
+    <link rel="stylesheet" href="../assets/css/material-symbols.css" />
+    <link rel="stylesheet" href="./dealer-dashboard-partnership.css" />
+    <link rel="stylesheet" href="./dashboard.css" />
+  </head>
+
+  <body class="dashboard-page">
+    <!-- Skeleton -->
+    <div id="dashboardSkeleton" class="dashboard-skeleton">
+      <div class="skeleton-header"></div>
+
+      <div class="max-content-area">
+        <div class="row">
+          <div class="col-lg-9 padding-skeleton">
+            <div class="skeleton-box skeleton-top"></div>
+            <div class="skeleton-box skeleton-stepper"></div>
+            <div class="skeleton-box skeleton-card"></div>
+          </div>
+
+          <div class="col-lg-3 d-none d-md-block">
+            <div class="skeleton-box skeleton-side"></div>
+            <div class="skeleton-box skeleton-side"></div>
+            <div class="skeleton-box skeleton-side"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="skeleton-box skeleton-bottom"></div>
+    </div>
+
+    <div id="dashboardContent" style="display: none">
+      <!-- Header -->
+      <header class="bg-white mobile-gradient-header">
+        <div
+          class="d-flex justify-content-between align-items-center max-content-area py-3 gap-3"
+        >
+          <div class="mobile-header-left">
+            <img
+              src="../assets/image/dashboard/ICICI-logo.svg"
+              alt="logo"
+              class="header-logo"
+            />
+          </div>
+
+          <div
+            class="mobile-header-right d-flex d-md-none align-items-center gap-3"
+          >
+            <div class="get-touch-wrapper">
+              <button class="getInTouchBtn header-action-btn">
+                <i data-lucide="circle-help"></i>
+                <span>Get in touch</span>
+              </button>
+
+              <div class="getTouchDropdown get-touch-dropdown">
+                <div class="drop-card">
+                  <small class="rm-title">Relationship manager</small>
+
+                  <h6>Harish Sharma</h6>
+
+                  <hr />
+
+                  <div class="dropdown-row">
+                    <i data-lucide="phone"></i>
+
+                    <span>+91 7432345677</span>
+                    <div class="copy-contact">
+                      <span class="material-icons copy-icon">content_copy</span>
+                    </div>
+                  </div>
+
+                  <div class="dropdown-row last-part-dropdown-row">
+                    <i data-lucide="mail"></i>
+
+                    <span>harishsharma@gmail.com</span>
+                    <div class="copy-contact">
+                      <span class="material-icons copy-icon">content_copy</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="dropdown-contact">
+                  <i data-lucide="mail"></i>
+
+                  <div>
+                    <small>Email us @</small>
+
+                    <p>scf@icicibank.in</p>
+                  </div>
+                </div>
+
+                <div class="dropdown-contact">
+                  <span class="material-symbols-outlined support-agent"
+                    >support_agent</span
+                  >
+
+                  <div>
+                    <small>Give a missed call on</small>
+
+                    <p>1800 309 8595</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <img
+              src="../assets/image/dashboard/accessibility_white.svg"
+              alt="accessibility"
+              width="25"
+              id="openAccessibilityModalMobile"
+            />
+
+            <!-- <img
+            src="../assets/image/dashboard/need-help.svg"
+            alt="help"
+            width="30"
+            id="openHelpPanelMobile"
+          /> -->
+
+            <i data-lucide="bell" id="openNotificationPanelMobile"></i>
+
+            <button id="openLogoutModal" class="header-icon-btn">
+              <img src="../assets/image/dashboard/logout.svg" alt="" />
+            </button>
+          </div>
+
+          <div class="d-none d-md-flex align-items-center header-actions">
+            <div class="get-touch-wrapper">
+              <button class="getInTouchBtn header-action-btn">
+                <i data-lucide="circle-help"></i>
+                <span>Get in touch</span>
+              </button>
+
+              <div class="getTouchDropdown get-touch-dropdown">
+                <div class="drop-card">
+                  <small class="rm-title">Relationship manager</small>
+
+                  <h6>Harish Sharma</h6>
+
+                  <hr />
+
+                  <div class="dropdown-row">
+                    <i data-lucide="phone"></i>
+
+                    <span>+91 7432345677</span>
+                    <div class="copy-contact">
+                      <span class="material-icons copy-icon">content_copy</span>
+                    </div>
+                  </div>
+
+                  <div class="dropdown-row last-part-dropdown-row">
+                    <i data-lucide="mail"></i>
+
+                    <span>harishsharma@gmail.com</span>
+                    <div class="copy-contact">
+                      <span class="material-icons copy-icon">content_copy</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="dropdown-contact">
+                  <i data-lucide="mail"></i>
+
+                  <div>
+                    <small>Email us @</small>
+
+                    <p>scf@icicibank.in</p>
+                  </div>
+                </div>
+
+                <div class="dropdown-contact">
+                  <span class="material-symbols-outlined support-agent"
+                    >support_agent</span
+                  >
+
+                  <div>
+                    <small>Give a missed call on</small>
+
+                    <p>1800 309 8595</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <button id="openAccessibilityModal" class="header-icon-btn">
+              <img src="../assets/image/dashboard/accessibility.svg" alt="" />
+            </button>
+
+            <button
+              id="openNotificationPanel"
+              class="header-icon-btn notification-btn"
+            >
+              <i data-lucide="bell" id="openNotificationPanel"></i>
+
+              <span class="notification-badge">5</span>
+            </button>
+
+            <button id="openLogoutModal" class="header-icon-btn">
+              <img src="../assets/image/dashboard/logout.svg" alt="" />
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Empty state -->
+      <!-- <div class="empty-state-container max-content-area">
+        <div class="locked-overlay">
+          <div class="icon">
+            <i data-lucide="file" class="File-icon"></i>
+          </div>
+          <span class="locked-text">No data found</span>
+          <div class="empty-sub">
+            Please reload or contact your relationship manager.
+          </div>
+        </div>
+      </div> -->
+
+      <div class="max-content-area">
+        <main class="dashboard-wrapper">
+          <div class="">
+            <div class="row">
+              <div class="col-lg-9 left-side">
+                <!-- Dashboard top cards -->
+                <div id="dashboard-top-section">
+                  <div class="top-dash-card">
+                    <div>
+                      <p class="dashboard-title title-1" id="dashboard-title">
+                        Supply chain finance portal
+                      </p>
+
+                      <!-- id="openProfileView" -->
+                      <div class="dashboard-card top-card">
+                        <div
+                          class="d-flex align-items-center justify-content-between"
+                        >
+                          <div class="d-flex align-items-center gap-3">
+                            <div class="image-div">
+                              <img
+                                src="../assets/image/dashboard/building-user.svg"
+                                alt=""
+                              />
+                            </div>
+
+                            <div>
+                              <p class="text-muted dashboard-title">
+                                Your company
+                              </p>
+
+                              <p
+                                class="mb-0 fw-bold your-company-labal character-limit"
+                              >
+                                SunDesh Solar Systems & Infrastructure Solutions
+                                Network
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="part-2">
+                      <p class="dashboard-title" id="dashboard-title">
+                        Last login:
+                        <span class="dashboard-top-span"
+                          >19 Mar '26 <span class="at">at</span> 8:00 AM</span
+                        >
+                      </p>
+
+                      <div class="dashboard-card" id="corporate-anchor">
+                        <div
+                          class="d-none d-md-flex align-items-center justify-content-between gap-corporate"
+                        >
+                          <div class="d-flex align-items-center gap-3">
+                            <img
+                              src="../assets/image/dashboard/dashboard-top.svg"
+                              alt="logo"
+                            />
+
+                            <div>
+                              <p class="text-muted dashboard-title">
+                                Anchor corporate program name
+                              </p>
+
+                              <p
+                                class="mb-0 fw-bold your-company-labal width-set character-limit-2"
+                              >
+                                Dealer of Kartikeya Industries Service Division
+                              </p>
+                            </div>
+                          </div>
+
+                          <span id="openAnchorDetails" class="view-details-btn">
+                            View details
+                          </span>
+                        </div>
+
+                        <!-- Mobile Layout -->
+                        <div class="d-block d-md-none">
+                          <div
+                            class="d-flex justify-content-between align-items-center mb-2"
+                          >
+                            <p class="text-muted dashboard-title mb-0">
+                              Anchor corporate program name
+                            </p>
+
+                            <span
+                              id="openAnchorDetails"
+                              class="view-details-btn"
+                            >
+                              View details
+                            </span>
+                          </div>
+
+                          <div class="d-flex align-items-center gap-3">
+                            <img
+                              src="../assets/image/dashboard/dashboard-top.svg"
+                              alt="logo"
+                              class="image"
+                            />
+
+                            <p class="mb-0 fw-bold dealer-name">
+                              Dealer of Kartikeya Industries Service Division
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Mobile Profile Screen -->
+                <div
+                  id="mobileProfileSection"
+                  class="mobile-profile-section d-md-none"
+                >
+                  <p class="dashboard-title">
+                    Last login:
+                    <span class="dashboard-top-span"
+                      >19 Mar '26 at 8:00 AM</span
+                    >
+                  </p>
+                  <div class="profile-card mb-3 mt-1 profile-card-margin">
+                    <div class="d-flex align-items-center gap-3">
+                      <div>
+                        <h6 class="mb-1 text-muted your-title">
+                          Your company details
+                        </h6>
+                        <p class="mb-0 fw-bold your-labal">
+                          SunDesh Solar Systems & Services
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="profile-card profile-card-margin">
+                    <div
+                      class="d-flex align-items-center gap-3 mb-2 profile-part"
+                    >
+                      <div class="d-flex align-items-center gap-3">
+                        <div class="km-card">KM</div>
+
+                        <div>
+                          <h6 class="mb-1 fw-bold" id="mobileProfileName">
+                            Keshav Mishra
+                          </h6>
+                        </div>
+                      </div>
+
+                      <button
+                        id="mobileEditProfileBtn"
+                        class="view-details-btn"
+                      >
+                        Edit Profile
+                        <i data-lucide="pencil" class="pencil"></i>
+                      </button>
+                    </div>
+
+                    <div class="profile-row">
+                      <span class="profile-label">Date of birth</span>
+                      <span id="mobileProfileDob" class="profile-value"
+                        >26 Apr ‘01</span
+                      >
+                    </div>
+
+                    <div class="profile-row">
+                      <span class="profile-label">Email ID</span>
+                      <span id="mobileProfileEmail" class="profile-value"
+                        >keshav.mishra@gmail.com</span
+                      >
+                    </div>
+
+                    <div class="profile-row">
+                      <span class="profile-label">Mobile number</span>
+                      <span id="mobileProfileMobile" class="profile-value"
+                        >+91 7656440011</span
+                      >
+                    </div>
+
+                    <div class="profile-row profile-row-bottom">
+                      <span class="profile-label">Address</span>
+                      <span id="mobileProfileAddress" class="profile-value">
+                        178CP, Bandra Kurla Complex, Mumbai, Maharashtra,
+                        400025.
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Anchor details modal -->
+                <div id="anchorDetailsModal" class="custom-modal-overlay">
+                  <div class="custom-modal relationship-modal margin-modal">
+                    <button class="modal-close-btn" data-close-modal>
+                      <span class="material-icons">close</span>
+                    </button>
+
+                    <h2 class="modal-title">Anchor corporate details</h2>
+
+                    <div class="rm-user-section">
+                      <img
+                        src="../assets/image/dashboard/dashboard-top.svg"
+                        alt="logo"
+                      />
+
+                      <div>
+                        <h6>Kartikeya Industries</h6>
+                      </div>
+                    </div>
+
+                    <div class="rm-contact-card">
+                      <div class="contact-row">
+                        <i data-lucide="user"></i>
+                        <span>Rajeev Mishra</span>
+                      </div>
+
+                      <div class="contact-row">
+                        <i data-lucide="phone"></i>
+                        <span>+91 7432345677</span>
+
+                        <div class="copy-contact">
+                          <span class="material-icons copy-icon"
+                            >content_copy</span
+                          >
+                        </div>
+                      </div>
+
+                      <div class="contact-row">
+                        <i data-lucide="mail"></i>
+                        <span>rakesh.kumar@gmail.com</span>
+
+                        <div class="copy-contact">
+                          <span class="material-icons copy-icon"
+                            >content_copy</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="modal-footer-right">
+                      <button class="outline-orange-btn" data-close-modal>
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Profile view modal -->
+                <div id="profileViewModal" class="custom-modal-overlay">
+                  <div class="custom-modal profile-modal">
+                    <button class="modal-close-btn" data-close-modal>
+                      <span class="material-icons">close</span>
+                    </button>
+
+                    <h2 class="modal-title">Profile details</h2>
+
+                    <div class="profile-card">
+                      <div class="profile-row profile-row-top">
+                        <span class="profile-label">Name</span>
+                        <strong id="profileName" class="profile-value"
+                          >Keshav Mishra</strong
+                        >
+                      </div>
+
+                      <div class="profile-row">
+                        <span class="profile-label">Date of birth</span>
+                        <strong id="profileDob" class="profile-value"
+                          >1990/08/28</strong
+                        >
+                      </div>
+
+                      <div class="profile-row">
+                        <span class="profile-label">Email ID</span>
+                        <strong id="profileEmail" class="profile-value"
+                          >keshav.mishra@gmail.com</strong
+                        >
+                      </div>
+
+                      <div class="profile-row">
+                        <span class="profile-label">Mobile number</span>
+                        <strong id="profileMobile" class="profile-value"
+                          >+91 9362736457</strong
+                        >
+                      </div>
+
+                      <div class="profile-row profile-row-bottom">
+                        <span class="profile-label">Address</span>
+                        <strong class="profile-value" id="profileAddress"
+                          >431TP BKC, Mumbai, Maharashtra, 400051</strong
+                        >
+                      </div>
+                    </div>
+
+                    <div class="modal-footer-right">
+                      <button class="outline-orange-btn" data-close-modal>
+                        Close
+                      </button>
+
+                      <button class="orange-btn" id="openProfileEdit">
+                        Edit
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Profile edit modal -->
+                <div id="profileEditModal" class="custom-modal-overlay">
+                  <div class="custom-modal profile-modal">
+                    <button class="modal-close-btn" data-close-modal>
+                      <span class="material-icons">close</span>
+                    </button>
+
+                    <h2 class="modal-title">Profile details</h2>
+
+                    <div class="row g-3 modal-pad">
+                      <div class="col-md-6 profile-card-margin">
+                        <label class="form-label">Name</label>
+                        <input
+                          class="form-control"
+                          id="editName"
+                          value="Keshav Mishra"
+                        />
+                      </div>
+
+                      <div class="col-md-6 second-item profile-card-margin">
+                        <label class="form-label"
+                          >Date of birth as per aadhaar
+                          <i
+                            data-lucide="info"
+                            class="info-icon date-icon"
+                            data-tooltip="Date of birth"
+                          ></i>
+                        </label>
+                        <div class="position-relative calender-input">
+                          <input
+                            type="text"
+                            class="form-control pe-5"
+                            id="editDob"
+                            value="26/04/2001"
+                          />
+                          <i
+                            data-lucide="calendar"
+                            class="bi bi-calendar3 position-absolute top-50 end-0 translate-middle-y me-3 copy-icon"
+                          ></i>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6">
+                        <label class="form-label">Email ID</label>
+                        <input
+                          class="form-control"
+                          id="editEmail"
+                          value="keshav.mishra@gmail.com"
+                        />
+                      </div>
+
+                      <div class="col-md-6">
+                        <label class="form-label">Mobile number</label>
+                        <div class="d-flex gap-3">
+                          <input
+                            class="form-control edit-mobile-pre"
+                            value="+91"
+                            disabled
+                          />
+                          <input
+                            class="form-control"
+                            id="editMobile"
+                            value="9362736457"
+                            maxlength="10"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="col-md-6">
+                        <label class="form-label">Address</label>
+                        <input
+                          id="editAddress"
+                          class="form-control"
+                          value="178CP, Bandra Kurla Complex, Road 21 "
+                        />
+                      </div>
+
+                      <div class="col-md-6">
+                        <label class="form-label">Pin code</label>
+                        <input class="form-control" value="400051" />
+                      </div>
+
+                      <div class="mobile-profile">
+                        <div class="col-md-6">
+                          <label class="form-label">City</label>
+                          <span class="form-control form-input-value"
+                            >Mumbai</span
+                          >
+                        </div>
+
+                        <div class="col-md-6">
+                          <label class="form-label">State</label>
+                          <span class="form-control form-input-value"
+                            >Maharashtra</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="modal-footer-right">
+                      <button class="outline-orange-btn" data-close-modal>
+                        Cancel
+                      </button>
+
+                      <button class="orange-btn" id="updateProfileBtn">
+                        Update
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Stepper card -->
+                <div id="stepper-card" class="dashboard-card mt-4">
+                  <div class="stepper-wrapper" id="stepperWrapper">
+                    <div class="stepper-line"></div>
+
+                    <div class="stepper-progress"></div>
+
+                    <div class="step-item active" id="step1">
+                      <div class="step-circle step-circle-check">
+                        <i class="check-icon material-symbols-outlined"
+                          >check</i
+                        >
+                      </div>
+                      <div class="step-label step-1">Loan offer</div>
+                    </div>
+                    <div class="step-item current" id="step2">
+                      <div class="step-circle"></div>
+                      <div class="step-label">Apply</div>
+                    </div>
+                    <div class="step-item" id="step3">
+                      <div class="step-circle">3</div>
+                      <div class="step-label">Sanction</div>
+                    </div>
+                    <div class="step-item" id="step4">
+                      <div class="step-circle">4</div>
+                      <div class="step-label">Current account</div>
+                    </div>
+                    <div class="step-item" id="step5">
+                      <div class="step-circle">5</div>
+                      <div class="step-label">eSign</div>
+                    </div>
+                    <div class="step-item" id="step6">
+                      <div class="step-circle step-last">6</div>
+                      <div class="step-label step-n">Limit setup</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Dashboard Cards -->
+                <div class="dashboardCardHigh">
+                  <div
+                    id="cardHeaderSection"
+                    class="d-flex justify-content-between align-items-start flex-wrap"
+                  >
+                    <div class="d-flex gap-3 application-block">
+                      <div class="alert-icon-container">
+                        <div class="alert-icon-outer rejected-outer"></div>
+                        <div class="alert-icon-middle rejected-middle"></div>
+                        <!-- <i data-lucide="alert-circle" class="alert-icon-inner"></i> -->
+                        <div class="alert-icon-custom rejected-custom">
+                          <span class="exclamation-mark">!</span>
+                        </div>
+                      </div>
+
+                      <div class="mt-3 mt-lg-0 loan-rejected-block">
+                        <p
+                          id="rejectedTitle"
+                          class="fs-6 fw-bold your-company-labal"
+                        >
+                          Loan application rejected
+                        </p>
+
+                        <div class="d-flex align-items-center gap-2">
+                          <p class="relation">
+                            Your ICICI Bank relationship manager will contact
+                            you shortly.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div id="dashboard-card-top" class="dashboard-card-box">
+                    <div class="d-flex justify-content-between flex-wrap">
+                      <div>
+                        <div class="mt-3 mt-lg-0 application-block">
+                          <p class="loan-label-top">Application number</p>
+                          <div class="d-flex align-items-center gap-2">
+                            <p
+                              class="fw-bold mb-0 fs-5 account-number-clb your-company-labal"
+                            >
+                              CLB-000203606-PRO
+                            </p>
+
+                            <span
+                              id="loanOfferBadge"
+                              class="status-badge fw-bold"
+                              >New loan offer</span
+                            >
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="seperator"></div>
+
+                      <div
+                        class="d-flex justify-content-between align-items-start gap-add"
+                      >
+                        <div id="interestRangeBox">
+                          <p class="loan-label-top">
+                            Interest rate range
+                            <i
+                              data-lucide="info"
+                              class="chevron-icon info-icon info-css"
+                              data-tooltip="Interest rate"
+                            ></i>
+                          </p>
+
+                          <p class="fw-bold fs-5 mb-0 your-company-labal">
+                            10.70% - 11.30%
+                          </p>
+                        </div>
+
+                        <div id="rateOfInterestBox" style="display: none">
+                          <p class="loan-label-top">
+                            Interest rate
+                            <i
+                              data-lucide="info"
+                              class="chevron-icon info-icon info-css"
+                              data-tooltip="Interest rate"
+                            ></i>
+                          </p>
+
+                          <p class="fw-bold fs-5 mb-0 your-company-labal">
+                            10.70%
+                          </p>
+                        </div>
+
+                        <div class="text-end-part loan-grid-part">
+                          <p id="loan-word" class="loan-label-top">
+                            Loan offer
+                          </p>
+
+                          <p
+                            class="fw-bold fs-5 mb-0 your-company-labal loan-amount"
+                          >
+                            ₹1,00,00,000
+                          </p>
+
+                          <small class="loan-rupee"> Rupees one crore </small>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="loan-grid mt-4">
+                      <div id="processingFeeBox">
+                        <p class="loan-label">Processing fees</p>
+                        <div id="processingFeeValue" class="loan-value">
+                          ₹10,000<span class="fee-small">.00</span>
+                          <span id="gst">+ GST</span>
+                        </div>
+                      </div>
+
+                      <div class="grid-right-part" id="sanctionDateBox">
+                        <p class="loan-label">offer date</p>
+                        <div class="loan-value">02 Jan ‘25</div>
+                      </div>
+
+                      <div id="limitExpiryBox">
+                        <p class="loan-label">Offer validity date</p>
+                        <div class="loan-value">01 Jan ‘26</div>
+                      </div>
+
+                      <div class="grid-right-part">
+                        <p class="loan-label">
+                          Tenor
+                          <i
+                            data-lucide="info"
+                            class="chevron-icon info-icon info-css"
+                            data-tooltip="Tranche repayment tenor"
+                          ></i>
+                        </p>
+
+                        <div class="loan-value">60 days</div>
+                      </div>
+
+                      <div id="currentAccount" style="display: none">
+                        <p class="loan-label">Current account</p>
+                        <div class="loan-value">1006 1995 1006</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    id="cardFooterSection"
+                    class="d-flex justify-content-between align-items-start flex-wrap foot"
+                  >
+                    <div>
+                      <div class="mt-3 mt-lg-0 apply-card-footer">
+                        <p class="fs-6 fw-bold" id="cardFooterTitle">
+                          Apply for dealer finance
+                          <i
+                            data-lucide="info"
+                            class="chevron-icon info-icon info-css"
+                            data-tooltip="Revolving line of credit"
+                          ></i>
+                        </p>
+
+                        <div class="d-flex align-items-center gap-2">
+                          <p id="cardFooterText">
+                            Your loan offer will expire on
+                            <strong>29 Mar ‘26</strong>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="mt-3 mt-lg-0 button-part">
+                      <button id="applyBtn" class="fw-bold orange-btn">
+                        Apply
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Limit setup card -->
+                <div id="limitSetupSection">
+                  <div class="dashboard-card-box">
+                    <div
+                      class="d-flex justify-content-between flex-wrap limit-validity"
+                    >
+                      <div class="d-flex gap-3 application-block">
+                        <div class="icon-frame">
+                          <img
+                            src="../assets/image/dashboard/icici-icon.svg"
+                            width="36"
+                          />
+                        </div>
+
+                        <div class="account-number-section">
+                          <div class="loan-label-top">
+                            SCF limit account number
+                          </div>
+                          <div class="loan-value account-number-value">
+                            xxxx xxxx 8754
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="seperator"></div>
+
+                      <div class="proceed-to-esign-part">
+                        <div class="d-flex justify-content-end first-card">
+                          <div class="items-place">
+                            <div class="loan-label-top">Utilized limit</div>
+                            <div
+                              class="d-flex gap-1 percentage-block-part start-div"
+                            >
+                              <div class="outstanding-amount-value">
+                                ₹xxxxxxxxxx
+                              </div>
+                              <div
+                                class="percentage-block fw-bold"
+                                style="display: none"
+                              >
+                                0%
+                              </div>
+                            </div>
+                            <small
+                              class="saction-limiy-value-words"
+                              style="display: none"
+                            >
+                              Rupees zero
+                            </small>
+                          </div>
+
+                          <div class="items-place grid-right-part">
+                            <div class="loan-label-top">Available limit</div>
+                            <div class="d-flex gap-1 percentage-block-part">
+                              <div
+                                class="available-amount-value your-company-labal"
+                              >
+                                ₹xxxxxxxxxx
+                              </div>
+                              <div
+                                class="available-percent percentage-block fw-bold"
+                                style="display: none"
+                              >
+                                100%
+                              </div>
+                            </div>
+                            <small
+                              class="saction-limiy-value-words"
+                              style="display: none"
+                            >
+                              Rupees one crore
+                            </small>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="items-place gap-3 items-place-last">
+                        <div class="d-flex align-items-end saction">
+                          <div class="loan-label-top">Sanctioned limit</div>
+                          <div class="d-flex align-items-end grid-flex-start">
+                            <div
+                              class="sanction-limit-value your-company-labal"
+                            >
+                              ₹xxxxxxxxxx
+                            </div>
+
+                            <small
+                              class="saction-limiy-value-words"
+                              style="display: none"
+                            >
+                              Rupees one crore
+                            </small>
+                          </div>
+                        </div>
+
+                        <div class="view-details-btn" id="toggleAccountDetails">
+                          View details
+                          <i data-lucide="eye"></i>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="loan-grid mt-4 grid-parts">
+                      <div>
+                        <p class="loan-label">Interest rate</p>
+                        <div class="loan-value">10.70%</div>
+                      </div>
+
+                      <div class="grid-right-part">
+                        <p class="loan-label">Processing fee</p>
+                        <div class="loan-value">
+                          ₹10,000<span class="fee-small">.00</span>
+                          <span id="gst">+ GST</span>
+                        </div>
+                      </div>
+
+                      <div>
+                        <p class="loan-label">Limit setup date</p>
+                        <div class="loan-value">02 Jan '25</div>
+                      </div>
+
+                      <div class="grid-right-part">
+                        <p class="loan-label">Limit expiry date</p>
+                        <div class="loan-value">01 Jan '26</div>
+                      </div>
+
+                      <div>
+                        <p class="loan-label">
+                          Tenor
+                          <i
+                            data-lucide="info"
+                            class="chevron-icon info-icon info-css"
+                            data-tooltip="Tranche repayment tenor"
+                          ></i>
+                        </p>
+                        <div class="loan-value">60 days</div>
+                      </div>
+
+                      <div class="account-frozen grid-right-part">
+                        <p class="loan-label">Account status</p>
+                        <div class="loan-value">Unfreeze</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div id="limitBottomSection"></div>
+                </div>
+
+                <!-- E-Sign Redirect Modal -->
+                <div
+                  id="esignRedirectModal"
+                  class="esign-modal-overlay"
+                  style="display: none"
+                >
+                  <div class="esign-modal-box margin-modal">
+                    <button class="esign-modal-close" id="closeEsignModal">
+                      ✕
+                    </button>
+
+                    <h3 class="esign-modal-title">Proceed to eSign</h3>
+
+                    <div class="esign-modal-content">
+                      <div class="esign-modal-icon">
+                        <i data-lucide="arrow-up-right"></i>
+                      </div>
+
+                      <p>
+                        You will be re-directing to the third party
+                        <br />
+                        portal for eSigning process.
+                      </p>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-3 footer-btns">
+                      <button
+                        id="partnerEsignCancelBtn"
+                        class="outline-orange-btn fw-bold"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        id="partnerEsignProceedBtn"
+                        class="orange-btn fw-bold"
+                      >
+                        Proceed
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Tour overlay modal -->
+                <div
+                  id="tourOverlay"
+                  class="tour-overlay"
+                  style="display: none"
+                >
+                  <div id="tourHighlight"></div>
+
+                  <div id="tourTooltip" class="tour-tooltip">
+                    <button class="tour-close" id="tourClose">
+                      <span class="material-icons">close</span>
+                    </button>
+
+                    <div id="tourTooltipContent"></div>
+                    <div class="steps-tour-container">
+                      <div class="steps-tour"></div>
+                      <div class="step-tour"></div>
+                      <div class="step-tour"></div>
+                    </div>
+
+                    <div class="tour-footer">
+                      <span id="tourStepText">Step 1/4</span>
+
+                      <div class="tooltip-footer">
+                        <button id="tourSkip" class="outline-orange-btn">
+                          Skip
+                        </button>
+
+                        <button id="tourNext" class="orange-btn">Next</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Loan reject modal -->
+                <div id="rejectModal" class="custom-modal-overlay">
+                  <div
+                    class="custom-modal relationship-modal logout-modal margin-modal"
+                  >
+                    <button
+                      class="modal-close-btn"
+                      id="rejectModalCloseBtn"
+                      data-close-modal
+                    >
+                      <i data-lucide="x"></i>
+                    </button>
+                    <div class="d-flex gap-3">
+                      <img
+                        src="../assets/image/auth/logout.svg"
+                        alt="verification-done"
+                        class="verification-done"
+                      />
+                      <div class="d-flex flex-column gap-1">
+                        <h5 class="modal-title">Loan application rejected</h5>
+                        <p class="verification-subtitle">
+                          Thank you for your interest in channel finance
+                          facility. We are unable to offer loan basis the bureau
+                          details. We sincerely regret the inconvenience
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="modal-footer-right">
+                      <button
+                        class="outline-orange-btn"
+                        data-close-modal
+                        id="closeRejectModal"
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Esign card -->
+                <div id="dashboardEsign" style="display: none">
+                  <div class="esign-box">
+                    <div
+                      class="d-flex justify-content-between align-items-center flex-wrap gap-3 esign-block"
+                    >
+                      <div>
+                        <h5 class="fw-bold fs-6 esign-title your-company-labal">
+                          eSign
+                          <i
+                            data-lucide="info"
+                            class="chevron-icon info-icon info-css"
+                            data-tooltip="eSign"
+                          ></i>
+                        </h5>
+
+                        <p
+                          class="mb-0 mt-2 esign-title"
+                          id="esignMainSigner your-company-labal"
+                        >
+                          Signatory:
+                          <strong class="your-company-labal"
+                            >Ramesh Lakshmi Ronda</strong
+                          >
+                        </p>
+                      </div>
+
+                      <button class="orange-btn" id="mainEsignBtn">
+                        Proceed to eSign
+                      </button>
+                    </div>
+
+                    <div
+                      id="esignPendingSection"
+                      class="d-flex justify-content-between align-items-center flex-wrap"
+                    >
+                      <p class="mb-0" id="esignPendingText">
+                        eSign pending with <strong>3 partners</strong>
+                      </p>
+
+                      <span class="view-details-btn" id="toggleEsign">
+                        <span class="view-btn">View details</span>
+                        <i data-lucide="chevron-down" class="chevron-icon"></i
+                      ></span>
+                    </div>
+
+                    <div id="partnerDetails" style="display: none">
+                      <div class="partner-grid">
+                        <div>
+                          <p class="text-muted partner-label">Partner 1</p>
+
+                          <div class="partner-grid-detail">
+                            <div class="partner-name">
+                              Gayatri Lakshmi Ronda
+                            </div>
+
+                            <div class="green-text partner-status">
+                              eSigned
+                              <i
+                                data-lucide="circle-check"
+                                class="chevron-icon info-icon check-icon-circle"
+                                data-tooltip="eSigned"
+                              ></i>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div>
+                          <p class="text-muted partner-label">Partner 2</p>
+
+                          <div class="partner-grid-detail">
+                            <div class="partner-name">Ramesh Lakshmi Ronda</div>
+
+                            <div class="pending-text partner-status">
+                              Pending
+                            </div>
+                          </div>
+                        </div>
+
+                        <div>
+                          <p class="partner-label partner-disabled">
+                            Partner 3
+                          </p>
+
+                          <div class="partner-grid-detail">
+                            <div class="partner-name partner-disabled">
+                              Sameer Lakshmi Ronda
+                            </div>
+
+                            <div
+                              class="pending-text partner-status partner-disabled partner-status-bg"
+                            ></div>
+                          </div>
+                        </div>
+
+                        <div>
+                          <p class="partner-label partner-disabled">
+                            Partner 4
+                          </p>
+
+                          <div class="partner-grid-detail">
+                            <div class="partner-name partner-disabled">
+                              Kajal Lakshmi Ronda
+                            </div>
+
+                            <div
+                              class="pending-text partner-status partner-disabled partner-status-bg"
+                            ></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Document card -->
+                <div id="dashboardDocuments" style="display: none">
+                  <div class="document-box-column mt-4">
+                    <div class="document-header" id="documentsToggle">
+                      <h6 class="mb-0 fw-bold your-company-labal loan-document">
+                        Loan documents
+                      </h6>
+
+                      <i
+                        data-lucide="chevron-down"
+                        id="documentsArrow"
+                        class="chevron-icon"
+                      ></i>
+                    </div>
+
+                    <div id="documentsContent" style="display: none">
+                      <div class="document-list">
+                        <div class="document-item">
+                          <div class="document-title">
+                            Loan agreement.pdf
+                            <i
+                              data-lucide="info"
+                              class="info-icon info-css"
+                              data-tooltip="Loan agreement"
+                            ></i>
+                          </div>
+
+                          <div class="download-link download-btn">
+                            <span id="download-text" class="download-text">
+                              Download
+                            </span>
+
+                            <i id="download-icon" data-lucide="download"></i>
+
+                            <span
+                              class="spinner-border spinner-border-sm d-none download-loader"
+                            ></span>
+                          </div>
+                        </div>
+
+                        <div class="document-item">
+                          <div class="document-title">
+                            Sanction letter.pdf
+                            <i
+                              data-lucide="info"
+                              class="info-icon info-css"
+                              data-tooltip="Saction letter"
+                            ></i>
+                          </div>
+
+                          <div class="download-link download-btn">
+                            <span id="download-text" class="download-text">
+                              Download
+                            </span>
+
+                            <i id="download-icon" data-lucide="download"></i>
+
+                            <span
+                              class="spinner-border spinner-border-sm d-none download-loader"
+                            ></span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Mobile Account Actions -->
+                <div
+                  id="mobileAccountActions"
+                  class="d-md-none"
+                  style="display: none"
+                >
+                  <div class="mb-3 footer-section">
+                    <div class="footer-label">View account balance</div>
+
+                    <div class="footer-link">
+                      Redirect to CIB
+                      <i data-lucide="arrow-up-right"></i>
+                    </div>
+                  </div>
+
+                  <hr class="horizontal" />
+
+                  <div class="footer-section">
+                    <div class="footer-label">Account statement</div>
+
+                    <div class="footer-link">
+                      Download statement
+                      <i data-lucide="download" class="chevron-icon"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sidebar -->
+              <div class="d-none d-md-block col-lg-3 sidebar-width">
+                <div class="sidebar-box"></div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+
+      <div id="toast"></div>
+
+      <!-- Footer -->
+      <div id="dashboardFooter">
+        <div class="max-content-area">
+          <div class="footer-left" id="footerBalanceSection">
+            <div>
+              <div class="footer-label">View account balance</div>
+
+              <div class="footer-link">
+                Redirect to CIB
+                <i data-lucide="arrow-up-right"></i>
+              </div>
+            </div>
+
+            <div id="footerStatementSection">
+              <div class="footer-label">Account statement</div>
+
+              <div class="footer-link">
+                Download statement
+                <i data-lucide="download" class="chevron-icon"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="footer-right">
+            <img
+              src="../assets/image/dashboard/digital-lite-orange.svg"
+              class="digital-image"
+            />
+
+            <div class="footer-right-text">
+              <span>(Supply chain finance portal)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Bottom Navigation -->
+      <div id="mobileBottomNav" class="mobile-bottom-nav d-md-none">
+        <div class="mobile-nav-item active" data-tab="dashboard">
+          <i data-lucide="layout-dashboard"></i>
+          <span>Dashboard</span>
+        </div>
+
+        <div id="footer-profile" class="mobile-nav-item" data-tab="profile">
+          <i data-lucide="user"></i>
+          <span>Profile</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="sidePanelOverlay"></div>
+
+    <!-- Notification side panel -->
+    <div id="notificationPanel" class="side-panel">
+      <div class="panel-header">
+        <h4 class="norify">
+          <i data-lucide="bell" id="close-mobile"></i>
+          <i
+            data-lucide="chevron-left"
+            class="close-panel"
+            id="close-desktop"
+          ></i>
+          Notifications
+        </h4>
+
+        <button class="close-panel" id="close-mobile">
+          <i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <div class="panel-header panel-bottom">
+        <h4 class="date-panel">20 Jun ‘25 (Today)</h4>
+
+        <button>
+          <p class="mark-all">
+            <i data-lucide="check-check"></i>Mark all as read
+          </p>
+        </button>
+      </div>
+
+      <div class="panel-body">
+        <div class="notification-item">
+          <div class="round-ball"></div>
+          <div>
+            <i data-lucide="file" class="notify-icon"></i>
+          </div>
+          <div>
+            <h6>Sanction letter is sent to your email ID.</h6>
+            <p>
+              Thankyou for completing your sanction application, Your sanction
+              letter is sent to the registered email ID.
+            </p>
+            <span>10:35 AM</span>
+          </div>
+        </div>
+
+        <div class="notification-item">
+          <div class="notification-point"></div>
+          <div>
+            <i data-lucide="clock" class="notify-icon"></i>
+          </div>
+          <div>
+            <h6>Offer expiring soon.</h6>
+            <p>
+              Your loan offer expires in 3 days, don’t miss out. Apply now to
+              secure your limit before it expires.
+            </p>
+            <span>10:35 AM</span>
+          </div>
+        </div>
+
+        <div class="notification-item">
+          <div class="notification-point"></div>
+          <div>
+            <i data-lucide="clock" class="notify-icon"></i>
+          </div>
+          <div>
+            <h6>Your KYC is pending.</h6>
+            <p>
+              ICICI Bank relationship manager will contact you to complete your
+              KYC.
+            </p>
+            <span>10:35 AM</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Accessibility panel -->
+    <div id="accessibilityOverlay"></div>
+    <div id="accessibilityPanel">
+      <div class="accessibility-content">
+        <button class="modal-close-btn" data-close-modal>
+          <i data-lucide="x"></i>
+        </button>
+        <h5>Accessibility Settings</h5>
+
+        <div class="setting-row">
+          <img
+            src="../assets/image/dashboard/size.svg"
+            alt=""
+            class="text-size"
+          />
+          <span>Text Size</span>
+
+          <div class="setting-controls">
+            <button class="decrease-font">−</button>
+            <button class="not-active first" data-state="0">A</button>
+            <button class="active second" data-state="1">A</button>
+            <button class="not-active third" data-state="2">A</button>
+            <button class="increase-font">+</button>
+          </div>
+        </div>
+
+        <div class="setting-row">
+          <img
+            src="../assets/image/dashboard/line-height.svg"
+            alt=""
+            class="line-height"
+          />
+          <span>Line Height</span>
+
+          <div class="setting-controls">
+            <button class="decrease-line">−</button>
+            <button class="not-active first" data-state="0">☰</button>
+            <button class="active second" data-state="1">☰</button>
+            <button class="not-active third" data-state="2">☰</button>
+            <button class="increase-line">+</button>
+          </div>
+        </div>
+
+        <div class="setting-row">
+          <img
+            src="../assets/image/dashboard/letter-spacing.svg"
+            alt=""
+            class="letter-spacing"
+          />
+          <span>Letter Spacing</span>
+
+          <div class="setting-controls">
+            <button class="decrease-spacing">−</button>
+            <button class="not-active first" data-state="0">|A|</button>
+            <button class="active second" data-state="1">|A|</button>
+            <button class="not-active third" data-state="2">|A|</button>
+            <button class="increase-spacing">+</button>
+          </div>
+        </div>
+
+        <div class="setting-row">
+          <img
+            src="../assets/image/dashboard/high-contrast.svg"
+            alt=""
+            class="high-contrast-part"
+          />
+          <span>High contrast mode</span>
+
+          <div class="form-check form-switch">
+            <input
+              id="highContrastToggle"
+              class="form-check-input"
+              type="checkbox"
+            />
+          </div>
+        </div>
+
+        <div class="accessibility-footer">
+          <button class="outline-orange-btn" id="resetAccessibility">
+            Reset
+          </button>
+
+          <button class="orange-btn" id="applyAccessibility">Apply</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logout modal -->
+    <div id="logoutModal" class="custom-modal-overlay">
+      <div class="custom-modal relationship-modal logout-modal margin-modal">
+        <button class="modal-close-btn" data-close-modal>
+          <i data-lucide="x"></i>
+        </button>
+        <div class="d-flex gap-3">
+          <img
+            src="../assets/image/auth/logout.svg"
+            alt="verification-done"
+            class="verification-done"
+          />
+          <div class="d-flex flex-column gap-1">
+            <h5 class="modal-title">Are you sure you want to cancel?</h5>
+            <p class="verification-subtitle">
+              Clicking on logout will take you to home screen.
+            </p>
+          </div>
+        </div>
+
+        <div class="modal-footer-right">
+          <button class="outline-orange-btn" data-close-modal>Close</button>
+          <button id="proceedBtn" class="orange-btn" data-close-modal>
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Desktop logout success screen -->
+    <div id="logoutSuccessScreen" style="display: none">
+      <div class="logout">
+        <div class="max-content-area">
+          <div class="logout-header">
+            <img
+              src="../assets/image/dashboard/ICICI-logo.svg"
+              alt="logo"
+              class="header-logo"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="logout-success-content max-content-area">
+        <div class="alert-icon-container">
+          <div class="alert-icon-outer"></div>
+          <div class="alert-icon-middle"></div>
+          <div class="alert-icon-custom">
+            <span class="material-icons">check</span>
+          </div>
+        </div>
+
+        <h2>You have been logged out successfully</h2>
+
+        <p>
+          Thank you for using the ICICI Bank SCF Portal. Your progress has been
+          saved, log back in to continue.
+        </p>
+      </div>
+    </div>
+
+    <!-- Mobile logout success screen -->
+    <div
+      id="mobileLogoutSuccessScreen"
+      style="display: none"
+      class="custom-modal-overlay"
+    >
+      <div class="custom-modal relationship-modal logout-modal">
+        <button class="modal-close-btn" data-close-modal>
+          <span class="material-icons">close</span>
+        </button>
+        <div class="d-flex gap-3">
+          <div class="alert-icon-container">
+            <div class="alert-icon-outer"></div>
+            <div class="alert-icon-middle"></div>
+            <div class="alert-icon-custom">
+              <span class="material-icons">check</span>
+            </div>
+          </div>
+          <div class="d-flex flex-column gap-1">
+            <h5 class="modal-title">You have been logged out successfully</h5>
+            <p class="verification-subtitle">
+              Thank you for using the ICICI Bank SCF Portal. Your progress has
+              been saved, log back in to continue.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast container -->
+    <div id="toastContainer">
+      <div id="downloadToast" class="custom-toast" style="display: none">
+        <div class="toast-icon"></div>
+        <div>
+          <div class="toast-title">Download successful</div>
+          <div class="toast-message">
+            Sanction letter document has been downloaded successfully
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Apply for sanction modal -->
+    <div class="custom-modal-overlay" id="applySanctionModal">
+      <div class="custom-modal sanction-modal">
+        <div class="corner-image">
+          <img
+            src="../assets/image/dashboard/bg-image.svg"
+            alt="document icon"
+          />
+        </div>
+
+        <div class="side-center-image">
+          <img
+            src="../assets/image/dashboard/file.svg"
+            alt="verification badge"
+          />
+        </div>
+
+        <div class="side-mobile-image" style="display: none">
+          <img
+            src="../assets/image/dashboard/side-mobile-file.svg"
+            alt="verification badge"
+          />
+        </div>
+
+        <div class="mobile-fix">
+          <button class="modal-close-btn" id="modalCloseBtn">
+            <span class="material-icons">close</span>
+          </button>
+
+          <h2>Apply for dealer finance</h2>
+
+          <p class="subtitle">Steps you need to follow:</p>
+        </div>
+
+        <div class="sanction-steps">
+          <div class="sanction-step">
+            <span>1</span>
+            <div>
+              <h6>Verify entity details</h6>
+              <p>PAN, GST & URC</p>
+            </div>
+          </div>
+
+          <div class="sanction-step">
+            <span>2</span>
+            <div>
+              <h6>Additional entity details</h6>
+              <p>LEI & banking exposure</p>
+            </div>
+          </div>
+
+          <div class="sanction-step">
+            <span>3</span>
+            <div>
+              <h6>Proprietor details</h6>
+              <p>Personal details of proprietor</p>
+            </div>
+          </div>
+
+          <div class="sanction-step">
+            <span>4</span>
+            <div>
+              <h6>Bank statement & ITR</h6>
+              <p>Account details, bank statement and ITR</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-part-apply">
+          <p class="apply-six-title">Keep these details/documents ready:</p>
+          <div class="grid-section">
+            <span class="grid-section-part">
+              <div class="icon-circle">
+                <span class="material-symbols-outlined"> contact_mail </span>
+              </div>
+              PAN card
+              <span class="personal">(personal)</span>
+            </span>
+            <span class="grid-section-part">
+              <div class="icon-circle">
+                <span class="material-symbols-outlined">cards_stack</span>
+              </div>
+              GSTIN</span
+            >
+            <span class="grid-section-part">
+              <div class="icon-circle">
+                <span class="material-symbols-outlined">docs</span>
+              </div>
+              URC</span
+            >
+            <span class="grid-section-part">
+              <div class="icon-circle">
+                <span class="material-symbols-outlined">description</span>
+              </div>
+              LEI certificate</span
+            >
+            <span class="grid-section-part">
+              <div class="icon-circle">
+                <span class="material-symbols-outlined">contract_edit</span>
+              </div>
+              Bank statement</span
+            >
+            <span class="grid-section-part">
+              <div class="icon-circle">
+                <span class="material-symbols-outlined"
+                  >heap_snapshot_multiple</span
+                >
+              </div>
+              Income tax return</span
+            >
+          </div>
+        </div>
+
+        <div class="modal-footer-right">
+          <button class="outline-orange-btn" id="cancelBtn">Cancel</button>
+          <button class="orange-btn" id="applySanctionProceedBtn">
+            Proceed
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Apply for sanction modal(with saved progress state) -->
+    <!-- <div class="custom-modal-overlay" id="applySanctionModal">
+      <div class="custom-modal sanction-modal">
+        <div class="corner-image">
+          <img
+            src="../assets/image/dashboard/bg-image.svg"
+            alt="document icon"
+          />
+        </div>
+
+        <div class="side-center-image">
+          <img
+            src="../assets/image/dashboard/file.svg"
+            alt="verification badge"
+          />
+        </div>
+
+        <div class="side-mobile-image" style="display: none">
+          <img
+            src="../assets/image/dashboard/side-mobile-file.svg"
+            alt="verification badge"
+          />
+        </div>
+
+        <div class="mobile-fix">
+          <button class="modal-close-btn" id="modalCloseBtn">
+            <span class="material-icons">close</span>
+          </button>
+
+          <h2>You can continue from where you left</h2>
+
+          <p class="subtitle">
+            We have saved your progress. You can continue the application from
+            the step you left.
+          </p>
+        </div>
+
+        <div class="sanction-steps">
+          <div class="sanction-step">
+            <span
+              class="material-icons"
+              >check</span
+            >
+            <div>
+              <h6>Verify entity details</h6>
+              <p>PAN, GST & URC</p>
+            </div>
+          </div>
+
+          <div class="sanction-step">
+            <span class="saction-step-current"
+              ><i data-lucide="clock-3" class="check-icon"></i
+            ></span>
+            <div>
+              <h6>Additional entity details</h6>
+              <p>LEI & banking exposure</p>
+            </div>
+          </div>
+
+          <div class="sanction-step">
+            <span>3</span>
+            <div>
+              <h6>Proprietor details</h6>
+              <p>Personal details of proprietor</p>
+            </div>
+          </div>
+
+          <div class="sanction-step">
+            <span>4</span>
+            <div>
+              <h6>Bank statement & ITR</h6>
+              <p>Account details, bank statement and ITR</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-part-apply">
+          <p class="apply-six-title">Keep these details/documents ready:</p>
+          <div class="grid-section">
+            <span class="grid-section-part">
+              <div class="icon-circle">
+                <span class="material-symbols-outlined"> contact_mail </span>
+              </div>
+              PAN card
+              <span class="personal">(personal)</span>
+            </span>
+            <span class="grid-section-part">
+              <div class="icon-circle">
+                <span class="material-symbols-outlined">cards_stack</span>
+              </div>
+              GSTIN</span
+            >
+            <span class="grid-section-part">
+              <div class="icon-circle">
+                <span class="material-symbols-outlined">docs</span>
+              </div>
+              URC</span
+            >
+            <span class="grid-section-part">
+              <div class="icon-circle">
+                <span class="material-symbols-outlined">description</span>
+              </div>
+              LEI certificate</span
+            >
+            <span class="grid-section-part">
+              <div class="icon-circle">
+                <span class="material-symbols-outlined">contract_edit</span>
+              </div>
+              Bank statement</span
+            >
+            <span class="grid-section-part">
+              <div class="icon-circle">
+                <span class="material-symbols-outlined"
+                  >heap_snapshot_multiple</span
+                >
+              </div>
+              Income tax return</span
+            >
+          </div>
+        </div>
+
+        <div class="modal-footer-right">
+          <button class="outline-orange-btn" id="cancelBtn">Cancel</button>
+          <button class="orange-btn" id="applySanctionProceedBtn">
+            Proceed
+          </button>
+        </div>
+      </div>
+    </div> -->
+
+    <!-- Apply for sanction - terms modal -->
+    <div class="custom-modal-overlay" id="termsModal">
+      <div class="custom-modal sanction-modal">
+        <div class="terms-header">
+          <h2>
+            <i data-lucide="chevron-left" class="close-modal"></i>
+            Terms & Conditions
+          </h2>
+
+          <div class="language-selector">
+            <div class="language-dropdown" id="languageDropdown">
+              <div class="language-selected">
+                <div>
+                  <span class="language">Aa</span>
+                  <span class="dropdown-option">English</span>
+                </div>
+                <span class="material-icons dropdown-arrow">expand_more</span>
+              </div>
+
+              <div class="language-options">
+                <div class="language-option" data-value="en">
+                  <div>
+                    <span class="language">Aa</span>
+                    <span class="dropdown-option">English</span>
+                  </div>
+                </div>
+
+                <div class="language-option" data-value="hi">
+                  <div>
+                    <span class="language">आ</span>
+                    <span class="dropdown-option">हिंदी</span>
+                  </div>
+                </div>
+
+                <div class="language-option" data-value="gu">
+                  <div>
+                    <span class="language">એ</span>
+                    <span class="dropdown-option">ગુજરાતી</span>
+                  </div>
+                </div>
+
+                <div class="language-option" data-value="bn">
+                  <div>
+                    <span class="language">आ</span>
+                    <span class="dropdown-option">मराठी</span>
+                  </div>
+                </div>
+
+                <div class="language-option" data-value="mr">
+                  <div>
+                    <span class="language">அ</span>
+                    <span class="dropdown-option">बोदो</span>
+                  </div>
+                </div>
+              </div>
+
+              <input type="hidden" id="languageSelect" value="en" />
+            </div>
+          </div>
+        </div>
+
+        <div class="terms-scroll">
+          <ol id="termsList">
+            <ol id="termsList">
+              <li>
+                I/We declare that the entity or its promoters/directors should
+                not be in the RBI defaulter list/RBI willful defaulter's
+                list/ECGC.
+              </li>
+
+              <li>
+                I/We declare that we are not having arrears/defaults to ICICI
+                Bank at the time of sanction.
+              </li>
+
+              <li>
+                I/We declare that ICICI Bank's assistance to the entity or its
+                promoter should not have been restructured.
+              </li>
+
+              <li>
+                I/We declare that I/We are not be sick/potentially sick /
+                referred to BIFR.
+              </li>
+
+              <li>
+                I/We declare that None of the directors of the company, or
+                directors of its holding company or any of its subsidiary
+                companies is a director of ICICI Bank.
+              </li>
+
+              <li>
+                I/We declare that No director of ICICI Bank is a director,
+                manager, managing agent, employee or guarantor of us, or of a
+                subsidiary of the us, or of the holding company of the us, or
+                holds substantial interest, in the us or a subsidiary or the
+                holding company of the us and no directors of any other bank
+                holds substantial interest or is interested as director or as
+                guarantor of the us.
+              </li>
+
+              <li>
+                I/We declare that no relative (as specified by RBI) of a
+                Chairman / Managing Director or director of banking company
+                (including ICICI Bank) or a relative of senior officer (as
+                specified by RBI) of ICICI Bank hold substantial interest or is
+                interested as director or as guarantor of us.
+              </li>
+
+              <li>
+                I/We declare that none of the directors of us are directors of
+                subsidiaries of the Bank or of Scheduled Cooperative Banks and
+                the trustees of mutual funds/venture capital funds.
+              </li>
+
+              <li>
+                I/We declare that I/We are not section 20 company of Indian
+                Banking Regulation Act 1949.
+              </li>
+
+              <li>
+                I/We declare that I/we don't have any history of RFA/Fraud and
+                Non-Cooperative Borrowers.
+              </li>
+
+              <li>
+                I/We further declare and affirm that such borrowing and
+                authorization thereof are in compliance with our constitutional
+                documents.
+              </li>
+
+              <li>
+                The aforesaid partners shall inform ICICI Bank in writing of any
+                changes which may take place in the partnership. The aforesaid
+                partners will not dissolve / reconstitute the
+                partnership/proprietorship entity without the prior written
+                approval of ICICI Bank.
+              </li>
+
+              <li>
+                The aforesaid partners are jointly and severally liable to ICICI
+                Bank for repayment / payment of all amounts in respect of the
+                Facility to ICICI Bank. The partners are liable to ICICI Bank in
+                capacity of partner and in their personal capacity.
+              </li>
+
+              <li>
+                I/We declare any modifications / amendments carried out by the
+                aforesaid partners in the partnership (including but not limited
+                to the constitutional documents) shall not be binding on ICICI
+                Bank if made without the prior written approval of ICICI Bank.
+              </li>
+
+              <li>
+                I/We hereby agree that all documents pursuant to this Facility
+                either signed electronically or physically is binding upon the
+                partnership entity, its partners in capacity of partner and in
+                their personal capacity.
+              </li>
+
+              <li>
+                I/We declare that all the particulars and information and
+                details given/filled in this Application Form and documents
+                submitted are true, correct, and complete and up-to date in all
+                respects and that I/We have not withheld any information
+                whatsoever. I/We shall furnish such additional writings,
+                documents as may be required in connection with the financial
+                assistance/s required by me/us. I/We understand that certain
+                particulars given by us are required in view of the guidelines
+                governing banking companies.
+              </li>
+
+              <li>
+                I/We confirm that no insolvency proceedings or suits for
+                recovery outstanding dues or monies whatsoever or for attachment
+                of my/our assets or properties and/or any criminal proceedings
+                have been initiated and/or are pending against me/us and that
+                I/We have never been adjudicated insolvent by any court or other
+                authority.
+              </li>
+
+              <li>
+                No director or a relative/near relation (as specified by RBI) of
+                a director of a banking company (including ICICI Bank) or a
+                relative/near relation (as specified by RBI) of senior officer
+                of ICICI Bank (as specified by RBI) is: the Applicant(s), or a
+                partner of our concern, or a trustee, member, director, employee
+                of our concern, or of our subsidiary, or our holding company, or
+                a guarantor on my behalf, or holds substantial interest in our
+                concern or my subsidiary or holding company.
+              </li>
+
+              <li>
+                No action nor other steps have been taken or legal proceedings
+                started by or against me/us in any court of law / other
+                authorities for winding up, dissolution, administration or re
+                organization or the appointment of a liquidator (including a
+                provisional liquidator) receiver, administrator, administrative
+                receiver, trustee or similar officer or for my assets.
+              </li>
+
+              <li>
+                I/We authorize ICICI Bank and all its group companies and their
+                agents to exchange, share or part with all the information and
+                details relating to my existing loans / financial assistances
+                and/or repayment history to other ICICI Bank group companies,
+                banks, financial institutions, credit bureaus, agencies,
+                statutory bodies, etc. as may be required or they may deem fit
+                and shall not hold ICICI Bank (or any of its group companies or
+                its/their agents/representatives) liable for use/sharing of this
+                information.
+              </li>
+
+              <li>
+                I / We hereby authorize / give our consent to ICICI Bank Limited
+                ("ICICI Bank") to collect / receive / use / possess / store /
+                deal / handle / share / exchange / transfer / process all my /
+                our personal / sensitive personal information, other data,
+                including financial data and share / exchange / transfer /
+                process with group companies / affiliates / financial
+                institutions / credit bureaus / agencies / statutory bodies /
+                third party service providers / any other person as may be
+                necessary/required by ICICI Bank for the purpose of processing
+                any service request / providing any product or service /
+                complying with any applicable law / marketing and promotions
+                offers / training which may be provided/offered by ICICI Bank on
+                its own and/or in collaboration or through tie-ups with partners
+                / third parties / facilitating services / improvement or
+                development of services.
+              </li>
+
+              <li>
+                I/We agree that ICICI Bank Ltd/its group companies reserves the
+                right to retain the photographs and documents submitted with
+                photo-card application and will not return to the Applicant.
+              </li>
+
+              <li>
+                The Applicant has/have no objection to ICICI Bank, its group
+                companies, agents / representatives to provide me/us information
+                on various products, offers and services provided by ICICI Bank
+                / its group companies through any mode (including without
+                limitation through telephone calls / SMS / email) and authorize
+                ICICI Bank, its group companies, agents / representatives for
+                the above purpose.
+              </li>
+
+              <li>
+                The Applicant: (i) accepts that the RBI or credit bureau and any
+                other agency so authorized, any statutory, regulatory or
+                supervisory authority, may use, process, disseminate the said
+                information and data disclosed by ICICI Bank in such manner as
+                deemed fit by them in any particular circumstances; and (ii)
+                shall not hold ICICI Bank at all responsible or liable in this
+                regard.
+              </li>
+
+              <li>
+                I/We understand and acknowledge that ICICI Bank shall have the
+                absolute discretion, without assigning any reasons (unless
+                required by applicable law), to reject this application and that
+                ICICI Bank shall not be responsible/liable in any manner
+                whatsoever to me/us for such rejection or any delay in notifying
+                me/us of such rejection, and any costs, losses, damages or
+                expenses, or other consequences caused by reason of such
+                rejection, or any delay in notifying me/us of such rejection, of
+                my application.
+              </li>
+
+              <li>
+                I/We undertake to inform ICICI Bank regarding any changes
+                whatsoever in my addresses, as specified herein above or
+                employment/profession and to promptly provide such further
+                information that ICICI Bank for its designated group companies
+                or agents or representatives may require.
+              </li>
+
+              <li>
+                I/We also authorize ICICI Bank to check references about me/us
+                from a bank/persons.
+              </li>
+
+              <li>
+                I/We hereby further confirm that, none of the partners of the
+                borrowing entity are also directors of subsidiaries of ICICI
+                Bank or of scheduled co-operative banks or the trustees of
+                mutual funds/venture capital funds.
+              </li>
+
+              <li>
+                I/We declare that: (i) We am/are competent and fully authorized
+                to issue such declaration, confirmations, agreements and
+                undertaking and submit this Application Form, accept the terms
+                and conditions applicable to the Facility (electronically or
+                physically) for the purposes of borrowing/availing of the
+                requested facility, and to execute all other documents required
+                by ICICI Bank for such purpose; (ii) all such letter(s) of
+                authorities / powers of attorney, if any, executed by me/us in
+                favour of any person/s and which is/are submitted to ICICI Bank,
+                is/are valid, subsisting and has/have not been revoked by me/us.
+              </li>
+
+              <li>
+                I/We acknowledge and agree that the grant of the Facility by
+                ICICI Bank to me/us shall be subject to compliance by me/us of
+                the above Terms & Conditions.
+              </li>
+            </ol>
+          </ol>
+        </div>
+
+        <div class="terms-footer">
+          <label>
+            <input type="checkbox" id="agreeTerms" />
+            <div>
+              I agree to the
+              <span class="terms-conditions">terms & conditions</span>
+            </div>
+          </label>
+
+          <div class="modal-footer-right">
+            <button class="outline-orange-btn">Cancel</button>
+
+            <button class="orange-btn" id="acceptTermsBtn" disabled>
+              Accept & continue
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Apply for sanction - syatem failure -->
+    <div class="custom-modal-overlay" id="systemFailureModal">
+      <div class="custom-modal relationship-modal logout-modal">
+        <button class="modal-close-btn" data-close-modal>
+          <i data-lucide="x"></i>
+        </button>
+        <div class="d-flex gap-3">
+          <img
+            src="../assets/image/auth/logout.svg"
+            alt="verification-done"
+            class="verification-done"
+          />
+          <div class="d-flex flex-column gap-1">
+            <h5 class="modal-title">Unable to process your request</h5>
+            <p class="verification-subtitle">
+              A temporary system issue has occurred. Please retry after some
+              time
+            </p>
+          </div>
+        </div>
+
+        <div class="modal-footer-right">
+          <button
+            id="systemFailedCloseBtn"
+            class="outline-orange-btn"
+            data-close-modal
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Apply for sanction - gst tradename modal -->
+    <div class="custom-modal-overlay" id="gstTradename">
+      <div class="custom-modal sanction-modal">
+        <div class="cong-header">
+          <img src="../assets/image/auth/logout.svg" alt="" />
+          <p class="cong-title">Entity name mismatch</p>
+        </div>
+        <div class="stepScroll">
+          <div class="gst-trade-body">
+            <div class="entity-wrapper">
+              <!-- Left Side -->
+              <div class="entity-info">
+                <div class="entity-label">
+                  <span>Entity</span>
+                  <span class="mismatch-tag">
+                    Name mismatch
+                    <i data-lucide="info" class="info-icon info-css"></i>
+                  </span>
+                </div>
+
+                <p class="entity-name">Elmech engineering company ltd.</p>
+              </div>
+
+              <!-- Right Side -->
+              <div class="entity-selection">
+                <p class="selection-title">
+                  Select entity name associated with anchor corporate
+                </p>
+
+                <label class="radio-option">
+                  <input
+                    type="radio"
+                    name="entityName"
+                    value="Elmech engineering company"
+                  />
+                  <span>Elmech engineering company</span>
+                </label>
+
+                <label class="radio-option">
+                  <input
+                    type="radio"
+                    name="entityName"
+                    value="SunDesh Solur Systems and Services Marketing India"
+                  />
+                  <span
+                    >SunDesh Solur Systems and Services Marketing India</span
+                  >
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <div class="footer-actions-cong">
+            <label>
+              <i
+                data-lucide="info"
+                class="chevron-icon info-icon info-css"
+                data-tooltip="Once you choose correct entity name and click on ‘Proceed’, it
+              cannot be changed later."
+              ></i>
+              <div>
+                Once you choose correct entity name and click on ‘Proceed’, it
+                cannot be changed later.
+              </div>
+            </label>
+            <div class="footer-actions">
+              <button class="outline-orange-btn" id="gstTradeBack">Back</button>
+
+              <button class="orange-btn" id="gstTradeProceed" disabled>
+                <span class="btn-load">Proceed</span>
+                <!-- <div
+                  id="gstTradeLoader"
+                  class="input-loader"
+                  style="display: none"
+                ></div> -->
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Apply for sanction - gst tradename success modal -->
+    <div class="custom-modal-overlay" id="gstSuccessTradename">
+      <div class="custom-modal sanction-modal">
+        <div id="logoutSuccessScreen">
+          <div class="logout-success-content">
+            <div class="alert-icon-container">
+              <div class="alert-icon-outer"></div>
+              <div class="alert-icon-middle"></div>
+              <!-- <i data-lucide="alert-circle" class="alert-icon-inner"></i> -->
+              <div class="alert-icon-custom">
+                <span class="material-icons">check</span>
+              </div>
+            </div>
+
+            <h2>Your entity’s name has been successfully updated.</h2>
+          </div>
+        </div>
+
+        <div id="mobileLogoutSuccessScreen" style="display: none">
+          <div class="relationship-modal logout-modal">
+            <button class="modal-close-btn" data-close-modal>
+              <span class="material-icons">close</span>
+            </button>
+            <div class="d-flex gap-3 success-gap">
+              <div class="alert-icon-container">
+                <div class="alert-icon-outer"></div>
+                <div class="alert-icon-middle"></div>
+                <!-- <i data-lucide="alert-circle" class="alert-icon-inner"></i> -->
+                <div class="alert-icon-custom">
+                  <span class="material-icons">check</span>
+                </div>
+              </div>
+              <div class="d-flex flex-column gap-1">
+                <h5 class="modal-title">
+                  Your entity’s name has been successfully updated.
+                </h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Apply for sanction - step 1 modal -->
+    <div class="custom-modal-overlay" id="step1Modal">
+      <div class="custom-modal sanction-modal">
+        <!-- Header -->
+        <div class="sanction-header-div">
+          <button class="modal-close-btn" id="modalStep1CloseBtn">
+            <span class="material-icons">close</span>
+          </button>
+          <h2>Apply for dealer finance</h2>
+          <div class="sanction-header">
+            <div class="step-progress">
+              <div class="progress-circle">
+                <span>1/4</span>
+              </div>
+
+              <div>
+                <h3>Verify entity details</h3>
+                <div class="application-number">
+                  Next step: <span>Additional entity details</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="application-number">
+              Application number:
+              <span id="applicationNumber">CLB-000203606-PRO</span>
+              <div class="copy-contact">
+                <span class="material-icons copy-icon">content_copy</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stepScroll">
+          <!-- Entity Information -->
+          <div class="entity-grid">
+            <div>
+              <label>Entity</label>
+              <p>SunDesh Solar Systems and Services Marketing</p>
+            </div>
+
+            <div>
+              <label>PAN</label>
+              <p>BBOPP9250V</p>
+            </div>
+
+            <div class="mobile">
+              <label>Constitution</label>
+              <p>Proprietorship</p>
+            </div>
+
+            <div>
+              <label>Address</label>
+              <p>178CP, Bandra Kurla Complex, Road 21</p>
+            </div>
+
+            <div>
+              <label>Pincode</label>
+              <p>400021</p>
+            </div>
+
+            <div class="mobile">
+              <label>City</label>
+              <p>Mumbai</p>
+            </div>
+
+            <div>
+              <label>State</label>
+              <p>Maharashtra</p>
+            </div>
+
+            <div class="mobile mobile-district">
+              <label>District</label>
+              <p>Mumbai</p>
+            </div>
+
+            <div class="mobile high-screen">
+              <label>Mobile number</label>
+              <p>+91 7656440011</p>
+            </div>
+
+            <div class="email-id">
+              <label
+                >Email ID
+                <i
+                  data-lucide="info"
+                  class="chevron-icon info-icon info-css"
+                  data-tooltip="Mandatory to verify your email ID with OTP process. This email ID will be used to send your dealer financing statements"
+                ></i
+              ></label>
+              <p id="email-id">
+                sharma@gmail.com
+                <span class="verify-link">Verify</span>
+              </p>
+
+              <div id="emailOtpBox" style="display: none">
+                <div class="otp-box">
+                  <p class="otp-email">sharma@gmail.com</p>
+
+                  <div class="otp-head">
+                    <div class="otp-header">
+                      <p>OTP sent to entered email ID</p>
+
+                      <i class="material-icons otp-email-close">close</i>
+                    </div>
+
+                    <div class="otp-row">
+                      <div class="otp-section">
+                        <div class="otp-inputs">
+                          <input type="password" maxlength="1" />
+                          <input type="password" maxlength="1" />
+                          <input type="password" maxlength="1" />
+                          <input type="password" maxlength="1" />
+                          <input type="password" maxlength="1" />
+                          <input type="password" maxlength="1" />
+                        </div>
+
+                        <i
+                          class="material-icons otp-toggle"
+                          data-visible="false"
+                        >
+                          visibility_off
+                        </i>
+                      </div>
+                    </div>
+
+                    <div class="otp-footer">
+                      <span class="otp-resend-wrapper">
+                        Resend OTP after
+                        <span id="emailOtpTimer">03:00</span>
+                      </span>
+
+                      <span class="verify-otp-btn" id="verifyEmailOtpBtn">
+                        Verify
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="date" id="dateDesktop">
+              <label
+                >Incorporation date
+                <span class="incorporation-yy">(yyyy-mm-dd)</span></label
+              >
+
+              <div class="date-input custom-datepicker-wrap">
+                <input
+                  type="text"
+                  class="incorporationDate"
+                  placeholder="Select date (yyyy-mm-dd)"
+                  readonly
+                />
+                <span class="material-icons custom-cal-icon"
+                  >calendar_today</span
+                >
+                <div class="custom-calendar-popup" style="display: none"></div>
+              </div>
+
+              <p class="selected-date-text" style="display: none">
+                Business vintage = 26 years
+              </p>
+            </div>
+          </div>
+
+          <div class="entity-grid-2">
+            <div class="email-id-2">
+              <label
+                >Email ID
+                <i
+                  data-lucide="info"
+                  class="chevron-icon info-icon info-css"
+                  data-tooltip="Mandatory to verify your email ID with OTP process. This email ID will be used to send your dealer financing statements"
+                ></i>
+              </label>
+              <p class="otp-email-display">
+                sharma@gmail.com
+                <span class="verify-link">Verify</span>
+              </p>
+
+              <div id="emailOtpBoxMobile" style="display: none">
+                <div class="otp-box">
+                  <p class="otp-email">sharma@gmail.com</p>
+
+                  <div class="otp-head">
+                    <div class="otp-header">
+                      <p>OTP sent to entered email ID</p>
+                      <i class="material-icons otp-close">close</i>
+                    </div>
+                    <div class="otp-row">
+                      <div class="otp-section">
+                        <div class="otp-inputs">
+                          <input type="password" maxlength="1" />
+                          <input type="password" maxlength="1" />
+                          <input type="password" maxlength="1" />
+                          <input type="password" maxlength="1" />
+                          <input type="password" maxlength="1" />
+                          <input type="password" maxlength="1" />
+                        </div>
+                        <i
+                          class="material-icons otp-toggle"
+                          data-visible="false"
+                          >visibility_off</i
+                        >
+                      </div>
+                    </div>
+                    <div class="otp-footer">
+                      <span class="otp-resend-wrapper">
+                        Resend OTP after
+                        <span id="emailOtpTimerMobile">03:00</span>
+                      </span>
+                      <span class="verify-otp-btn" id="verifyEmailOtpBtnMobile"
+                        >Verify</span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="date-2" id="dateMobile">
+              <label
+                >Incorporation date
+                <span class="incorporation-yy">(yyyy-mm-dd)</span></label
+              >
+
+              <div class="date-input custom-datepicker-wrap">
+                <input
+                  type="text"
+                  class="incorporationDate"
+                  placeholder="Select date (yyyy-mm-dd)"
+                  readonly
+                />
+                <span class="material-icons custom-cal-icon"
+                  >calendar_today</span
+                >
+                <div class="custom-calendar-popup" style="display: none"></div>
+              </div>
+
+              <p class="selected-date-text" style="display: none">
+                Business vintage = 26 years
+              </p>
+            </div>
+          </div>
+
+          <!-- GST Section -->
+          <div class="verification-section">
+            <div class="verification-left">
+              <div class="toggle-row">
+                <h4>Do you have GSTIN?</h4>
+
+                <div class="yes-no-toggle">
+                  <span>No</span>
+
+                  <label class="switch switch-margin">
+                    <input type="checkbox" checked />
+                    <span class="slider"></span>
+                  </label>
+
+                  <span>Yes</span>
+                </div>
+              </div>
+
+              <div class="gst-grid">
+                <div>
+                  <label
+                    >Select primary GSTIN
+                    <i
+                      data-lucide="info"
+                      class="chevron-icon info-icon info-css"
+                      data-tooltip="Primary GSTIN is home state GSTIN number where major business is done"
+                    ></i>
+                  </label>
+
+                  <div class="custom-select-wrapper gstin" id="gstCustomSelect">
+                    <div class="custom-select-trigger gstinTrigger">
+                      <span class="selected-option">Select</span>
+                      <div class="select-right">
+                        <i class="material-icons">expand_more</i>
+                      </div>
+                      <!-- <div
+                        id="gstLoader"
+                        class="input-loader"
+                        style="display: none"
+                      ></div> -->
+                    </div>
+
+                    <div class="custom-select-options" style="display: none">
+                      <div class="option-item" data-value="18BNAPS8432G4ZP">
+                        18BNAPS8432G4ZP
+                      </div>
+                      <div class="option-item" data-value="18BNAPS8432G4ZP2">
+                        18BNAPS8432G4ZP2
+                      </div>
+                    </div>
+
+                    <span id="gstVerifyBtn"> Verify </span>
+                  </div>
+
+                  <select id="gstSelect" style="display: none !important">
+                    <option value="">Select</option>
+                    <option value="18BNAPS8432G4ZP">18BNAPS8432G4ZP</option>
+                    <option value="18BNAPS8432G4ZP2">18BNAPS8432G4ZP2</option>
+                  </select>
+
+                  <div id="gstOtpBox" style="display: none">
+                    <div class="otp-box">
+                      <p class="otp-email">18BNAPS8432G4ZP</p>
+
+                      <div class="otp-head">
+                        <div class="otp-header">
+                          <p>OTP sent to GSTIN registered mobile number.</p>
+                          <i class="material-icons otp-gst-close">close</i>
+                        </div>
+
+                        <div class="otp-row">
+                          <div class="otp-section">
+                            <div class="otp-inputs">
+                              <input type="password" maxlength="1" />
+                              <input type="password" maxlength="1" />
+                              <input type="password" maxlength="1" />
+                              <input type="password" maxlength="1" />
+                              <input type="password" maxlength="1" />
+                              <input type="password" maxlength="1" />
+                            </div>
+                            <i
+                              class="material-icons otp-toggle"
+                              data-visible="false"
+                              >visibility_off</i
+                            >
+                          </div>
+                        </div>
+
+                        <div class="otp-footer">
+                          <span class="otp-resend-wrapper">
+                            Resend OTP after
+                            <span id="gstOtpTimer">03:00</span>
+                          </span>
+                          <span class="verify-otp-btn" id="verifyGstOtpBtn"
+                            >Verify</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    id="gstVerifyMsg"
+                    class="verify-lei-number"
+                    style="display: none"
+                  >
+                    <i data-lucide="info info-style"></i>
+                    <p class="gst-verify-p">
+                      Verification may take few minutes, you may proceed to the
+                      next step.
+                    </p>
+                  </div>
+
+                  <p id="gstinpara">
+                    OTP will be sent to GSTIN registered mobile number.
+                  </p>
+                </div>
+
+                <!-- <div
+              class="upload-drop-zone itr-upload"
+              id="uploadGst"
+              style="display: none"
+              data-year="2022-23"
+            >
+              <div
+                class="upload-loader input-loader"
+                style="display: none"
+              ></div>
+
+              <div class="upload-left-icon">
+                <span class="material-symbols-outlined">draft</span>
+              </div>
+
+              <div class="upload-content">
+                <div class="upload-title">Upload / Drag & Drop file</div>
+                <div class="upload-info">
+                  (Max size: 2MB | Format: PDF, Excel)
+                </div>
+              </div>
+
+              <div class="upload-right-icon">
+                <i data-lucide="upload"></i>
+              </div>
+
+              <input
+                type="file"
+                class="upload-file-input"
+                accept=".pdf,.xls,.xlsx"
+                hidden
+              />
+            </div> -->
+
+                <div class="username">
+                  <label>GSTIN username</label>
+
+                  <div class="text-input">
+                    <input
+                      type="text"
+                      id="gstUsername"
+                      maxlength="15"
+                      placeholder="Enter username"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- URC -->
+              <div class="urc-section">
+                <div class="toggle-row">
+                  <h4 class="toggle-row-header">
+                    Do you have URC?
+                    <i
+                      data-lucide="info"
+                      class="chevron-icon info-icon info-css"
+                      data-tooltip="Udyam registration certificate (URC)"
+                    ></i>
+                  </h4>
+
+                  <div class="yes-no-toggle">
+                    <span>No</span>
+
+                    <label class="switch switch-margin">
+                      <input type="checkbox" checked />
+                      <span class="slider"></span>
+                    </label>
+
+                    <span>Yes</span>
+                  </div>
+                </div>
+
+                <div class="urc-grid">
+                  <div>
+                    <label>URC number</label>
+
+                    <div class="text-input" id="urc-section-input">
+                      <input
+                        type="text"
+                        id="urcNumber"
+                        placeholder="Ex: UDYAM-XX-00-0000000"
+                      />
+
+                      <!-- <div
+                        id="urcLoader"
+                        class="input-loader"
+                        style="display: none"
+                      ></div> -->
+                    </div>
+
+                    <div
+                      id="urcVerified"
+                      class="verified-status"
+                      style="display: none"
+                    >
+                      <i data-lucide="circle-check"></i>
+                      URC verified
+                    </div>
+
+                    <div
+                      id="urcVerifyMsg"
+                      class="verify-lei-number"
+                      style="display: none"
+                    >
+                      <i data-lucide="info info-style"></i>
+                      <p class="gst-verify-p">
+                        Verification may take few minutes, you may proceed to
+                        the next step.
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- <div
+                class="upload-drop-zone itr-upload"
+                id="uploadUrc"
+                style="display: none"
+                data-year="2022-23"
+              >
+                <div
+                  class="upload-loader input-loader"
+                  style="display: none"
+                ></div>
+
+                <div class="upload-left-icon">
+                  <span class="material-symbols-outlined">draft</span>
+                </div>
+
+                <div class="upload-content">
+                  <div class="upload-title">Upload / Drag & Drop file</div>
+                  <div class="upload-info">
+                    (Max size: 2MB | Format: PDF, Excel)
+                  </div>
+                </div>
+
+                <div class="upload-right-icon">
+                  <i data-lucide="upload"></i>
+                </div>
+
+                <input
+                  type="file"
+                  class="upload-file-input"
+                  accept=".pdf,.xls,.xlsx"
+                  hidden
+                />
+              </div> -->
+                </div>
+              </div>
+            </div>
+
+            <div class="gst-steps-card">
+              <h5 id="gstStepsToggle">
+                Steps for GST credentials
+                <i
+                  data-lucide="chevron-up"
+                  class="chevron-icon"
+                  id="gstStepsIcon"
+                ></i>
+              </h5>
+
+              <!-- Steps Box -->
+              <div id="gstStepsContent">
+                <div class="sanction-steps">
+                  <div class="sanction-step">
+                    <span>1</span>
+                    <div>
+                      <h6>Login to GST portal</h6>
+                      <p class="toggle-row-header">
+                        Login at
+                        <a
+                          href="https://www.gst.gov.in"
+                          target="_blank"
+                          class="link"
+                          >www.gst.gov.in</a
+                        >
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="sanction-step">
+                    <span class="saction-step-2">2</span>
+                    <div>
+                      <h6>Enable API access</h6>
+                      <p>
+                        Go to
+                        <strong
+                          >Profile → Manage API Access → Select “Yes” → Enable
+                          API Request</strong
+                        >
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="sanction-step">
+                    <span>3</span>
+                    <div>
+                      <h6>Enter details & verify</h6>
+                      <p>Enter GST username and complete OTP verification</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer">
+          <button type="button" class="disabled-link saveExitBtn">
+            Save & exit
+          </button>
+
+          <div class="footer-actions">
+            <button class="outline-orange-btn" id="step1BackBtn">Back</button>
+
+            <button class="orange-btn" id="step1NextBtn" disabled>
+              Proceed
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Apply for sanction - step 2 modal -->
+    <div class="custom-modal-overlay" id="step2Modal">
+      <div class="custom-modal form-modal sanction-modal">
+        <div class="sanction-header-div">
+          <button class="modal-close-btn" id="modalStep2CloseBtn">
+            <span class="material-icons">close</span>
+          </button>
+          <h2>Apply for dealer finance</h2>
+          <div class="sanction-header">
+            <div class="step-progress">
+              <div class="progress-circle">
+                <span>2/4</span>
+              </div>
+
+              <div>
+                <h3>Additional entity details</h3>
+                <div class="application-number">
+                  Next step: <span>Proprietor details</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="application-number">
+              Application number:
+              <span id="applicationNumber">CLB-000203606-PRO</span>
+              <div class="copy-contact">
+                <span class="material-icons copy-icon">content_copy</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stepScroll">
+          <!-- Current Account  -->
+          <div class="cc-account">
+            <div class="toggle-row">
+              <h4>Are you an ICICI Bank customer?</h4>
+
+              <div class="yes-no-toggle">
+                <span>No</span>
+
+                <label class="switch switch-margin">
+                  <input type="checkbox" checked />
+                  <span class="slider"></span>
+                </label>
+
+                <span>Yes</span>
+              </div>
+            </div>
+
+            <div class="account">
+              <label>Current account number</label>
+              <input
+                type="text"
+                placeholder="Enter account number"
+                maxlength="14"
+              />
+            </div>
+
+            <div class="toggle-row lei-gap">
+              <h4>
+                Do you have LEI?
+                <i
+                  data-lucide="info"
+                  class="chevron-icon info-icon info-css"
+                  data-tooltip="Legal entity identifier (LEI) is mandatory for total banking exposure above ₹5 Cr."
+                ></i>
+              </h4>
+
+              <div class="yes-no-toggle">
+                <span>No</span>
+
+                <label class="switch switch-margin">
+                  <input type="checkbox" checked />
+                  <span class="slider"></span>
+                </label>
+
+                <span>Yes</span>
+              </div>
+            </div>
+
+            <div class="account-grid account-grid-first">
+              <div>
+                <label>LEI number</label>
+                <div class="input-wrapper lei-input-wrapper">
+                  <input
+                    type="text"
+                    id="leiNumber"
+                    maxlength="20"
+                    placeholder="Ex: 529900T8BM4AUR4DB004"
+                  />
+
+                  <!-- <div
+                    id="leiLoader"
+                    class="input-loader"
+                    style="display: none"
+                  ></div> -->
+                </div>
+                <div
+                  id="leiVerified"
+                  class="verified-status"
+                  style="display: none"
+                >
+                  <i data-lucide="circle-check"></i>
+                  LEI verified
+                </div>
+                <div
+                  id="leiVerifyMsg"
+                  class="verify-lei-number"
+                  style="display: none"
+                >
+                  <i data-lucide="info info-style"></i>
+                  <p class="gst-verify-p">
+                    Verification may take few minutes, you may proceed to the
+                    next step.
+                  </p>
+                </div>
+              </div>
+
+              <!-- <div
+            class="upload-drop-zone itr-upload"
+            id="uploadLei"
+            style="display: none"
+            data-year="2022-23"
+          >
+            <div class="upload-loader input-loader" style="display: none"></div>
+
+            <div class="upload-left-icon">
+              <span class="material-symbols-outlined">draft</span>
+            </div>
+
+            <div class="upload-content">
+              <div class="upload-title">Upload / Drag & Drop file</div>
+              <div class="upload-info">
+                (Max size: 2MB | Format: PDF, Excel)
+              </div>
+            </div>
+
+            <div class="upload-right-icon">
+              <i data-lucide="upload"></i>
+            </div>
+
+            <input
+              type="file"
+              class="upload-file-input"
+              accept=".pdf,.xls,.xlsx"
+              hidden
+            />
+          </div> -->
+
+              <div>
+                <label>
+                  Entity ID proof
+                  <i
+                    data-lucide="info"
+                    class="chevron-icon info-icon info-css"
+                    data-tooltip="Entity ID proof submitted to obtain LEI"
+                  ></i>
+                </label>
+
+                <div
+                  class="custom-select-wrapper"
+                  id="entityIdTypeCustomSelect"
+                >
+                  <div class="custom-select-trigger">
+                    <span class="selected-option">Select ID type</span>
+
+                    <div class="select-right">
+                      <i class="material-icons">expand_more</i>
+                    </div>
+                  </div>
+
+                  <div class="custom-select-options" style="display: none">
+                    <div class="option-item" data-value="">Select ID type</div>
+                    <div class="option-item" data-value="PAN">PAN card</div>
+                    <div class="option-item" data-value="GSTIN">GSTIN</div>
+                    <div class="option-item" data-value="CIN">CIN</div>
+                    <div class="option-item" data-value="Udyam">
+                      Udyam registration certificate
+                    </div>
+                  </div>
+                </div>
+
+                <select id="entityIdType" style="display: none">
+                  <option value="">Select ID type</option>
+                  <option value="PAN">PAN card</option>
+                  <option value="GSTIN">GSTIN</option>
+                  <option value="CIN">CIN</option>
+                  <option value="Udyam">Udyam registration certificate</option>
+                </select>
+              </div>
+
+              <div>
+                <label>Entity ID proof number</label>
+                <input
+                  type="text"
+                  id="idProofNumber"
+                  placeholder="Ex: U74999MH2020PTC345678"
+                  maxlength="20"
+                />
+              </div>
+            </div>
+
+            <h3 class="banking-exposure">Banking exposure</h3>
+
+            <div class="account-grid currency-section">
+              <div>
+                <label
+                  >Foreign currency exposure hedged
+                  <i
+                    data-lucide="info"
+                    class="chevron-icon info-icon info-css"
+                    data-tooltip="Protected from exchange rate fluctuations"
+                  ></i
+                ></label>
+                <div class="input-wrapper">
+                  <i data-lucide="indian-rupee" class="rupee-icon"></i>
+                  <input type="text" id="foreignHedged" placeholder="0.00" />
+                </div>
+              </div>
+              <div>
+                <label
+                  >Foreign currency exposure unhedged
+                  <i
+                    data-lucide="info"
+                    class="chevron-icon info-icon info-css"
+                    data-tooltip="Not protected from exchange rate fluctuations"
+                  ></i
+                ></label>
+                <div class="input-wrapper">
+                  <i data-lucide="indian-rupee" class="rupee-icon"></i>
+                  <input type="text" id="foreignUnhedged" placeholder="0.00" />
+                </div>
+              </div>
+              <div>
+                <label
+                  >Total foreign currency exposure
+                  <span class="incorporation-yy">(hedged + unhedged)</span>
+                </label>
+                <div class="input-wrapper">
+                  <i data-lucide="indian-rupee" class="rupee-icon"></i>
+                  <input
+                    type="text"
+                    placeholder="0.00"
+                    id="totalForeignExposure"
+                    readonly
+                  />
+                </div>
+              </div>
+              <div>
+                <label
+                  >Total banking exposure
+                  <i
+                    data-lucide="info"
+                    class="chevron-icon info-icon info-css"
+                    data-tooltip="Entity ID proof submitted to obtain LEI"
+                  ></i
+                ></label>
+                <div class="input-wrapper">
+                  <i data-lucide="indian-rupee" class="rupee-icon"></i>
+                  <input
+                    type="text"
+                    placeholder="0.00"
+                    id="totalBankingExposure"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="disabled-link saveExitBtn">
+            Save & exit
+          </button>
+          <div class="footer-actions">
+            <button class="outline-orange-btn" id="cancelStep2Btn">Back</button>
+            <button class="orange-btn" id="step2NextBtn">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Apply for sanction - step 3 modal -->
+    <div class="custom-modal-overlay" id="step3Modal">
+      <div class="custom-modal form-modal sanction-modal">
+        <div class="sanction-header-div">
+          <button class="modal-close-btn" id="modalStep3CloseBtn">
+            <span class="material-icons">close</span>
+          </button>
+          <h2>Apply for dealer finance</h2>
+          <div class="sanction-header">
+            <div class="step-progress">
+              <div class="progress-circle">
+                <span>3/4</span>
+              </div>
+
+              <div>
+                <h3>Partner details</h3>
+                <div class="application-number">
+                  Next step: <span>Bank statement & ITR</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="application-number">
+              Application number:
+              <span id="applicationNumber">CLB-000203606-PRO</span>
+              <div class="copy-contact">
+                <span class="material-icons copy-icon">content_copy</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stepScroll">
+          <div class="proprietor-wrapper">
+            <div class="partner-bottom">
+              <label class="partner-label-number">
+                Number of partners
+                <span class="partner-at">(at least 2 partners required)</span>
+              </label>
+              <input
+                type="number"
+                id="partnerCount"
+                placeholder="Enter number of partners"
+                min="2"
+              />
+            </div>
+
+            <div id="partnerAccordionContainer"></div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="disabled-link saveExitBtn">
+            Save & exit
+          </button>
+          <div class="footer-actions">
+            <button class="outline-orange-btn" id="cancelStep3Btn">Back</button>
+            <button class="orange-btn" id="step3NextBtn" disabled>
+              Proceed
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Apply for sanction - step 4 modal -->
+    <div class="custom-modal-overlay" id="step4Modal">
+      <div class="custom-modal sanction-modal">
+        <!-- Header -->
+        <div class="sanction-header-div">
+          <button class="modal-close-btn" id="modalStep4CloseBtn">
+            <span class="material-icons">close</span>
+          </button>
+          <h2>Apply for dealer finance</h2>
+          <div class="sanction-header">
+            <div class="step-progress">
+              <div class="progress-circle">
+                <span>4/4</span>
+              </div>
+
+              <div>
+                <h3>Bank statement & ITR</h3>
+                <div class="application-number">Final step</div>
+              </div>
+            </div>
+
+            <div class="application-number">
+              Application number:
+              <span id="applicationNumber">CLB-000203606-PRO</span>
+              <div class="copy-contact">
+                <span class="material-icons copy-icon">content_copy</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stepScroll">
+          <div class="step4-body">
+            <!-- Bank Statement -->
+            <div class="section-title">Bank statement</div>
+
+            <p class="radio-label">Select option</p>
+
+            <div class="radio-group">
+              <label>
+                <input type="radio" name="bankMode" value="aggregator" />
+                Account aggregator
+              </label>
+
+              <label>
+                <input type="radio" name="bankMode" value="netbanking" />
+                Netbanking
+              </label>
+
+              <label>
+                <input type="radio" name="bankMode" value="upload" />
+                Upload bank statement
+              </label>
+            </div>
+
+            <!-- Upload Flow -->
+            <div id="uploadSection" style="display: none">
+              <div id="bankAccountContainer"></div>
+
+              <div id="addBankAccount" class="add-bank-link">
+                + Add another bank account
+              </div>
+            </div>
+
+            <!-- Aggregator / Netbanking -->
+            <div id="consentSection">
+              <div class="consent-box" id="consent-1" style="display: none">
+                <input type="checkbox" id="bankConsent" />
+                <span>
+                  I hereby authorize ICICI Bank to fetch my account statement
+                  through account aggregator
+                </span>
+              </div>
+
+              <div class="section-title itr-title">Income tax return (ITR)</div>
+
+              <!-- <p class="radio-label">Select option</p> -->
+
+              <div class="radio-group">
+                <label>
+                  <input type="radio" name="itrMode" value="online" />
+                  Online
+                </label>
+
+                <label>
+                  <input type="radio" name="itrMode" value="upload" />
+                  Upload ITR
+                </label>
+              </div>
+
+              <div
+                class="itr-consent-section consent-box"
+                id="consent-2"
+                style="display: none"
+              >
+                <input type="checkbox" id="itrConsent" />
+                <span>
+                  I hereby authorize ICICI Bank to fetch my income tax returns
+                </span>
+              </div>
+
+              <div
+                class="itr-upload-section itr-upload-list"
+                style="display: none"
+              >
+                <div class="itr-row">
+                  <div>
+                    <div class="fy-box">ITR: FY 2024-25</div>
+                  </div>
+
+                  <div class="upload-drop-zone itr-upload" data-year="2022-23">
+                    <!-- <div
+                      class="upload-loader input-loader"
+                      style="display: none"
+                    ></div> -->
+
+                    <div class="upload-left-icon">
+                      <span class="material-symbols-outlined">draft</span>
+                    </div>
+
+                    <div class="upload-content">
+                      <div class="upload-title">Upload / Drag & Drop file</div>
+                      <div class="upload-info">
+                        (Max size: 2MB | Format: PDF, Excel)
+                      </div>
+                    </div>
+
+                    <div class="upload-right-icon">
+                      <i data-lucide="upload"></i>
+                    </div>
+
+                    <input
+                      type="file"
+                      class="upload-file-input"
+                      accept=".pdf,.xls,.xlsx"
+                      hidden
+                    />
+                  </div>
+                </div>
+
+                <div class="itr-row">
+                  <div>
+                    <div class="fy-box">ITR: FY 2023-24</div>
+                  </div>
+
+                  <div class="upload-drop-zone itr-upload" data-year="2022-23">
+                    <!-- <div
+                      class="upload-loader input-loader"
+                      style="display: none"
+                    ></div> -->
+
+                    <div class="upload-left-icon">
+                      <span class="material-symbols-outlined">draft</span>
+                    </div>
+
+                    <div class="upload-content">
+                      <div class="upload-title">Upload / Drag & Drop file</div>
+                      <div class="upload-info">
+                        (Max size: 2MB | Format: PDF, Excel)
+                      </div>
+                    </div>
+
+                    <div class="upload-right-icon">
+                      <i data-lucide="upload"></i>
+                    </div>
+
+                    <input
+                      type="file"
+                      class="upload-file-input"
+                      accept=".pdf,.xls,.xlsx"
+                      hidden
+                    />
+                  </div>
+                </div>
+
+                <div class="itr-row">
+                  <div>
+                    <div class="fy-box">ITR: FY 2022-23</div>
+                  </div>
+
+                  <div class="upload-drop-zone itr-upload" data-year="2022-23">
+                    <!-- <div
+                      class="upload-loader input-loader"
+                      style="display: none"
+                    ></div> -->
+
+                    <div class="upload-left-icon">
+                      <span class="material-symbols-outlined">draft</span>
+                    </div>
+
+                    <div class="upload-content">
+                      <div class="upload-title">Upload / Drag & Drop file</div>
+                      <div class="upload-info">
+                        (Max size: 2MB | Format: PDF, Excel)
+                      </div>
+                    </div>
+
+                    <div class="upload-right-icon">
+                      <i data-lucide="upload"></i>
+                    </div>
+
+                    <input
+                      type="file"
+                      class="upload-file-input"
+                      accept=".pdf,.xls,.xlsx"
+                      hidden
+                    />
+                  </div>
+                </div>
+
+                <div class="section-title itr-title">
+                  Financial statements (FSA)
+                </div>
+
+                <div class="itr-row">
+                  <div>
+                    <div class="fy-box">FSA: FY 2024-25</div>
+                  </div>
+
+                  <div class="upload-drop-zone itr-upload" data-year="2022-23">
+                    <!-- <div
+                      class="upload-loader input-loader"
+                      style="display: none"
+                    ></div> -->
+
+                    <div class="upload-left-icon">
+                      <span class="material-symbols-outlined">draft</span>
+                    </div>
+
+                    <div class="upload-content">
+                      <div class="upload-title">Upload / Drag & Drop file</div>
+                      <div class="upload-info">
+                        (Max size: 2MB | Format: PDF, Excel)
+                      </div>
+                    </div>
+
+                    <div class="upload-right-icon">
+                      <i data-lucide="upload"></i>
+                    </div>
+
+                    <input
+                      type="file"
+                      class="upload-file-input"
+                      accept=".pdf,.xls,.xlsx"
+                      hidden
+                    />
+                  </div>
+                </div>
+
+                <div class="itr-row">
+                  <div>
+                    <div class="fy-box">FSA: FY 2023-24</div>
+                  </div>
+
+                  <div class="upload-drop-zone itr-upload" data-year="2022-23">
+                    <!-- <div
+                      class="upload-loader input-loader"
+                      style="display: none"
+                    ></div> -->
+
+                    <div class="upload-left-icon">
+                      <span class="material-symbols-outlined">draft</span>
+                    </div>
+
+                    <div class="upload-content">
+                      <div class="upload-title">Upload / Drag & Drop file</div>
+                      <div class="upload-info">
+                        (Max size: 2MB | Format: PDF, Excel)
+                      </div>
+                    </div>
+
+                    <div class="upload-right-icon">
+                      <i data-lucide="upload"></i>
+                    </div>
+
+                    <input
+                      type="file"
+                      class="upload-file-input"
+                      accept=".pdf,.xls,.xlsx"
+                      hidden
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="disabled-link saveExitBtn">
+            Save & exit
+          </button>
+
+          <div class="footer-actions">
+            <button class="outline-orange-btn" id="step4BackBtn">Back</button>
+
+            <button class="orange-btn" id="step4NextBtn" disabled>
+              Proceed
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Apply for sanction - review modal -->
+    <div class="custom-modal-overlay" id="reviewModal">
+      <div class="custom-modal form-modal sanction-modal">
+        <div class="review-header">
+          <button class="modal-close-btn" id="modalReviewCloseBtn">
+            <span class="material-icons">close</span>
+          </button>
+          <img src="../assets/image/dashboard/review.svg" alt="" class="img" />
+          <div class="right-section-review">
+            <p class="review-title2">Review your offer and application form</p>
+            <div class="clip-section">
+              <div class="application-number">
+                Application number:
+                <span id="applicationNumber">CLB-000203606-PRO</span>
+                <div class="copy-contact">
+                  <span class="material-icons copy-icon">content_copy</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stepScroll">
+          <div class="review-wrapper">
+            <div class="review-grid2">
+              <div>
+                <p class="review-title">Loan offer</p>
+                <p class="review-subtitle">₹1,00,00,000</p>
+              </div>
+              <div>
+                <p class="review-title">
+                  Interest rate range
+                  <i
+                    data-lucide="info"
+                    class="chevron-icon info-icon info-css"
+                    data-tooltip="Interest rate range"
+                  ></i>
+                </p>
+                <p class="review-subtitle">10.70 - 11.30%</p>
+              </div>
+              <div>
+                <p class="review-title">
+                  Tenor
+                  <i
+                    data-lucide="info"
+                    class="chevron-icon info-icon info-css"
+                    data-tooltip="Tenor"
+                  ></i>
+                </p>
+                <p class="review-subtitle">60 days</p>
+              </div>
+              <div>
+                <p class="review-title">Processing fee</p>
+                <p class="review-subtitle">
+                  ₹10,000<span class="decimal-amount">.00</span>
+                  <span class="plus-gst">+ GST</span>
+                </p>
+              </div>
+            </div>
+
+            <div class="accordian-grid">
+              <div class="accordian">
+                <div class="opne-accordian">
+                  <p class="title">Entity details</p>
+                  <i data-lucide="chevron-down" class="accordion-icon"></i>
+                </div>
+
+                <div class="accordian-content">
+                  <div class="accordian-content-grid">
+                    <div>
+                      <label>Entity name</label>
+                      <p>SunDesh Solar Systems and Services Marketing</p>
+                    </div>
+                    <div>
+                      <label>PAN</label>
+                      <p>BBOPP9250V</p>
+                    </div>
+                    <div>
+                      <label>Constitution</label>
+                      <p>Proprietorship</p>
+                    </div>
+                    <div>
+                      <label>Mobile number</label>
+                      <p>+91 9876564536</p>
+                    </div>
+                    <div>
+                      <label>Email ID</label>
+                      <p>sharma@gmail.com</p>
+                    </div>
+                    <div>
+                      <label>Incorporation date</label>
+                      <p>2000/08/10</p>
+                    </div>
+                    <div>
+                      <label>Business vintage</label>
+                      <p>26 years</p>
+                    </div>
+                    <div>
+                      <label>Address</label>
+                      <p>1 BKC Mumbai, Mumbai, Maharashtra, 400051</p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="review-gst-section">
+                      <p>GSTIN</p>
+                      <i data-lucide="circle-check"></i>
+                    </div>
+
+                    <div class="accordian-content-grid custom-gst-margin">
+                      <div>
+                        <label>GSTIN number</label>
+                        <p>18BNAPS8432G4ZP</p>
+                      </div>
+                      <div>
+                        <label>GSTIN username</label>
+                        <p>AABCT1234_ADMIN</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="review-gst-section">
+                      <p>URC</p>
+                      <i data-lucide="circle-check"></i>
+                    </div>
+
+                    <div class="accordian-content-grid custom-gst-margin">
+                      <div>
+                        <label>URC number</label>
+                        <p>UDYAM-MH-54-2341234</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordian">
+                <div class="opne-accordian">
+                  <p class="title">Additional entity details</p>
+                  <i data-lucide="chevron-down" class="accordion-icon"></i>
+                </div>
+
+                <div class="accordian-content">
+                  <p class="bank-title2">ICICI Bank account</p>
+                  <div class="accordian-content-grid title-gap">
+                    <div>
+                      <label>Current account number</label>
+                      <p>xxxx xxxx 1006</p>
+                    </div>
+                  </div>
+
+                  <div class="LEI">
+                    <p>LEI</p>
+                    <i data-lucide="circle-check"></i>
+                  </div>
+
+                  <div class="accordian-content-grid title-gap">
+                    <div>
+                      <label>LEI number</label>
+                      <p>335800B8MT9PHY3YAO09</p>
+                    </div>
+                    <div>
+                      <label>Entity ID proof</label>
+                      <p>CIN</p>
+                    </div>
+                    <div>
+                      <label>Entity ID proof number</label>
+                      <p>U74999MH2020PTC345678</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordian">
+                <div class="opne-accordian">
+                  <p class="title">
+                    Partner details
+                    <span class="partner-badge">7 Partners</span>
+                  </p>
+                  <i data-lucide="chevron-down" class="accordion-icon"></i>
+                </div>
+
+                <div class="accordian-content">
+                  <p class="partner-title">Partner 1</p>
+                  <div class="accordian-content-grid">
+                    <div>
+                      <label>Name</label>
+                      <p>Mr. Yogesh Meena</p>
+                    </div>
+                    <div>
+                      <label>Mobile number</label>
+                      <p>+91 9738297384</p>
+                    </div>
+                    <div>
+                      <label>Email ID</label>
+                      <p>yogesh01@gmail.com</p>
+                    </div>
+                    <div>
+                      <label>PAN</label>
+                      <p>EOTPR2600K</p>
+                    </div>
+                    <div>
+                      <label>Ownership control</label>
+                      <p>100%</p>
+                    </div>
+                    <div>
+                      <label>Gender</label>
+                      <p>Male</p>
+                    </div>
+                    <div>
+                      <label>Date of birth as per aadhaar</label>
+                      <p>1995/08/14</p>
+                    </div>
+                    <div>
+                      <label>Community</label>
+                      <p>Hindu</p>
+                    </div>
+                    <div>
+                      <label>Category</label>
+                      <p>General</p>
+                    </div>
+                    <div>
+                      <label>Address</label>
+                      <p>1 BKC Mumbai, Mumbai, Maharashtra, 400051</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordian-content modal-pad">
+                  <p class="partner-title">Partner 2</p>
+                  <div class="accordian-content-grid">
+                    <div>
+                      <label>Name</label>
+                      <p>Mr. Yogesh Meena</p>
+                    </div>
+                    <div>
+                      <label>Mobile number</label>
+                      <p>+91 9738297384</p>
+                    </div>
+                    <div>
+                      <label>Email ID</label>
+                      <p>yogesh01@gmail.com</p>
+                    </div>
+                    <div>
+                      <label>PAN</label>
+                      <p>EOTPR2600K</p>
+                    </div>
+                    <div>
+                      <label>Ownership control</label>
+                      <p>100%</p>
+                    </div>
+                    <div>
+                      <label>Gender</label>
+                      <p>Male</p>
+                    </div>
+                    <div>
+                      <label>Date of birth as per aadhaar</label>
+                      <p>1995/08/14</p>
+                    </div>
+                    <div>
+                      <label>Community</label>
+                      <p>Hindu</p>
+                    </div>
+                    <div>
+                      <label>Category</label>
+                      <p>General</p>
+                    </div>
+                    <div>
+                      <label>Address</label>
+                      <p>1 BKC Mumbai, Mumbai, Maharashtra, 400051</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordian">
+                <div class="opne-accordian">
+                  <p class="title">Bank statement & ITR</p>
+                  <i data-lucide="chevron-down" class="accordion-icon"></i>
+                </div>
+
+                <div class="accordian-content">
+                  <h3>Primary account</h3>
+                  <div class="accordian-content-grid">
+                    <div>
+                      <label>Name of bank</label>
+                      <p>ICICI Bank</p>
+                    </div>
+                    <div>
+                      <label>Account type</label>
+                      <p>Current account</p>
+                    </div>
+                    <div>
+                      <label>Account number</label>
+                      <p>xxxx xxxx 1006</p>
+                    </div>
+                    <div>
+                      <label>Statement period</label>
+                      <p>01/08/2025 - 01/09/2025</p>
+                    </div>
+                    <div>
+                      <label>File name</label>
+                      <p class="file-link">
+                        ICICIbankstatement.pdf <span>File size: 1.8MB </span>
+                      </p>
+                    </div>
+                  </div>
+                  <h3>Income tax return (ITR)</h3>
+                  <div class="accordian-content-grid2">
+                    <div>
+                      <label>FY 2024-25</label>
+                      <p class="file-link">
+                        Fy24-25.pdf <span>File size: 1.8MB</span>
+                      </p>
+                    </div>
+                    <div>
+                      <label>FY 2023-24</label>
+                      <p class="file-link">
+                        Fy23-24.pdf <span>File size: 1.8MB</span>
+                      </p>
+                    </div>
+                    <div>
+                      <label>FY 2022-23</label>
+                      <p class="file-link">
+                        Fy22-23.pdf <span>File size: 1.8MB</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="terms-review">
+          <label>
+            <input type="checkbox" id="agreeTerms" />
+            <div>
+              I agree to the
+              <span class="terms-conditions">terms & conditions</span>
+            </div>
+          </label>
+          <div class="modal-footer">
+            <button type="button" class="disabled-link saveExitBtn">
+              Save & exit
+            </button>
+            <div class="footer-actions">
+              <button class="outline-orange-btn" id="reviewCancel">Back</button>
+              <button class="orange-btn" id="reviewSubmitBtn">Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Apply for sanction - terms modal -->
+    <div class="custom-modal-overlay" id="congratulationsModal">
+      <div class="custom-modal sanction-modal">
+        <div class="cong-header">
+          <button class="modal-close-btn" id="modalCongoCloseBtn">
+            <span class="material-icons">close</span>
+          </button>
+          <img src="../assets/image/auth/done.svg" alt="" />
+          <p class="cong-title">
+            Congratulations, you are eligible for the loan
+          </p>
+        </div>
+        <div class="stepScroll">
+          <div class="cong-wrapper">
+            <div class="cong">
+              <h3>Sanction details</h3>
+              <div class="cong-grid">
+                <div>
+                  <label>
+                    Sanction limit
+                    <i
+                      data-lucide="info"
+                      class="chevron-icon info-icon info-css"
+                      data-tooltip="Mandatory to verify your email ID with OTP process. This email ID will be used to send your dealer financing statements"
+                    ></i>
+                  </label>
+                  <p>₹1,00,00,000 <span>*</span></p>
+                  <p class="para">Rupees one crore</p>
+                </div>
+                <div>
+                  <label> Interest rate </label>
+                  <p>10.70%</p>
+                  <p class="para">Repo. rate + 5.45%</p>
+                </div>
+                <div>
+                  <label>
+                    Tenor
+                    <i
+                      data-lucide="info"
+                      class="chevron-icon info-icon info-css"
+                      data-tooltip="Mandatory to verify your email ID with OTP process. This email ID will be used to send your dealer financing statements"
+                    ></i>
+                  </label>
+                  <p>60 days</p>
+                </div>
+                <div>
+                  <label> Processing fee </label>
+                  <p>₹10,000.00 <span class="plus-gst2">+ GST</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cong-text">
+            <p>
+              Your loan sanction letter has been sent to
+              <span>(keshav.mishra@sundeshsolar.com)</span>
+            </p>
+            <div class="both">
+              <div class="pdf-align">
+                <img
+                  src="../assets/image/dashboard/R 1.svg"
+                  alt=""
+                  class="pdf"
+                />
+                <p>Sanction letter:</p>
+              </div>
+              <div class="cong-down">
+                <i data-lucide="download"></i>
+                <p class="download">Download</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="modal-footer-right">
+      <button class="orange-btn" id="continueToNextStepsBtn">Continue</button>
+    </div> -->
+
+        <div class="terms-review2">
+          <p class="note">
+            Note: <br class="hide-note" />
+            <span class="des-text"
+              >Subject to completion of required documentation to the
+              satisfaction of the bank and as specified from time to time.</span
+            >
+          </p>
+          <div class="modal-footer">
+            <div class="footer-actions-cong">
+              <label>
+                <input type="checkbox" id="agreeTerms" />
+                <div>
+                  I acknowledge
+                  <span class="terms-conditions">sanction</span>
+                </div>
+              </label>
+              <button class="orange-btn" id="continueToNextStepsBtn">
+                Accept
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Apply for sanction - next step modal(state 1) -->
+    <!-- <div class="custom-modal-overlay" id="nextStepsModal">
+    <div class="custom-modal sanction-modal">
+        <div class="cong-header">
+        <img src="../assets/image/auth/done.svg" alt="" />
+        <p class="cong-title">Next step - Current account opening</p>
+        </div>
+
+        <div class="stepScroll">
+        <div class="next-wrapper">
+            <div
+            id="stepper-card"
+            class="dashboard-card"
+            >
+            <div class="stepper-wrapper" id="stepperWrapper">
+                <div class="stepper-line"></div>
+
+                <div class="stepper-progress"></div>
+
+                <div class="step-item active" id="step1">
+                <div class="step-circle step-circle-first">
+                    <i class="check-icon material-symbols-outlined">check</i>
+                </div>
+                <div class="step-label step-1">Loan offer</div>
+                </div>
+                <div class="step-item current" id="step2">
+                <div class="step-circle"></div>
+                <div class="step-label">Apply</div>
+                </div>
+                <div class="step-item" id="step3">
+                <div class="step-circle">3</div>
+                <div class="step-label">Sanction</div>
+                </div>
+                <div class="step-item" id="step4">
+                <div class="step-circle">4</div>
+                <div class="step-label">Current account</div>
+                </div>
+                <div class="step-item" id="step5">
+                <div class="step-circle">5</div>
+                <div class="step-label">eSign</div>
+                </div>
+                <div class="step-item" id="step6">
+                <div class="step-circle step-circle-last">6</div>
+                <div class="step-label step-n">Limit setup</div>
+                </div>
+            </div>
+            </div>
+
+            <div class="acc-opne">
+            <h6>
+                Your ICICI Bank relationship manager will get in touch with you soon
+                for account opening 
+            </h6>
+            <div class="acc-grid">
+                <div class="user-acc">
+                <img src="/src/assets/image/dashboard/user-image.svg" alt="" />
+                <div>
+                    <label>Relationship manager</label>
+                    <p>Harish Sharma</p>
+                </div>
+                </div>
+                <div>
+                <label>Mobile number</label>
+                <p class="acc-copy">
+                    +91 9835263746
+                    <img src="/src/assets/image/dashboard/copy.svg" alt="" />
+                </p>
+                </div>
+                <div>
+                <label>Email ID</label>
+                <p class="acc-copy">
+                    harishsharma@icici.bank.in
+                    <img src="/src/assets/image/dashboard/copy.svg" alt="" />
+                </p>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="modal-footer-left">
+        <p>
+            Note: <br class="mobile-only" />
+            <span
+            >For more assistance, give a missed call on
+            <span class="left-number">1800 309 8595</span> (toll-free number) or
+            email us at <span class="left-number">scf@icici.bank.in</span></span
+            >
+        </p>
+        </div>
+    </div>
+    </div> -->
+
+    <!-- Apply for sanction - next step modal(state 2) -->
+    <div class="custom-modal-overlay" id="nextStepsModal">
+      <div class="custom-modal sanction-modal">
+        <div class="cong-header">
+          <button class="modal-close-btn" id="modalNextStepCloseBtn">
+            <span class="material-icons">close</span>
+          </button>
+          <img src="../assets/image/auth/done.svg" alt="" />
+          <p class="cong-title">Next step - Document eSign</p>
+        </div>
+
+        <div class="stepScroll">
+          <div class="next-wrapper">
+            <div id="stepper-card" class="dashboard-card eSign-stepper">
+              <div class="stepper-wrapper" id="stepperWrapper">
+                <div class="stepper-line"></div>
+
+                <div class="stepper-progress"></div>
+
+                <div class="step-item active" id="step1">
+                  <div class="step-circle step-circle-first">
+                    <i class="check-icon material-symbols-outlined">check</i>
+                  </div>
+                  <div class="step-label step-1">Loan offer</div>
+                </div>
+                <div class="step-item current" id="step2">
+                  <div class="step-circle"></div>
+                  <div class="step-label">Apply</div>
+                </div>
+                <div class="step-item" id="step3">
+                  <div class="step-circle">3</div>
+                  <div class="step-label">Sanction</div>
+                </div>
+                <div class="step-item" id="step4">
+                  <div class="step-circle">4</div>
+                  <div class="step-label">Current account</div>
+                </div>
+                <div class="step-item" id="step5">
+                  <div class="step-circle">5</div>
+                  <div class="step-label">eSign</div>
+                </div>
+                <div class="step-item" id="step6">
+                  <div class="step-circle step-circle-last">6</div>
+                  <div class="step-label step-n">Limit setup</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="acc-opne">
+              <h6>
+                We have your KYC verified. As the next step, you may proceed to
+                document eSign to avail the loan.
+              </h6>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer-left">
+          <p>
+            Note: <br class="mobile-only" />
+            <span
+              >For more assistance, give a missed call on
+              <span class="left-number">1800 309 8595</span> (toll-free number)
+              or email us at
+              <span class="left-number">scf@icici.bank.in</span></span
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Apply for sanction - save progress modal -->
+    <div class="custom-modal-overlay" id="saveProgressModal">
+      <div class="custom-modal sanction-modal">
+        <div class="mobile-fix">
+          <button class="modal-close-btn" id="modalCloseBtn">
+            <span class="material-icons">close</span>
+          </button>
+
+          <div class="save-progress-model">
+            <img src="../assets/image/auth/done.svg" alt="" />
+
+            <div>
+              <h2>Save your progress</h2>
+
+              <p class="subtitle">
+                Your progress will be saved so you can continue from where you
+                left anytime.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="sanction-steps">
+          <div class="saction-title">Your progress so far:</div>
+          <div class="sanction-step">
+            <span class="material-icons">check</span>
+            <div>
+              <h6>Verify entity details</h6>
+              <p>PAN, GST & URC</p>
+            </div>
+          </div>
+
+          <div class="sanction-step">
+            <span class="saction-step-current"
+              ><i data-lucide="clock-3" class="check-icon"></i
+            ></span>
+            <div>
+              <h6>Additional entity details</h6>
+              <p>LEI & banking exposure</p>
+            </div>
+          </div>
+
+          <div class="sanction-step">
+            <span>3</span>
+            <div>
+              <h6>Proprietor details</h6>
+              <p>Personal details of proprietor</p>
+            </div>
+          </div>
+
+          <div class="sanction-step">
+            <span>4</span>
+            <div>
+              <h6>Bank statement & ITR</h6>
+              <p>Account details, bank statement and ITR</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer-right">
+          <button class="outline-orange-btn" id="backBtn">Back</button>
+          <button class="orange-btn" id="saveBtn">Save & close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Apply for sanction - offer not accept modal -->
+    <div class="custom-modal-overlay" id="offerNotAcceptModal">
+      <div class="custom-modal relationship-modal logout-modal margin-modal">
+        <button class="modal-close-btn" data-close-modal>
+          <i data-lucide="x"></i>
+        </button>
+        <div class="d-flex gap-3">
+          <img
+            src="../assets/image/auth/logout.svg"
+            alt="verification-done"
+            class="verification-done"
+          />
+          <div class="d-flex flex-column gap-1">
+            <h5 class="modal-title">Offer not accepted yet</h5>
+            <p class="verification-subtitle">
+              You haven’t accepted the offer yet. Accept it to continue and
+              avail your sanctioned amount.
+            </p>
+          </div>
+        </div>
+
+        <div class="modal-footer-right">
+          <button id="viewOfferBtn" class="orange-btn" data-close-modal>
+            View offer
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- JS -->
+    <script src="../assets/js/plugins.js"></script>
+    <script src="../assets/js/jquery-3.6.0.min.js"></script>
+    <script src="../assets/js/global.js"></script>
+
+    <!-- jQuery -->
+    <script src="./dealer-dashboard-partnership.js"></script>
+    <script src="./dashboardTabFunction.js"></script>
+
+    <script>
+      var loadedSections = 0;
+      const totalSections = 8;
+
+      $(".dashboard-page").addClass("loading");
+
+      setTimeout(() => {
+        $("#dashboardSkeleton").fadeOut(300, function () {
+          $("#dashboardContent").fadeIn(300);
+          $(".dashboard-page").removeClass("loading");
+        });
+      }, 1000);
+    </script>
+  </body>
+</html>
