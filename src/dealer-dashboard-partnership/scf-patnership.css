@@ -665,8 +665,9 @@
   width: 83.34%;
   height: 100%;
   overflow: auto;
-  margin: 3em auto;
-  max-height: calc(100vh - 4em);
+  /* margin: 3em auto;
+  max-height: calc(100vh - 4em); */
+  margin: auto;
   animation: modalFadeIn 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
 }
 
@@ -1293,8 +1294,6 @@
   background: #fff;
   display: flex;
   align-items: center;
-  /* padding: 0 24px;
-    */
 }
 
 .logout-success-content {
@@ -1782,7 +1781,6 @@
 #step4Modal .custom-modal {
   padding: 0px 0px;
   height: 100%;
-  max-height: 100%;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -4835,15 +4833,17 @@ header {
   overflow: hidden;
 }
 
+#termsModal .custom-modal,
+#applySanctionModal .custom-modal,
 #step1Modal .custom-modal,
 #step2Modal .custom-modal,
 #step3Modal .custom-modal,
 #step4Modal .custom-modal,
 #reviewModal .custom-modal,
-#congratulationsModal .custom-modal {
+#congratulationsModal .custom-modal,
+#nextStepsModal .custom-modal {
   padding: 0px 0px;
-  height: 100%;
-  max-height: 100%;
+  height: 90%;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -9399,5 +9399,249 @@ button.keyboard-focus,
   .account-grid {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
     gap: 16px !important;
+  }
+}
+
+/* ==========================================================================
+   SECTION: RESPONSIVE MODAL STRUCTURE (TABLET & DESKTOP CENTERED, MOBILE BOTTOM SHEET)
+   ========================================================================== */
+
+/* Enforce overlay flex layout for Desktop & Tablet (Centered) */
+@media screen and (min-width: 768px) {
+  .custom-modal-overlay.modal-visible,
+  .custom-modal-overlay.show,
+  .custom-modal-overlay.active,
+  .custom-modal-overlay[style*="display: block"],
+  .custom-modal-overlay[style*="display: flex"],
+  .custom-modal-overlay[style*="display: inline-block"],
+  .esign-modal-overlay.modal-visible,
+  .esign-modal-overlay.show,
+  .esign-modal-overlay.active,
+  .esign-modal-overlay[style*="display: block"],
+  .esign-modal-overlay[style*="display: flex"],
+  .esign-modal-overlay[style*="display: inline-block"],
+  #esignRedirectModal.modal-visible,
+  #esignRedirectModal.show,
+  #esignRedirectModal.active,
+  #esignRedirectModal[style*="display: block"],
+  #esignRedirectModal[style*="display: flex"],
+  #esignRedirectModal[style*="display: inline-block"],
+  #offerNotAcceptModal.modal-visible,
+  #logoutModal.modal-visible,
+  #sellsModal.modal-visible,
+  #alertModal.modal-visible,
+  #infoModal.modal-visible,
+  #offerRejectedModal.modal-visible,
+  #rejectModal.modal-visible,
+  #systemFailureModal.modal-visible {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  .custom-modal-overlay > .custom-modal,
+  .custom-modal-overlay > [class*="modal"],
+  .esign-modal-overlay > .esign-modal-box,
+  .custom-modal,
+  .sanction-modal,
+  .relationship-modal,
+  .profile-modal,
+  .logout-modal,
+  .margin-modal,
+  .esign-modal-box {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    margin: auto !important;
+  }
+
+  #step1Modal .custom-modal,
+  #step2Modal .custom-modal,
+  #step3Modal .custom-modal,
+  #step4Modal .custom-modal,
+  #reviewModal .custom-modal,
+  #congratulationsModal .custom-modal,
+  #nextStepsModal .custom-modal {
+    height: 100% !important;
+    max-height: min(712px, 86vh) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+  }
+
+  #termsModal .custom-modal,
+  #applySanctionModal .custom-modal {
+    padding: 16px 32px;
+  }
+}
+
+/* Enforce Bottom Sheet layout for Phone (bottom: 0) */
+@media screen and (max-width: 767px) {
+  .custom-modal-overlay.modal-visible,
+  .custom-modal-overlay.show,
+  .custom-modal-overlay.active,
+  .custom-modal-overlay[style*="display: block"],
+  .custom-modal-overlay[style*="display: flex"],
+  .custom-modal-overlay[style*="display: inline-block"],
+  .esign-modal-overlay.modal-visible,
+  .esign-modal-overlay.show,
+  .esign-modal-overlay.active,
+  .esign-modal-overlay[style*="display: block"],
+  .esign-modal-overlay[style*="display: flex"],
+  .esign-modal-overlay[style*="display: inline-block"],
+  #esignRedirectModal.modal-visible,
+  #esignRedirectModal.show,
+  #esignRedirectModal.active,
+  #esignRedirectModal[style*="display: block"],
+  #esignRedirectModal[style*="display: flex"],
+  #esignRedirectModal[style*="display: inline-block"],
+  #offerNotAcceptModal.modal-visible,
+  #logoutModal.modal-visible,
+  #sellsModal.modal-visible,
+  #alertModal.modal-visible,
+  #infoModal.modal-visible,
+  #offerRejectedModal.modal-visible,
+  #rejectModal.modal-visible,
+  #systemFailureModal.modal-visible {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-end !important;
+    padding: 0 !important;
+  }
+
+  .custom-modal-overlay > .custom-modal,
+  .custom-modal-overlay > [class*="modal"],
+  .esign-modal-overlay > .esign-modal-box,
+  .custom-modal,
+  .sanction-modal,
+  .relationship-modal,
+  .profile-modal,
+  .logout-modal,
+  .margin-modal,
+  .esign-modal-box,
+  #termsModal .custom-modal,
+  #applySanctionModal .custom-modal,
+  #step1Modal .custom-modal,
+  #step2Modal .custom-modal,
+  #step3Modal .custom-modal,
+  #step4Modal .custom-modal,
+  #reviewModal .custom-modal,
+  #congratulationsModal .custom-modal,
+  #nextStepsModal .custom-modal {
+    position: absolute !important;
+    bottom: 0 !important;
+    top: auto !important;
+    left: 0 !important;
+    right: 0 !important;
+    margin: 0 !important;
+    transform: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 16px 16px 0 0 !important;
+    height: 100% !important;
+    max-height: 90vh !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+  }
+
+  .sanction-header-div,
+  .review-header,
+  .cong-header,
+  .modal-title,
+  .sanction-header {
+    flex-shrink: 0 !important;
+    padding: 16px !important;
+    background: #fff !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .stepScroll,
+  .terms-scroll,
+  #termsModal .stepScroll,
+  #applySanctionModal .stepScroll,
+  #step1Modal .stepScroll,
+  #step2Modal .stepScroll,
+  #step3Modal .stepScroll,
+  #step4Modal .stepScroll,
+  #reviewModal .stepScroll,
+  #congratulationsModal .stepScroll,
+  #nextStepsModal .stepScroll {
+    flex: 1 1 auto !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding: 16px !important;
+    margin: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  #termsModal .modal-footer,
+  #applySanctionModal .modal-footer,
+  #step1Modal .modal-footer,
+  #step2Modal .modal-footer,
+  #step3Modal .modal-footer,
+  #step4Modal .modal-footer,
+  #reviewModal .modal-footer,
+  #congratulationsModal .modal-footer,
+  #nextStepsModal .modal-footer,
+  #congratulationsModal .terms-review2,
+  .modal-footer {
+    width: 100% !important;
+    flex-shrink: 0 !important;
+    position: sticky !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    background: #fff !important;
+    z-index: 999 !important;
+    padding: 12px 16px !important;
+    border-top: 1px solid #e6e6e6 !important;
+    box-sizing: border-box !important;
+  }
+
+  .footer-actions,
+  #termsModal .modal-footer-right,
+  #applySanctionModal .modal-footer-right,
+  #step1Modal .modal-footer-right,
+  #step2Modal .modal-footer-right,
+  #step3Modal .modal-footer-right,
+  #step4Modal .modal-footer-right,
+  #reviewModal .modal-footer-right,
+  #congratulationsModal .modal-footer-right,
+  #nextStepsModal .modal-footer-right {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .orange-btn,
+  .outline-orange-btn,
+  #step1Modal .orange-btn,
+  #step4Modal .orange-btn,
+  #step2Modal .orange-btn,
+  #step3Modal .orange-btn,
+  #reviewModal .orange-btn,
+  #step1Modal .outline-orange-btn,
+  #step4Modal .outline-orange-btn,
+  #step2Modal .outline-orange-btn,
+  #step3Modal .outline-orange-btn,
+  #reviewModal .outline-orange-btn {
+    flex: 1 !important;
+    width: 50% !important;
+    min-width: 0 !important;
+    height: 48px !important;
+    margin: 0 !important;
   }
 }

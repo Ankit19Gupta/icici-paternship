@@ -6030,6 +6030,7 @@ $(document).on("change", ".toggle-row .switch input", function () {
   updateUrcSectionMargin();
 });
 
+
 $(document).on("click", ".partner-accordion-header", function (e) {
   e.stopPropagation();
   var currentAccordion = $(this).closest(".partner-accordion");
