@@ -9645,3 +9645,30 @@ button.keyboard-focus,
     margin: 0 !important;
   }
 }
+
+/* Partner Confirmation Modal CSS */
+
+#partnerConfirmationModal .partner-confirmation-modal {
+  height: auto !important;
+  min-height: 45% !important;
+  max-height: 90vh;
+  width: 45%;
+}
+
+/* Alert / confirmation message */
+#partnerConfirmationModal .partner-confirmation-message {
+  background-color: #f6cab5;
+  padding: 1rem !important;
+  border-radius: 8px;
+  margin-top: 8px !important;
+  margin-bottom: 0;
+}
+
+/* Yes / No buttons */
+#partnerConfirmationModal .partner-confirmation-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+}
