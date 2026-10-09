@@ -206,6 +206,21 @@
 /* --------------------------------------------------------------------------
    4. Sticky Modal Footer & Actions
    -------------------------------------------------------------------------- */
+/* #partnershipStep3Modal .modal-footer,
+#reviewModal .modal-footer,
+.terms-review .modal-footer {
+  flex-shrink: 0;
+  padding: 16px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ffffff;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  box-sizing: border-box;
+} */
+
 #partnershipStep3Modal .modal-footer,
 #reviewModal .modal-footer,
 .terms-review .modal-footer {
@@ -214,11 +229,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-top: 1px solid #e0e0e0;
+  gap: 12px;
   background-color: #ffffff;
   position: sticky;
   bottom: 0;
   z-index: 10;
+  box-sizing: border-box;
 }
 
 #reviewModal .terms-review {
@@ -258,61 +274,64 @@
 }
 
 /* Reusable Action Buttons */
-.orange-btn {
+.partnership-orange-btn,
+.partnership-outline-orange-btn {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  min-height: 48px;
+  width: auto;
+  min-width: 156px;
+  max-width: 100%;
+  padding: 16px;
+  border-radius: 6px;
+  font-size: 16px;
+  line-height: 16px;
+  letter-spacing: 0%;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  flex: 0 1 auto;
+}
+.partnership-orange-btn {
   background-color: #f37021;
   color: #ffffff;
   border: none;
-  padding: 10px 24px;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
   transition: all 0.2s ease;
 }
-
-.orange-btn:hover:not(:disabled) {
+.partnership-orange-btn:hover:not(:disabled) {
   background-color: #e3530f;
 }
-
-.orange-btn:disabled,
-.orange-btn[disabled] {
+.partnership-orange-btn:disabled,
+.partnership-orange-btn[disabled] {
   background-color: #e0e0e0 !important;
   color: #a0a0a0 !important;
   cursor: not-allowed !important;
   border: none !important;
 }
-
-.outline-orange-btn {
+.partnership-outline-orange-btn {
   background: transparent;
-  color: #f37021;
-  border: 1px solid #f37021;
-  padding: 10px 24px;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
+  color: #e3530f;
+  border: 1px solid #e3530f;
   transition: all 0.2s ease;
 }
-
-.outline-orange-btn:hover {
+.partnership-outline-orange-btn:hover:not(:disabled) {
   background-color: rgba(243, 112, 33, 0.08);
 }
-
 .disabled-link,
 .saveExitBtn {
   background: none;
   border: none;
-  color: #f37021;
-  font-size: 14px;
-  font-weight: 600;
+  color: #f37021 !important;
+  font-size: 16px;
+  line-height: 16px;
+  font-weight: 700;
+  letter-spacing: 0;
   cursor: pointer;
   padding: 0;
   text-decoration: none;
-}
-
-.disabled-link:hover,
-.saveExitBtn:hover {
-  text-decoration: underline;
 }
 
 .partnership-wrapper {
@@ -431,11 +450,6 @@
   border-radius: 4px;
   transition: background-color 0.2s ease;
 }
-
-.partner-edit-btn:hover {
-  background-color: rgba(243, 112, 33, 0.08);
-}
-
 .partner-asset-top {
   display: flex;
   justify-content: flex-end;
@@ -773,7 +787,6 @@
   #partnershipStep3Modal .modal-footer,
   #reviewModal .modal-footer {
     padding: 12px 16px;
-    flex-direction: column-reverse;
     gap: 12px;
   }
 
@@ -791,7 +804,7 @@
   #partnershipStep3Modal .saveExitBtn,
   #reviewModal .saveExitBtn {
     width: 100%;
-    text-align: center;
+    text-align: left;
   }
 
   .partner-summary-grid,
