@@ -5466,6 +5466,7 @@ header {
   cursor: pointer;
 }
 
+/* Added min-width and width  */
 .custom-select-trigger {
   display: flex;
   align-items: center;
@@ -5476,6 +5477,8 @@ header {
   color: #f2f2f2;
   min-height: 44px;
   transition: border-color 0.2s ease;
+  min-width: 80px;
+  width: 100%;
 }
 
 .custom-select-trigger:hover {

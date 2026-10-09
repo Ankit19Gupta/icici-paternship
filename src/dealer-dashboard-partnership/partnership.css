@@ -358,15 +358,15 @@
   border-radius: 8px;
   background-color: #ffffff;
   overflow: hidden;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   transition:
     border-color 0.2s ease,
     box-shadow 0.2s ease;
 }
 
 .partner-accordion.saved {
-  border-color: #2e7d32;
-  background-color: #fbfdfe;
+  background-color: #ffffff;
+  border: none;
 }
 
 .partner-accordion-header {
@@ -379,7 +379,7 @@
 }
 
 .partner-accordion.saved .partner-accordion-header {
-  background-color: #f1f8f5;
+  background-color: #fef9f6;
 }
 
 .partner-accordion-span {
@@ -396,9 +396,9 @@
 
 /* Saved Summary State */
 .partner-summary {
-  padding: 16px 20px;
-  border-top: 1px solid #e8e8e8;
-  background-color: #ffffff;
+  padding: 0px 16px 16px 16px;
+  background-color: #fef9f6;
+  border-radius: 12px;
 }
 
 .partner-summary-grid {
@@ -460,10 +460,16 @@
   background-color: #f37021;
   color: #ffffff;
   border: none;
-  padding: 8px 22px;
-  border-radius: 6px;
+  border-radius: 8px;
+  padding: 16px;
   font-size: 14px;
-  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0%;
+  font-weight: 700;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
   transition:
     background-color 0.2s ease,

@@ -122,6 +122,7 @@ input[type="number"] {
   color: #9f9f9f;
 }
 
+/* Addded important for overriding  */
 .copy-contact .copy-icon {
   color: #e3530f !important;
   width: 14px;
