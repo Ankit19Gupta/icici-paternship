@@ -84,7 +84,6 @@
 
 #partnershipStep3Modal .sanction-header {
   display: flex;
-  align-items: center;
   justify-content: space-between;
   gap: 16px;
 }
@@ -654,23 +653,54 @@
   #partnershipStep3Modal .custom-modal,
   #reviewModal .custom-modal,
   .custom-modal.sanction-modal {
-    max-width: 90vw;
-    max-height: 88vh !important;
+    width: 100%;
+    max-width: 85%;
+    max-height: 88% !important;
+  }
+
+  .partner-bottom input[type="number"] {
+    width: 50%;
+  }
+
+  .proprietor-grid {
+    width: 100%;
   }
 }
 
 @media screen and (max-width: 768px) {
+  #partnershipStep3Modal.custom-modal-overlay.modal-visible,
+  #partnershipStep3Modal.custom-modal-overlay.show,
+  #partnershipStep3Modal.custom-modal-overlay.active,
+  #partnershipStep3Modal.custom-modal-overlay[style*="display: block"],
+  #partnershipStep3Modal.custom-modal-overlay[style*="display: flex"],
+  #reviewModal.custom-modal-overlay.modal-visible,
+  #reviewModal.custom-modal-overlay.show,
+  #reviewModal.custom-modal-overlay.active,
+  #reviewModal.custom-modal-overlay[style*="display: block"],
+  #reviewModal.custom-modal-overlay[style*="display: flex"] {
+    align-items: flex-end !important;
+    padding: 0 !important;
+  }
+
   #partnershipStep3Modal .custom-modal,
   #reviewModal .custom-modal,
   .custom-modal.sanction-modal {
-    max-width: 92vw;
-    max-height: 90vh !important;
-    border-radius: 12px;
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 16px 16px 0 0 !important;
+    height: 100% !important;
+    max-height: 95% !important;
+    margin: 0 !important;
+    padding: 0px !important;
+  }
+
+  .partner-bottom input[type="number"] {
+    width: 100%;
   }
 
   #partnershipStep3Modal .sanction-header-div,
   #reviewModal .review-header {
-    padding: 16px 20px;
+    padding: 16px;
   }
 
   #partnershipStep3Modal .stepScroll,
@@ -716,13 +746,23 @@
     width: 100% !important;
     max-width: 100% !important;
     border-radius: 16px 16px 0 0 !important;
-    max-height: 92vh !important;
+    height: 100% !important;
+    max-height: 95% !important;
     margin: 0 !important;
+    padding: 0px !important;
+  }
+
+  #partnershipStep3Modal .application-number {
+    flex-direction: column;
+  }
+
+  .partner-bottom input[type="number"] {
+    width: 100%;
   }
 
   #partnershipStep3Modal .sanction-header-div,
   #reviewModal .review-header {
-    padding: 14px 16px;
+    padding: 16px;
   }
 
   #partnershipStep3Modal .stepScroll,
@@ -757,7 +797,7 @@
   .partner-summary-grid,
   .review-grid2,
   .accordian-content-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
   }
 

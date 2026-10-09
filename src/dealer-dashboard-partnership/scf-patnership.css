@@ -661,12 +661,9 @@
   background: #fff;
   border-radius: 8px;
   position: relative;
-  /* padding: 24px 32px;  */
   width: 83.34%;
   height: 100%;
   overflow: auto;
-  /* margin: 3em auto;
-  max-height: calc(100vh - 4em); */
   margin: auto;
   animation: modalFadeIn 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
 }
