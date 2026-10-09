@@ -123,8 +123,7 @@ input[type="number"] {
 }
 
 .copy-contact .copy-icon {
-  color: #e3530f;
-
+  color: #e3530f !important;
   width: 14px;
   cursor: pointer;
 }

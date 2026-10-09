@@ -9,7 +9,9 @@
     <link rel="stylesheet" href="../assets/css/material-icons.css" />
     <link rel="stylesheet" href="../assets/css/material-symbols.css" />
     <!-- Consolidated Partnership Flow Stylesheet -->
-    <link rel="stylesheet" href="./scf-patnership.css" />
+    <!-- <link rel="stylesheet" href="./scf-patnership.css" /> -->
+    <link rel="stylesheet" href="./dashboard.css" />
+    <link rel="stylesheet" href="./partnership.css" />
 
     <!-- Old CSS files commented out after consolidating into scf-patnership.css
     <link rel="stylesheet" href="./dealer-dashboard-partnership.css" />
@@ -3274,11 +3276,11 @@
       </div>
     </div>
 
-    <!-- Apply for sanction - step 3 modal -->
-    <div class="custom-modal-overlay" id="step3Modal">
+    <!-- Apply for sanction Updated - partnership step 3 modal -->
+    <div class="custom-modal-overlay" id="partnershipStep3Modal">
       <div class="custom-modal form-modal sanction-modal">
         <div class="sanction-header-div">
-          <button class="modal-close-btn" id="modalStep3CloseBtn">
+          <button class="modal-close-btn" id="modalPartnershipStep3CloseBtn">
             <span class="material-icons">close</span>
           </button>
           <h2>Apply for dealer finance</h2>
@@ -3298,7 +3300,7 @@
 
             <div class="application-number">
               Application number:
-              <span id="applicationNumber">CLB-000203606-PRO</span>
+              <span id="partnershipApplicationNumber">CLB-000203606-PRO</span>
               <div class="copy-contact">
                 <span class="material-icons copy-icon">content_copy</span>
               </div>
@@ -3307,7 +3309,7 @@
         </div>
 
         <div class="stepScroll">
-          <div class="proprietor-wrapper">
+          <div class="partnership-wrapper">
             <div class="partner-bottom">
               <label class="partner-label-number">
                 Number of partners
@@ -3326,12 +3328,18 @@
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="disabled-link saveExitBtn">
+          <button
+            type="button"
+            class="disabled-link saveExitBtn"
+            id="partnershipSaveExitBtn"
+          >
             Save & exit
           </button>
           <div class="footer-actions">
-            <button class="outline-orange-btn" id="cancelStep3Btn">Back</button>
-            <button class="orange-btn" id="step3NextBtn" disabled>
+            <button class="outline-orange-btn" id="cancelPartnershipStep3Btn">
+              Back
+            </button>
+            <button class="orange-btn" id="partnershipStep3NextBtn" disabled>
               Proceed
             </button>
           </div>

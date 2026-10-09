@@ -46,7 +46,7 @@
   let focusableElements = [];
   let lastFocusedElement = null;
 
-  const ALL_MODALS_SELECTOR = "#step1Modal, #step2Modal, #step3Modal, #step4Modal, .custom-modal-overlay";
+  const ALL_MODALS_SELECTOR = "#step1Modal, #step2Modal, #partnershipStep3Modal, #step4Modal, .custom-modal-overlay";
 
   function getFocusableElements(modal) {
     if (!modal || !modal.length) return [];
@@ -1355,8 +1355,8 @@ $(document).on("click", ".saveExitBtn", function (e) {
     currentStepModalId = "step1Modal";
   } else if ($("#step2Modal").is(":visible")) {
     currentStepModalId = "step2Modal";
-  } else if ($("#step3Modal").is(":visible")) {
-    currentStepModalId = "step3Modal";
+  } else if ($("#partnershipStep3Modal").is(":visible")) {
+    currentStepModalId = "partnershipStep3Modal";
   } else if ($("#step4Modal").is(":visible")) {
     currentStepModalId = "step4Modal";
   } else if ($("#reviewModal").is(":visible")) {
@@ -1499,7 +1499,7 @@ $(document).on("click", "#nextStepsModal .saveExitBtn", function (e) {
 });
 
 $(document).on("click", "#step3NextBtn", function () {
-  $("#step3Modal").hide();
+  $("#partnershipStep3Modal").hide();
 
   disableSaveExitButton();
 
@@ -1662,7 +1662,7 @@ $(document).on("click", "#modalStep2CloseBtn", function () {
 });
 
 $(document).on("click", "#modalStep3CloseBtn", function () {
-  $("#step3Modal").addClass("d-none").hide();
+  $("#partnershipStep3Modal").addClass("d-none").hide();
 });
 
 $(document).on("click", "#modalStep4CloseBtn", function () {
@@ -3217,7 +3217,7 @@ $(document).on("change", ".incorporationDate", function () {
 
 (function initStep3Validation() {
   function getInput(selector) {
-    return document.querySelector("#step3Modal " + selector);
+    return document.querySelector("#partnershipStep3Modal " + selector);
   }
 
   function showError(inp, errEl) {
@@ -3279,17 +3279,17 @@ $(document).on("change", ".incorporationDate", function () {
     },
     {
       key: "email",
-      inpSel: '#step3Modal .proprietor-grid input[placeholder="Enter ID"]',
+      inpSel: '#partnershipStep3Modal .proprietor-grid input[placeholder="Enter ID"]',
       errSel: null,
     },
     {
       key: "address",
-      inpSel: '#step3Modal input[placeholder="Enter address"]',
+      inpSel: '#partnershipStep3Modal input[placeholder="Enter address"]',
       errSel: null,
     },
     {
       key: "pincode",
-      inpSel: '#step3Modal input[placeholder="Enter pin code"]',
+      inpSel: '#partnershipStep3Modal input[placeholder="Enter pin code"]',
       errSel: null,
       numericOnly: true,
     },
@@ -3297,7 +3297,7 @@ $(document).on("change", ".incorporationDate", function () {
 
   function getMobileErrEl() {
     var mobileSection = document.querySelector(
-      "#step3Modal .properties-mobile-number-section",
+      "#partnershipStep3Modal .properties-mobile-number-section",
     );
     if (!mobileSection) return null;
 
@@ -3347,7 +3347,7 @@ $(document).on("change", ".incorporationDate", function () {
   var touched = {};
 
   function checkStep3Completion() {
-    var modal = document.getElementById("step3Modal");
+    var modal = document.getElementById("partnershipStep3Modal");
     if (!modal) return;
 
     var nextBtn = document.getElementById("step3NextBtn");
@@ -3357,7 +3357,7 @@ $(document).on("change", ".incorporationDate", function () {
     var allTextValid = true;
     fieldDefs.forEach(function (def) {
       var inp =
-        modal.querySelector(def.inpSel.replace("#step3Modal ", "")) ||
+        modal.querySelector(def.inpSel.replace("#partnershipStep3Modal ", "")) ||
         document.querySelector(def.inpSel);
       if (!inp) {
         allTextValid = false;
@@ -3418,11 +3418,11 @@ $(document).on("change", ".incorporationDate", function () {
   }
 
   function setupField(def) {
-    var modal = document.getElementById("step3Modal");
+    var modal = document.getElementById("partnershipStep3Modal");
     if (!modal) return;
 
     var inp =
-      modal.querySelector(def.inpSel.replace("#step3Modal ", "")) ||
+      modal.querySelector(def.inpSel.replace("#partnershipStep3Modal ", "")) ||
       document.querySelector(def.inpSel);
     if (!inp) return;
 
@@ -3497,7 +3497,7 @@ $(document).on("change", ".incorporationDate", function () {
   }
 
   function setupSelects() {
-    var modal = document.getElementById("step3Modal");
+    var modal = document.getElementById("partnershipStep3Modal");
     if (!modal) return;
 
     var selects = modal.querySelectorAll("select");
@@ -3551,7 +3551,7 @@ $(document).on("change", ".incorporationDate", function () {
   }
 
   function init() {
-    var modal = document.getElementById("step3Modal");
+    var modal = document.getElementById("partnershipStep3Modal");
     if (!modal) return;
 
     var nextBtn = document.getElementById("step3NextBtn");
@@ -4651,7 +4651,7 @@ $(document).on("click", ".reset-bank", function () {
 $(document).on("click", "#step4BackBtn", function () {
   $("#step4Modal").hide();
 
-  $("#step3Modal").show();
+  $("#partnershipStep3Modal").show();
 });
 
 $(document).on("change", ".itr-upload-section .upload-file-input", function () {
@@ -5994,7 +5994,7 @@ $(document).ready(function () {
 });
 
 $(document).on("click", "#cancelStep3Btn", function () {
-  $("#step3Modal").hide();
+  $("#partnershipStep3Modal").hide();
 
   $("#step2Modal").show();
 });
@@ -6538,7 +6538,7 @@ function checkAllPartnersSaved() {
       .prop("disabled", false)
       .addClass("btn-enabled")
       .removeClass("btn-disabled");
-    $("#step3Modal .modal-footer p")
+    $("#partnershipStep3Modal .modal-footer p")
       .addClass("enabled")
       .removeClass("disabled");
   } else {
@@ -6546,7 +6546,7 @@ function checkAllPartnersSaved() {
       .prop("disabled", true)
       .addClass("btn-disabled")
       .removeClass("btn-enabled");
-    $("#step3Modal .modal-footer p")
+    $("#partnershipStep3Modal .modal-footer p")
       .addClass("disabled")
       .removeClass("enabled");
   }
@@ -7877,7 +7877,7 @@ const pincodeData = {
 };
 
 function populateCityAndState(pincode) {
-  const citySelect = document.querySelector("#step3Modal #cityCustomSelect");
+  const citySelect = document.querySelector("#partnershipStep3Modal #cityCustomSelect");
   const stateDisplay = document.getElementById("state");
   const cityDisplay = document.getElementById("city");
 
@@ -8006,7 +8006,7 @@ function populateCityAndState(pincode) {
 }
 
 function setupCityDropdownHandlers() {
-  const citySelect = document.querySelector("#step3Modal #cityCustomSelect");
+  const citySelect = document.querySelector("#partnershipStep3Modal #cityCustomSelect");
   if (!citySelect) return;
 
   citySelect
@@ -8077,7 +8077,7 @@ function handleCitySelection(e) {
 }
 
 function initializeStep3CityDropdown() {
-  const citySelect = document.querySelector("#step3Modal #cityCustomSelect");
+  const citySelect = document.querySelector("#partnershipStep3Modal #cityCustomSelect");
   if (!citySelect) {
     createCityDropdown();
     return;
@@ -8089,7 +8089,7 @@ function createCityDropdown() {
   const cityBlock = document.getElementsByClassName("cityAddressBlock");
   if (!cityBlock) return;
 
-  if (document.querySelector("#step3Modal #cityCustomSelect")) return;
+  if (document.querySelector("#partnershipStep3Modal #cityCustomSelect")) return;
 
   const citySelectHTML = `
         <div>
@@ -8132,14 +8132,14 @@ $(document).ready(function () {
     setTimeout(initializeStep3CityDropdown, 500);
     setTimeout(function () {
       const pincodeInput = document.querySelector(
-        '#step3Modal input[placeholder="Enter pin code"]',
+        '#partnershipStep3Modal input[placeholder="Enter pin code"]',
       );
       if (pincodeInput) {
         pincodeInput.value = "";
         document.getElementsByClassName("cityAddressBlock").style.display =
           "none";
         const citySelect = document.querySelector(
-          "#step3Modal #cityCustomSelect",
+          "#partnershipStep3Modal #cityCustomSelect",
         );
         if (citySelect) {
           const trigger = citySelect.querySelector(
@@ -8163,7 +8163,7 @@ $(document).ready(function () {
     $("#step2Modal").hide();
     disableSaveExitButton();
 
-    $("#step3Modal").show();
+    $("#partnershipStep3Modal").show();
   });
 });
 
@@ -8171,7 +8171,7 @@ const originalCheckStep3Completion = checkStep3Completion;
 checkStep3Completion = function () {
   originalCheckStep3Completion();
 
-  const modal = document.getElementById("step3Modal");
+  const modal = document.getElementById("partnershipStep3Modal");
   if (!modal) return;
 
   const nextBtn = document.getElementById("step3NextBtn");
@@ -8182,7 +8182,7 @@ checkStep3Completion = function () {
   const stateDisplay = document.getElementById("state");
 
   if (cityBlock && cityBlock.style.display !== "none") {
-    const citySelect = document.querySelector("#step3Modal #cityCustomSelect");
+    const citySelect = document.querySelector("#partnershipStep3Modal #cityCustomSelect");
     const selectedCity = citySelect
       ? citySelect.querySelector(".custom-select-trigger .selected-option")
           ?.textContent
@@ -8211,7 +8211,7 @@ $(document).ready(function () {
 
   $(document).on(
     "change",
-    "#step3Modal #cityCustomSelect .option-item",
+    "#partnershipStep3Modal #cityCustomSelect .option-item",
     function () {
       setTimeout(checkStep3Completion, 100);
     },

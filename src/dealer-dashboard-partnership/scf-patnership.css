@@ -661,7 +661,7 @@
   background: #fff;
   border-radius: 8px;
   position: relative;
-  padding: 24px 32px;
+  /* padding: 24px 32px;  */
   width: 83.34%;
   height: 100%;
   overflow: auto;
