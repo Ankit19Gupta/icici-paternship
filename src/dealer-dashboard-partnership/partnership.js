@@ -22,7 +22,267 @@
   };
 
   // ==========================================================================
-  // REMOVE PREVIOUS CONFLICTING HANDLERS FROM OLD / UNUSED CODE
+  // CUSTOM CALENDAR MODULE FOR DATE OF BIRTH
+  // ==========================================================================
+  const MONTHS = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+  ];
+  const MIN_YEAR = 1940;
+
+  function pad(n) {
+    return n < 10 ? "0" + n : "" + n;
+  }
+
+  function formatYMD(d) {
+    return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+  }
+
+  function sameDay(a, b) {
+    return (
+      a && b &&
+      a.getFullYear() === b.getFullYear() &&
+      a.getMonth() === b.getMonth() &&
+      a.getDate() === b.getDate()
+    );
+  }
+
+  function initCalState() {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return {
+      view: "year",
+      viewMonth: today.getMonth(),
+      viewYear: today.getFullYear(),
+      centerYear: today.getFullYear(),
+      selected: null,
+    };
+  }
+
+  function buildWeekdays() {
+    const w = document.createElement("div");
+    w.className = "weekdays";
+    ["S", "M", "T", "W", "T", "F", "S"].forEach(function (d) {
+      const s = document.createElement("span");
+      s.textContent = d;
+      w.appendChild(s);
+    });
+    return w;
+  }
+
+  function buildDaysGrid(state, pop) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const grid = document.createElement("div");
+    grid.className = "days";
+    const firstDay = new Date(state.viewYear, state.viewMonth, 1).getDay();
+    const totalDays = new Date(state.viewYear, state.viewMonth + 1, 0).getDate();
+
+    for (let i = 0; i < firstDay; i++) {
+      const e = document.createElement("div");
+      e.className = "day empty";
+      grid.appendChild(e);
+    }
+
+    for (let d = 1; d <= totalDays; d++) {
+      (function (day) {
+        const cellDate = new Date(state.viewYear, state.viewMonth, day);
+        cellDate.setHours(0, 0, 0, 0);
+        const cell = document.createElement("div");
+        cell.className = "day";
+        cell.textContent = day;
+
+        if (cellDate > today) cell.classList.add("disabled");
+        if (sameDay(cellDate, today)) cell.classList.add("today");
+        if (state.selected && sameDay(cellDate, state.selected)) cell.classList.add("selected");
+
+        if (!cell.classList.contains("disabled")) {
+          cell.addEventListener("click", function (e) {
+            e.stopPropagation();
+            state.selected = cellDate;
+            const wrap = pop.closest(".custom-datepicker-wrap");
+            const inp = wrap.querySelector(".dobDate, .partner-dob");
+            inp.value = formatYMD(cellDate);
+            pop.style.display = "none";
+            $(inp).trigger("input").trigger("change");
+
+            const $accordion = $(wrap).closest(".partner-accordion");
+            if ($accordion.length) {
+              updateValidationState($accordion);
+            }
+          });
+        }
+        grid.appendChild(cell);
+      })(d);
+    }
+    return grid;
+  }
+
+  function buildMonthsGrid(state, pop) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const grid = document.createElement("div");
+    grid.className = "months";
+
+    MONTHS.forEach(function (m, idx) {
+      const item = document.createElement("div");
+      item.className = "month-item";
+      item.textContent = m;
+
+      const isFuture =
+        (state.viewYear === today.getFullYear() && idx > today.getMonth()) ||
+        state.viewYear > today.getFullYear();
+
+      if (isFuture) item.classList.add("disabled");
+      if (idx === state.viewMonth && state.selected) item.classList.add("selected");
+      if (idx === today.getMonth() && state.viewYear === today.getFullYear()) item.classList.add("current");
+
+      if (!isFuture) {
+        item.addEventListener("click", function (e) {
+          e.stopPropagation();
+          state.viewMonth = idx;
+          state.view = "day";
+          renderCalendar(state, pop);
+        });
+      }
+      grid.appendChild(item);
+    });
+    return grid;
+  }
+
+  function buildYearsGrid(state, pop) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const grid = document.createElement("div");
+    grid.className = "years";
+    const start = MIN_YEAR;
+    const end = today.getFullYear();
+
+    for (let y = start; y <= end; y++) {
+      (function (yr) {
+        const item = document.createElement("div");
+        item.className = "year-item";
+        item.textContent = yr;
+
+        if (yr > today.getFullYear()) item.classList.add("faded");
+        if (yr === state.viewYear && state.selected) item.classList.add("selected");
+        if (yr === today.getFullYear()) item.classList.add("current");
+
+        if (yr <= today.getFullYear()) {
+          item.addEventListener("click", function (e) {
+            e.stopPropagation();
+            state.viewYear = yr;
+            state.centerYear = yr;
+            state.view = "month";
+            renderCalendar(state, pop);
+          });
+        }
+        grid.appendChild(item);
+      })(y);
+    }
+    return grid;
+  }
+
+  function renderCalendar(state, pop) {
+    pop.innerHTML = "";
+
+    const nav = document.createElement("div");
+    nav.className = "nav-dropdown";
+
+    const yBtn = document.createElement("div");
+    yBtn.className = "dd" + (state.view === "year" ? " active" : "");
+    yBtn.innerHTML = "<span>" + state.viewYear + "</span><span class='caret'>" + (state.view === "year" ? "&#9650;" : "&#9660;") + "</span>";
+    yBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      state.centerYear = state.viewYear;
+      state.view = state.view === "year" ? "day" : "year";
+      renderCalendar(state, pop);
+    });
+
+    const mBtn = document.createElement("div");
+    mBtn.className = "dd" + (state.view === "month" ? " active" : "");
+    mBtn.innerHTML = "<span>" + MONTHS[state.viewMonth] + "</span><span class='caret'>" + (state.view === "month" ? "&#9650;" : "&#9660;") + "</span>";
+    mBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      state.view = state.view === "month" ? "day" : "month";
+      renderCalendar(state, pop);
+    });
+
+    nav.appendChild(yBtn);
+    nav.appendChild(mBtn);
+    pop.appendChild(nav);
+
+    if (state.view === "day") {
+      pop.appendChild(buildWeekdays());
+      pop.appendChild(buildDaysGrid(state, pop));
+    } else if (state.view === "month") {
+      pop.appendChild(buildMonthsGrid(state, pop));
+    } else {
+      pop.appendChild(buildYearsGrid(state, pop));
+      const scrollTarget = pop.querySelector(".year-item.selected") || pop.querySelector(".year-item.current");
+      if (scrollTarget) {
+        setTimeout(() => scrollTarget.scrollIntoView({ block: "center" }), 10);
+      }
+    }
+  }
+
+  function openCustomPicker(wrap) {
+    const pop = wrap.querySelector(".custom-calendar-popup");
+    if (!pop) return;
+
+    if (!pop._calState) pop._calState = initCalState();
+    const state = pop._calState;
+    const inp = wrap.querySelector(".dobDate, .partner-dob");
+
+    if (inp && inp.value) {
+      const parts = inp.value.split("-");
+      if (parts.length === 3) {
+        const d = new Date(+parts[0], +parts[1] - 1, +parts[2]);
+        d.setHours(0, 0, 0, 0);
+        state.selected = d;
+        state.viewYear = d.getFullYear();
+        state.viewMonth = d.getMonth();
+        state.centerYear = d.getFullYear();
+      }
+    }
+    state.view = "year";
+    renderCalendar(state, pop);
+    pop.style.display = "flex";
+  }
+
+  // Custom Calendar Toggle Handler
+  $(document).on(
+    "click",
+    "#partnershipStep3Modal .custom-datepicker-wrap, #partnershipStep3Modal .custom-datepicker-wrap input, #partnershipStep3Modal .custom-datepicker-wrap .custom-cal-icon",
+    function (e) {
+      e.stopPropagation();
+      const wrap = $(this).closest(".custom-datepicker-wrap")[0];
+      if (!wrap) return;
+
+      const pop = wrap.querySelector(".custom-calendar-popup");
+      document.querySelectorAll(".custom-calendar-popup").forEach(function (p) {
+        if (p !== pop) p.style.display = "none";
+      });
+
+      if (pop.style.display === "none" || pop.style.display === "") {
+        openCustomPicker(wrap);
+      } else {
+        pop.style.display = "none";
+      }
+    }
+  );
+
+  // Close calendar when clicking outside
+  $(document).on("click", function (e) {
+    if ($(e.target).closest(".custom-datepicker-wrap").length === 0) {
+      document.querySelectorAll(".custom-calendar-popup").forEach(function (p) {
+        p.style.display = "none";
+      });
+    }
+  });
+
+  // ==========================================================================
+  // REMOVE PREVIOUS CONFLICTING HANDLERS
   // ==========================================================================
   $(document).off("click", ".partner-accordion-header");
   $(document).off("click", ".partner-save-btn");
@@ -143,7 +403,7 @@
             '<div class="proprietor-first-section">' +
               '<div class="proprietor-gender">' +
                 '<label>Title</label>' +
-                '<div class="custom-select-wrapper">' +
+                '<div class="custom-select-wrapper title-select">' +
                   '<div class="custom-select-trigger">' +
                     '<span class="selected-option">Mr.</span>' +
                     '<div class="select-right"><i class="material-icons">expand_more</i></div>' +
@@ -155,7 +415,7 @@
                     '<div class="option-item" data-value="dr">Dr.</div>' +
                   '</div>' +
                 '</div>' +
-                '<select style="display: none"><option value="mr" selected>Mr.</option><option value="miss">Miss.</option><option value="ms">Ms.</option><option value="dr">Dr.</option></select>' +
+                '<select class="partner-title" style="display: none"><option value="mr" selected>Mr.</option><option value="miss">Miss.</option><option value="ms">Ms.</option><option value="dr">Dr.</option></select>' +
               '</div>' +
               '<div class="field-wrapper">' +
                 '<label>First name as per PAN <span class="partner-required">*</span></label>' +
@@ -204,7 +464,7 @@
             '<div>' +
               '<div class="proprietor-gender-section field-wrapper">' +
                 '<label>Gender <span class="partner-required">*</span></label>' +
-                '<div class="custom-select-wrapper">' +
+                '<div class="custom-select-wrapper gender-select">' +
                   '<div class="custom-select-trigger">' +
                     '<span class="selected-option">Select gender</span>' +
                     '<div class="select-right"><i class="material-icons">expand_more</i></div>' +
@@ -227,8 +487,10 @@
             '<div>' +
               '<div class="width field-wrapper">' +
                 '<label>Date of birth as per aadhaar <span class="incorporation-yy">(yyyy-mm-dd)</span> <span class="partner-required">*</span></label>' +
-                '<div class="date-input">' +
-                  '<input type="date" class="partner-dob dobDate" />' +
+                '<div class="date-input custom-datepicker-wrap">' +
+                  '<input type="text" class="partner-dob dobDate" placeholder="Select date (yyyy-mm-dd)" readonly />' +
+                  '<span class="material-icons custom-cal-icon">calendar_today</span>' +
+                  '<div class="custom-calendar-popup" style="display: none"></div>' +
                 '</div>' +
               '</div>' +
             '</div>' +
@@ -270,7 +532,7 @@
             '<div>' +
               '<div class="proprietor-gender-section field-wrapper">' +
                 '<label>Community <span class="partner-required">*</span></label>' +
-                '<div class="custom-select-wrapper">' +
+                '<div class="custom-select-wrapper community-select">' +
                   '<div class="custom-select-trigger">' +
                     '<span class="selected-option">Select community</span>' +
                     '<div class="select-right"><i class="material-icons">expand_more</i></div>' +
@@ -303,7 +565,7 @@
             '<div>' +
               '<div class="proprietor-gender-section field-wrapper">' +
                 '<label>Category <span class="partner-required">*</span></label>' +
-                '<div class="custom-select-wrapper">' +
+                '<div class="custom-select-wrapper category-select">' +
                   '<div class="custom-select-trigger">' +
                     '<span class="selected-option">Select category</span>' +
                     '<div class="select-right"><i class="material-icons">expand_more</i></div>' +
@@ -390,6 +652,11 @@
         citySelect.siblings("select").val("");
       }
     }
+
+    const $accordion = $container.closest(".partner-accordion");
+    if ($accordion.length) {
+      updateValidationState($accordion);
+    }
   }
 
   // ==========================================================================
@@ -459,6 +726,8 @@
     '#partnershipStep3Modal input.partner-first-name, #partnershipStep3Modal input.partner-middle-name, #partnershipStep3Modal input.partner-last-name, #partnershipStep3Modal input[placeholder*="first name"], #partnershipStep3Modal input[placeholder*="middle name"], #partnershipStep3Modal input[placeholder*="last name"]',
     function () {
       $(this).val($(this).val().replace(/[^a-zA-Z\s]/g, ""));
+      const $acc = $(this).closest(".partner-accordion");
+      if ($acc.length) updateValidationState($acc);
     }
   );
 
@@ -470,6 +739,8 @@
       let clean = $(this).val().replace(/\D/g, "");
       if (clean.length > 10) clean = clean.slice(0, 10);
       $(this).val(clean);
+      const $acc = $(this).closest(".partner-accordion");
+      if ($acc.length) updateValidationState($acc);
     }
   );
 
@@ -477,7 +748,8 @@
     "blur",
     '#partnershipStep3Modal input.partner-mobile, #partnershipStep3Modal input[placeholder="10 digit mobile number"]',
     function () {
-      const clean = $(this).val().replace(/^\+91\s*/, "").replace(/\D/g, "");
+      let clean = $(this).val().replace(/^\+91\s*/, "").replace(/\D/g, "");
+      if (clean.startsWith("91") && clean.length === 12) clean = clean.slice(2);
       const errorDiv = $(this).closest(".field-wrapper").find(".error-step3-handle");
 
       if (clean.length > 0 && clean.length !== 10) {
@@ -490,6 +762,9 @@
         errorDiv.hide();
         $(this).removeClass("is-error is-success");
       }
+
+      const $acc = $(this).closest(".partner-accordion");
+      if ($acc.length) updateValidationState($acc);
     }
   );
 
@@ -499,6 +774,8 @@
     '#partnershipStep3Modal input.partner-email, #partnershipStep3Modal input[placeholder="Enter ID"]',
     function () {
       $(this).val($(this).val().replace(/\s/g, ""));
+      const $acc = $(this).closest(".partner-accordion");
+      if ($acc.length) updateValidationState($acc);
     }
   );
 
@@ -520,6 +797,9 @@
         errorDiv.hide();
         $(this).removeClass("is-error is-success");
       }
+
+      const $acc = $(this).closest(".partner-accordion");
+      if ($acc.length) updateValidationState($acc);
     }
   );
 
@@ -529,6 +809,8 @@
     '#partnershipStep3Modal input.partner-pan, #partnershipStep3Modal input[placeholder="Enter PAN"]',
     function () {
       $(this).val($(this).val().replace(/[^a-zA-Z0-9]/g, "").toUpperCase().slice(0, 10));
+      const $acc = $(this).closest(".partner-accordion");
+      if ($acc.length) updateValidationState($acc);
     }
   );
 
@@ -550,6 +832,9 @@
         errorDiv.hide();
         $(this).removeClass("is-error is-success");
       }
+
+      const $acc = $(this).closest(".partner-accordion");
+      if ($acc.length) updateValidationState($acc);
     }
   );
 
@@ -564,6 +849,8 @@
       if (clean.length === 6) {
         populateCityAndState($container, clean);
       }
+      const $acc = $(this).closest(".partner-accordion");
+      if ($acc.length) updateValidationState($acc);
     }
   );
 
@@ -586,6 +873,9 @@
         errorDiv.hide();
         $(this).removeClass("is-error is-success");
       }
+
+      const $acc = $(this).closest(".partner-accordion");
+      if ($acc.length) updateValidationState($acc);
     }
   );
 
@@ -595,6 +885,8 @@
     '#partnershipStep3Modal input.partner-address, #partnershipStep3Modal input[placeholder="Enter address"]',
     function () {
       $(this).val($(this).val().replace(/[^a-zA-Z0-9\s,.-]/g, ""));
+      const $acc = $(this).closest(".partner-accordion");
+      if ($acc.length) updateValidationState($acc);
     }
   );
 
@@ -606,6 +898,8 @@
       let val = parseFloat($(this).val());
       if (val > 100) $(this).val(100);
       if (val < 0) $(this).val(0);
+      const $acc = $(this).closest(".partner-accordion");
+      if ($acc.length) updateValidationState($acc);
     }
   );
 
@@ -615,48 +909,70 @@
     $(this).closest(".field-wrapper").find(".error-step3-handle").hide();
   });
 
+  // Global listener for ANY input changes to update Save button state
+  $(document).on(
+    "input change keyup blur paste focusout",
+    "#partnershipStep3Modal .partner-accordion-content input, #partnershipStep3Modal .partner-accordion-content select",
+    function () {
+      const $accordion = $(this).closest(".partner-accordion");
+      if ($accordion.length && !$accordion.hasClass("saved")) {
+        updateValidationState($accordion);
+      }
+    }
+  );
+
   // ==========================================================================
   // ACCORDION VALIDATION
   // ==========================================================================
   function isAccordionDataValid($accordion) {
     if (!$accordion || $accordion.hasClass("saved")) return true;
     const $content = $accordion.find(".partner-accordion-content");
-    if (!$content.length || $content.is(":hidden")) return false;
+    if (!$content.length) return false;
 
     const firstName = ($content.find('.partner-first-name, input[placeholder="Enter first name"]').val() || "").trim();
     const lastName = ($content.find('.partner-last-name, input[placeholder="Enter last name"]').val() || "").trim();
-    const mobile = ($content.find('.partner-mobile, input[placeholder="10 digit mobile number"]').val() || "").replace(/\D/g, "");
+
+    // Mobile digits (10 digits)
+    const mobileRaw = ($content.find('.partner-mobile, input[placeholder="10 digit mobile number"]').val() || "").trim();
+    let mobileDigits = mobileRaw.replace(/\D/g, "");
+    if (mobileDigits.startsWith("91") && mobileDigits.length === 12) {
+      mobileDigits = mobileDigits.slice(2);
+    }
+
     const email = ($content.find('.partner-email, input[placeholder="Enter ID"]').val() || "").trim();
     const pan = ($content.find('.partner-pan, input[placeholder="Enter PAN"]').val() || "").trim();
     const ownership = parseFloat($content.find('.partner-ownership, input.ownership-input, input[placeholder="0"]').val());
-    
+
     // Gender
-    const genderSel = $content.find(".partner-gender, select").eq(0).val() || "";
-    const genderText = $content.find(".proprietor-gender-section .selected-option").first().text().trim();
-    const genderValid = (genderSel && genderSel !== "Select gender") || (genderText && genderText !== "Select gender");
+    const genderText = $content.find(".gender-select .selected-option").text().trim();
+    const genderSel = $content.find(".partner-gender, select.partner-gender").val() || "";
+    const genderValid = (genderText && genderText !== "Select gender" && genderText !== "Select" && genderText !== "") ||
+                        (genderSel && genderSel !== "Select gender" && genderSel !== "");
 
     // DOB
-    const dob = $content.find('.partner-dob, .dobDate, input[type="date"]').val();
+    const dob = ($content.find('.partner-dob, .dobDate, input.dobDate').val() || "").trim();
+    const dobValid = dob !== "" && dob !== "Select date (yyyy-mm-dd)";
 
     // Address & Pin
     const address = ($content.find('.partner-address, input[placeholder="Enter address"]').val() || "").trim();
     const pincode = ($content.find('.partner-pincode, input.pincode-input, input[placeholder="Enter pin code"]').val() || "").replace(/\D/g, "");
 
     // Community
-    const communitySel = $content.find(".partner-community").val() || "";
-    const communityEls = $content.find(".proprietor-gender-section .selected-option");
-    const communityText = communityEls.length > 1 ? communityEls.eq(1).text().trim() : "";
-    const communityValid = (communitySel && communitySel !== "Select community") || (communityText && communityText !== "Select community");
+    const communityText = $content.find(".community-select .selected-option").text().trim();
+    const communitySel = $content.find(".partner-community, select.partner-community").val() || "";
+    const communityValid = (communityText && communityText !== "Select community" && communityText !== "Select" && communityText !== "") ||
+                           (communitySel && communitySel !== "Select community" && communitySel !== "");
 
     // Category
-    const categorySel = $content.find(".partner-category").val() || "";
-    const categoryText = communityEls.length > 2 ? communityEls.eq(2).text().trim() : "";
-    const categoryValid = (categorySel && categorySel !== "Select category") || (categoryText && categoryText !== "Select category");
+    const categoryText = $content.find(".category-select .selected-option").text().trim();
+    const categorySel = $content.find(".partner-category, select.partner-category").val() || "";
+    const categoryValid = (categoryText && categoryText !== "Select category" && categoryText !== "Select" && categoryText !== "") ||
+                          (categorySel && categorySel !== "Select category" && categorySel !== "");
 
     return (
-      firstName.length >= 2 &&
-      lastName.length >= 2 &&
-      mobile.length === 10 &&
+      firstName.length >= 1 &&
+      lastName.length >= 1 &&
+      mobileDigits.length === 10 &&
       email !== "" &&
       email.indexOf("@") !== -1 &&
       email.indexOf(".") !== -1 &&
@@ -665,9 +981,8 @@
       ownership > 0 &&
       ownership <= 100 &&
       genderValid &&
-      dob &&
-      dob !== "" &&
-      address.length >= 3 &&
+      dobValid &&
+      address.length >= 1 &&
       pincode.length === 6 &&
       communityValid &&
       categoryValid
@@ -678,11 +993,11 @@
     if (!$accordion || $accordion.hasClass("saved")) return;
     const isValid = isAccordionDataValid($accordion);
     const $btn = $accordion.find(".partner-save-btn");
-    $btn.prop("disabled", !isValid);
+
     if (isValid) {
-      $btn.addClass("enabled").removeClass("disabled");
+      $btn.prop("disabled", false).removeAttr("disabled").addClass("enabled").removeClass("disabled");
     } else {
-      $btn.addClass("disabled").removeClass("enabled");
+      $btn.prop("disabled", true).attr("disabled", "disabled").addClass("disabled").removeClass("enabled");
     }
   }
 
@@ -707,12 +1022,14 @@
     if (isValid) {
       $nextBtn
         .prop("disabled", false)
+        .removeAttr("disabled")
         .addClass("btn-enabled")
         .removeClass("btn-disabled");
       $saveExitBtn.removeClass("disabled-link").addClass("active");
     } else {
       $nextBtn
         .prop("disabled", true)
+        .attr("disabled", "disabled")
         .addClass("btn-disabled")
         .removeClass("btn-enabled");
       $saveExitBtn.addClass("disabled-link").removeClass("active");
@@ -807,18 +1124,6 @@
     }
   });
 
-  // Dynamic input validation listener
-  $(document).on(
-    "input change",
-    "#partnershipStep3Modal .partner-accordion-content input, #partnershipStep3Modal .partner-accordion-content select",
-    function () {
-      const $accordion = $(this).closest(".partner-accordion");
-      if ($accordion.length && !$accordion.hasClass("saved")) {
-        updateValidationState($accordion);
-      }
-    }
-  );
-
   // ==========================================================================
   // SAVE, EDIT & RESET PARTNER ACCORDION
   // ==========================================================================
@@ -828,28 +1133,31 @@
     e.stopPropagation();
 
     const $accordion = $(this).closest(".partner-accordion");
+    if (!isAccordionDataValid($accordion)) return;
+
     const num = $accordion.data("partner");
     const $content = $accordion.find(".partner-accordion-content");
 
-    const title = $content.find(".proprietor-gender .selected-option").first().text().trim() || "Mr.";
+    const title = $content.find(".title-select .selected-option").first().text().trim() || "Mr.";
     const firstName = $content.find('.partner-first-name, input[placeholder="Enter first name"]').val().trim();
     const middleName = $content.find('.partner-middle-name, input[placeholder="Enter middle name"]').val().trim();
     const lastName = $content.find('.partner-last-name, input[placeholder="Enter last name"]').val().trim();
     const fullName = (title + " " + firstName + (middleName ? " " + middleName : "") + " " + lastName).trim();
 
     let mobile = $content.find('.partner-mobile, input[placeholder="10 digit mobile number"]').val().trim();
-    if (mobile && !mobile.startsWith("+91")) mobile = "+91 " + mobile.replace(/\D/g, "");
+    let mobileClean = mobile.replace(/\D/g, "");
+    if (mobileClean.startsWith("91") && mobileClean.length === 12) mobileClean = mobileClean.slice(2);
+    if (mobileClean.length === 10) mobile = "+91 " + mobileClean;
 
     const email = $content.find('.partner-email, input[placeholder="Enter ID"]').val().trim();
     const pan = $content.find('.partner-pan, input[placeholder="Enter PAN"]').val().trim().toUpperCase();
     const ownership = $content.find('.partner-ownership, input.ownership-input, input[placeholder="0"]').val().trim();
 
-    const genderEls = $content.find(".proprietor-gender-section .selected-option");
-    const gender = genderEls.length ? genderEls.eq(0).text().trim() : ($content.find(".partner-gender").val() || "");
-    const dob = $content.find('.partner-dob, .dobDate, input[type="date"]').val() || "";
+    const gender = $content.find(".gender-select .selected-option").text().trim();
+    const dob = $content.find('.partner-dob, .dobDate, input.dobDate').val() || "";
 
-    const community = genderEls.length > 1 ? genderEls.eq(1).text().trim() : ($content.find(".partner-community").val() || "");
-    const category = genderEls.length > 2 ? genderEls.eq(2).text().trim() : ($content.find(".partner-category").val() || "");
+    const community = $content.find(".community-select .selected-option").text().trim();
+    const category = $content.find(".category-select .selected-option").text().trim();
 
     const address = $content.find('.partner-address, input[placeholder="Enter address"]').val().trim();
     const pincode = $content.find('.partner-pincode, input.pincode-input, input[placeholder="Enter pin code"]').val().trim();
@@ -920,30 +1228,11 @@
     $accordion.find(".error-step3-handle").hide();
     $accordion.find(".cityAddressBlock").hide();
 
-    $accordion.find(".custom-select-wrapper").each(function () {
-      const $wrap = $(this);
-      const isGender = $wrap.closest(".proprietor-gender-section").find("label").text().includes("Gender");
-      const isCommunity = $wrap.closest(".proprietor-gender-section").find("label").text().includes("Community");
-      const isCategory = $wrap.closest(".proprietor-gender-section").find("label").text().includes("Category");
-      const isTitle = $wrap.closest(".proprietor-gender").length;
-
-      if (isTitle) {
-        $wrap.find(".selected-option").text("Mr.");
-        $wrap.siblings("select").val("mr");
-      } else if (isGender) {
-        $wrap.find(".selected-option").text("Select gender");
-        $wrap.siblings("select").val("");
-      } else if (isCommunity) {
-        $wrap.find(".selected-option").text("Select community");
-        $wrap.siblings("select").val("");
-      } else if (isCategory) {
-        $wrap.find(".selected-option").text("Select category");
-        $wrap.siblings("select").val("");
-      } else {
-        $wrap.find(".selected-option").text("Select");
-        $wrap.siblings("select").val("");
-      }
-    });
+    $accordion.find(".title-select .selected-option").text("Mr.");
+    $accordion.find(".gender-select .selected-option").text("Select gender");
+    $accordion.find(".community-select .selected-option").text("Select community");
+    $accordion.find(".category-select .selected-option").text("Select category");
+    $accordion.find(".cityCustomSelect .selected-option").text("Select city");
 
     updateValidationState($accordion);
   });
