@@ -815,7 +815,6 @@
   }
 }
 
-/* Mobile & Small Mobile Screens (576px and below - Bottom Navigation / Sheet style) */
 @media screen and (max-width: 576px) {
   #partnershipStep3Modal.custom-modal-overlay.modal-visible,
   #partnershipStep3Modal.custom-modal-overlay.show,

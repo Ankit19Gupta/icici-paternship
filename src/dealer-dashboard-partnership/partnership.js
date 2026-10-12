@@ -18,9 +18,6 @@
     226001: { cities: ["Hazratganj", "Lucknow"], state: "Uttar Pradesh" },
   };
 
-  // ==========================================================================
-  // CUSTOM CALENDAR MODULE FOR DATE OF BIRTH
-  // ==========================================================================
   const MONTHS = [
     "Jan",
     "Feb",
@@ -311,9 +308,7 @@
     }
   });
 
-  // ==========================================================================
   // REMOVE PREVIOUS CONFLICTING HANDLERS
-  // ==========================================================================
   $(document).off("click", ".partner-accordion-header");
   $(document).off("click", ".partner-save-btn");
   $(document).off("click", ".partner-edit-btn");
@@ -325,9 +320,7 @@
   $(document).off("click", "#modalPartnershipStep3CloseBtn");
   $(document).off("click", "#partnershipSaveExitBtn");
 
-  // ==========================================================================
   // MODAL NAVIGATION & UTILITIES
-  // ==========================================================================
   function openPartnershipStep3Modal() {
     $("#partnershipStep3Modal").show();
     checkAllPartnersSaved();
@@ -420,10 +413,7 @@
     },
   );
 
-  // ==========================================================================
-  // DYNAMIC PARTNER HTML TEMPLATE GENERATOR
-  // Includes unique IDs and meaningful columns_name attribute on all inputs/selects
-  // ==========================================================================
+  // Dynamic Partner Html Page
   function getPartnerFormHtml(num) {
     return (
       '<div class="partner-accordion" data-partner="' +
@@ -694,9 +684,7 @@
     );
   }
 
-  // ==========================================================================
-  // PINCODE CITY & STATE AUTOFILL (SCOPED TO ACCORDION)
-  // ==========================================================================
+  // Pincode, City ad State
   function populateCityAndState($container, pincode) {
     const cleanPin = (pincode || "").replace(/\D/g, "");
     const num = $container.closest(".partner-accordion").data("partner");
@@ -777,9 +765,7 @@
     }
   }
 
-  // ==========================================================================
-  // CUSTOM SELECT DROPDOWN LOGIC
-  // ==========================================================================
+  // CUSTOM SELECT DROPDOWN
   $(document).on(
     "click",
     "#partnershipStep3Modal .custom-select-trigger",
@@ -814,7 +800,6 @@
       const selectedSpan = trigger.find(".selected-option");
       const hiddenSelect = wrapper.siblings("select");
       const options = wrapper.find(".custom-select-options");
-
       const value = $(this).data("value");
       const text = $(this).text().trim();
 
@@ -827,7 +812,6 @@
 
       options.find(".option-item").removeClass("selected");
       $(this).addClass("selected");
-
       options.hide();
       trigger.removeClass("active");
 
@@ -848,9 +832,7 @@
     }
   });
 
-  // ==========================================================================
-  // INPUT MASKS & SANITIZATION
-  // ==========================================================================
+  // Input Vaidation
   // Names: letters only
   $(document).on(
     "input",
@@ -879,6 +861,7 @@
     },
   );
 
+  // Append +91 in mobile number input
   $(document).on(
     "blur",
     '#partnershipStep3Modal input.partner-mobile, #partnershipStep3Modal input[placeholder="10 digit mobile number"]',
@@ -1081,15 +1064,12 @@
     },
   );
 
-  // ==========================================================================
-  // ACCORDION VALIDATION (SELECTED BY UNIQUE ID & CONSOLE LOGGED)
-  // ==========================================================================
+  // Accordion Validation
   function isAccordionDataValid($accordion) {
     if (!$accordion || $accordion.hasClass("saved")) return true;
     const num = $accordion.data("partner");
     if (!num) return false;
 
-    // Direct selection by unique IDs
     const firstName = ($("#partnerFirstName_" + num).val() || "").trim();
     const middleName = ($("#partnerMiddleName_" + num).val() || "").trim();
     const lastName = ($("#partnerLastName_" + num).val() || "").trim();
@@ -1122,30 +1102,30 @@
       ""
     ).trim();
 
-    // Console log values selected by unique ID as requested
-    console.log(`[isAccordionDataValid - Partner ${num} Field Values]`, {
-      partnerNumber: num,
-      title: (
-        $("#partnerTitle_" + num).val() ||
-        $("#partnerTitleSpan_" + num).text() ||
-        "Mr."
-      ).trim(),
-      first_name: firstName,
-      middle_name: middleName,
-      last_name: lastName,
-      mobile_number: rawMobile,
-      email_id: email,
-      pan_number: pan,
-      ownership_percentage: ownership,
-      gender: gender,
-      date_of_birth: dob,
-      address: address,
-      city: city,
-      pin_code: pincode,
-      state: state,
-      community: community,
-      category: category,
-    });
+    // To check All input
+    // console.log(`Partner ${num} Field Values -> `, {
+    //   partnerNumber: num,
+    //   title: (
+    //     $("#partnerTitle_" + num).val() ||
+    //     $("#partnerTitleSpan_" + num).text() ||
+    //     "Mr."
+    //   ).trim(),
+    //   first_name: firstName,
+    //   middle_name: middleName,
+    //   last_name: lastName,
+    //   mobile_number: rawMobile,
+    //   email_id: email,
+    //   pan_number: pan,
+    //   ownership_percentage: ownership,
+    //   gender: gender,
+    //   date_of_birth: dob,
+    //   address: address,
+    //   city: city,
+    //   pin_code: pincode,
+    //   state: state,
+    //   community: community,
+    //   category: category,
+    // });
 
     // Mobile verification (10 digits)
     let mobileDigits = rawMobile.replace(/\D/g, "");
@@ -1223,9 +1203,7 @@
     }
   }
 
-  // ==========================================================================
-  // STEP 3 OVERALL VALIDATION & SUBMIT STATE
-  // ==========================================================================
+  // Step 3 overall validation and submit state
   function validatePartnershipStep3() {
     const $targetModal = $("#partnershipStep3Modal");
     const count = parseInt($targetModal.find("#partnerCount").val()) || 0;
@@ -1266,9 +1244,7 @@
     }
   }
 
-  // ==========================================================================
-  // PARTNER COUNT LISTENER
-  // ==========================================================================
+  // Partner count
   $(document).on("input change", "#partnerCount", function () {
     let count = parseInt($(this).val()) || 0;
     const $container = $("#partnerAccordionContainer");
@@ -1321,9 +1297,7 @@
     $(this).removeClass("is-error");
   });
 
-  // ==========================================================================
-  // ACCORDION HEADER TOGGLE
-  // ==========================================================================
+  // Accordion Toggle
   $(document).on(
     "click",
     "#partnershipStep3Modal .partner-accordion-header",
@@ -1362,20 +1336,15 @@
     },
   );
 
-  // ==========================================================================
-  // SAVE, EDIT & RESET PARTNER ACCORDION
-  // ==========================================================================
-  // SAVE
+  // Save Accordion
   $(document).on(
     "click",
     "#partnershipStep3Modal .partner-save-btn",
     function (e) {
       e.preventDefault();
       e.stopPropagation();
-
       const $accordion = $(this).closest(".partner-accordion");
       if (!isAccordionDataValid($accordion)) return;
-
       const num = $accordion.data("partner");
       const $content = $accordion.find(".partner-accordion-content");
 
@@ -1472,7 +1441,7 @@
     },
   );
 
-  // EDIT
+  // Edit Accordion
   $(document).on(
     "click",
     "#partnershipStep3Modal .partner-edit-btn",
@@ -1490,13 +1459,12 @@
 
       $accordion.removeClass("saved").addClass("active");
       $accordion.find(".partner-accordion-content").slideDown(200);
-
       updateValidationState($accordion);
       checkAllPartnersSaved();
     },
   );
 
-  // RESET
+  // Reset Accordion
   $(document).on(
     "click",
     "#partnershipStep3Modal .partner-reset-btn",
@@ -1568,9 +1536,7 @@
     },
   );
 
-  // ==========================================================================
   // INITIALIZATION ON READY
-  // ==========================================================================
   function resetPartnershipStep3Form() {
     const $targetModal = $("#partnershipStep3Modal");
     $targetModal.find("#partnerCount").val("");
@@ -1583,9 +1549,6 @@
     checkAllPartnersSaved();
   });
 
-  // ==========================================================================
-  // PUBLIC API EXPOSITION
-  // ==========================================================================
   window.partnershipStep3 = {
     open: openPartnershipStep3Modal,
     close: closePartnershipStep3Modal,
