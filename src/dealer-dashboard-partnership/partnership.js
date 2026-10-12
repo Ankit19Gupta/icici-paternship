@@ -1,9 +1,6 @@
 (function ($) {
   "use strict";
 
-  // ==========================================================================
-  // PINCODE DATABASE FOR AUTO-POPULATING CITY & STATE
-  // ==========================================================================
   const pincodeData = {
     400051: { cities: ["Bandra East", "Mumbai"], state: "Maharashtra" },
     400001: { cities: ["Fort", "Mumbai"], state: "Maharashtra" },
@@ -25,8 +22,18 @@
   // CUSTOM CALENDAR MODULE FOR DATE OF BIRTH
   // ==========================================================================
   const MONTHS = [
-    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
   ];
   const MIN_YEAR = 1940;
 
@@ -35,12 +42,15 @@
   }
 
   function formatYMD(d) {
-    return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+    return (
+      d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate())
+    );
   }
 
   function sameDay(a, b) {
     return (
-      a && b &&
+      a &&
+      b &&
       a.getFullYear() === b.getFullYear() &&
       a.getMonth() === b.getMonth() &&
       a.getDate() === b.getDate()
@@ -76,7 +86,11 @@
     const grid = document.createElement("div");
     grid.className = "days";
     const firstDay = new Date(state.viewYear, state.viewMonth, 1).getDay();
-    const totalDays = new Date(state.viewYear, state.viewMonth + 1, 0).getDate();
+    const totalDays = new Date(
+      state.viewYear,
+      state.viewMonth + 1,
+      0,
+    ).getDate();
 
     for (let i = 0; i < firstDay; i++) {
       const e = document.createElement("div");
@@ -94,7 +108,8 @@
 
         if (cellDate > today) cell.classList.add("disabled");
         if (sameDay(cellDate, today)) cell.classList.add("today");
-        if (state.selected && sameDay(cellDate, state.selected)) cell.classList.add("selected");
+        if (state.selected && sameDay(cellDate, state.selected))
+          cell.classList.add("selected");
 
         if (!cell.classList.contains("disabled")) {
           cell.addEventListener("click", function (e) {
@@ -134,8 +149,10 @@
         state.viewYear > today.getFullYear();
 
       if (isFuture) item.classList.add("disabled");
-      if (idx === state.viewMonth && state.selected) item.classList.add("selected");
-      if (idx === today.getMonth() && state.viewYear === today.getFullYear()) item.classList.add("current");
+      if (idx === state.viewMonth && state.selected)
+        item.classList.add("selected");
+      if (idx === today.getMonth() && state.viewYear === today.getFullYear())
+        item.classList.add("current");
 
       if (!isFuture) {
         item.addEventListener("click", function (e) {
@@ -165,7 +182,8 @@
         item.textContent = yr;
 
         if (yr > today.getFullYear()) item.classList.add("faded");
-        if (yr === state.viewYear && state.selected) item.classList.add("selected");
+        if (yr === state.viewYear && state.selected)
+          item.classList.add("selected");
         if (yr === today.getFullYear()) item.classList.add("current");
 
         if (yr <= today.getFullYear()) {
@@ -191,7 +209,12 @@
 
     const yBtn = document.createElement("div");
     yBtn.className = "dd" + (state.view === "year" ? " active" : "");
-    yBtn.innerHTML = "<span>" + state.viewYear + "</span><span class='caret'>" + (state.view === "year" ? "&#9650;" : "&#9660;") + "</span>";
+    yBtn.innerHTML =
+      "<span>" +
+      state.viewYear +
+      "</span><span class='caret'>" +
+      (state.view === "year" ? "&#9650;" : "&#9660;") +
+      "</span>";
     yBtn.addEventListener("click", function (e) {
       e.stopPropagation();
       state.centerYear = state.viewYear;
@@ -201,7 +224,12 @@
 
     const mBtn = document.createElement("div");
     mBtn.className = "dd" + (state.view === "month" ? " active" : "");
-    mBtn.innerHTML = "<span>" + MONTHS[state.viewMonth] + "</span><span class='caret'>" + (state.view === "month" ? "&#9650;" : "&#9660;") + "</span>";
+    mBtn.innerHTML =
+      "<span>" +
+      MONTHS[state.viewMonth] +
+      "</span><span class='caret'>" +
+      (state.view === "month" ? "&#9650;" : "&#9660;") +
+      "</span>";
     mBtn.addEventListener("click", function (e) {
       e.stopPropagation();
       state.view = state.view === "month" ? "day" : "month";
@@ -219,7 +247,9 @@
       pop.appendChild(buildMonthsGrid(state, pop));
     } else {
       pop.appendChild(buildYearsGrid(state, pop));
-      const scrollTarget = pop.querySelector(".year-item.selected") || pop.querySelector(".year-item.current");
+      const scrollTarget =
+        pop.querySelector(".year-item.selected") ||
+        pop.querySelector(".year-item.current");
       if (scrollTarget) {
         setTimeout(() => scrollTarget.scrollIntoView({ block: "center" }), 10);
       }
@@ -269,7 +299,7 @@
       } else {
         pop.style.display = "none";
       }
-    }
+    },
   );
 
   // Close calendar when clicking outside
@@ -325,13 +355,15 @@
         temp.remove();
       }
 
-      const $icon = $(this).is(".copy-icon") ? $(this) : $(this).find(".copy-icon");
+      const $icon = $(this).is(".copy-icon")
+        ? $(this)
+        : $(this).find(".copy-icon");
       const originalText = $icon.text();
       $icon.text("done");
       setTimeout(function () {
         $icon.text(originalText);
       }, 1500);
-    }
+    },
   );
 
   // Close & Back Handlers
@@ -349,7 +381,7 @@
       if ($("#step2Modal").length) {
         $("#step2Modal").show();
       }
-    }
+    },
   );
 
   // Save & Exit Handler
@@ -385,7 +417,7 @@
           $("#reviewModal").show();
         }
       }
-    }
+    },
   );
 
   // ==========================================================================
@@ -394,209 +426,271 @@
   // ==========================================================================
   function getPartnerFormHtml(num) {
     return (
-      '<div class="partner-accordion" data-partner="' + num + '">' +
-        '<div class="partner-accordion-header">' +
-          '<span class="partner-accordion-span">Partner ' + num + '</span>' +
-          '<i class="material-icons">expand_more</i>' +
-        '</div>' +
-        '<div class="partner-accordion-content" style="display: none">' +
-          '<div class="proprietor-grid custom-margin">' +
-            '<div class="proprietor-first-section">' +
-              '<div class="proprietor-gender">' +
-                '<label>Title</label>' +
-                '<div class="custom-select-wrapper title-select" id="partnerTitleWrapper_' + num + '" columns_name="title">' +
-                  '<div class="custom-select-trigger">' +
-                    '<span class="selected-option" id="partnerTitleSpan_' + num + '">Mr.</span>' +
-                    '<div class="select-right"><i class="material-icons">expand_more</i></div>' +
-                  '</div>' +
-                  '<div class="custom-select-options" style="display: none">' +
-                    '<div class="option-item selected" data-value="mr">Mr.</div>' +
-                    '<div class="option-item" data-value="miss">Miss.</div>' +
-                    '<div class="option-item" data-value="ms">Ms.</div>' +
-                    '<div class="option-item" data-value="dr">Dr.</div>' +
-                  '</div>' +
-                '</div>' +
-                '<select id="partnerTitle_' + num + '" class="partner-title" style="display: none" columns_name="title"><option value="mr" selected>Mr.</option><option value="miss">Miss.</option><option value="ms">Ms.</option><option value="dr">Dr.</option></select>' +
-              '</div>' +
-              '<div class="field-wrapper">' +
-                '<label>First name as per PAN <span class="partner-required">*</span></label>' +
-                '<input type="text" id="partnerFirstName_' + num + '" class="partner-first-name" placeholder="Enter first name" columns_name="first_name" />' +
-                '<div class="error-step3-handle" style="display: none"><i class="material-icons">info</i><p>Entered first name is in wrong format, please enter a valid name.</p></div>' +
-              '</div>' +
-            '</div>' +
-            '<div>' +
-              '<div class="properties-middle">' +
-                '<div class="custom-properties-middle">' +
-                  '<label>Middle name <span class="incorporation-yy">(optional)</span></label>' +
-                  '<input type="text" id="partnerMiddleName_' + num + '" class="partner-middle-name" placeholder="Enter middle name" columns_name="middle_name" />' +
-                '</div>' +
-                '<div class="custom-properties-middle field-wrapper error-state-pan">' +
-                  '<label>Last name as per PAN <span class="partner-required">*</span></label>' +
-                  '<input type="text" id="partnerLastName_' + num + '" class="partner-last-name" placeholder="Enter last name" columns_name="last_name" />' +
-                  '<div class="error-step3-handle" style="display: none"><i class="material-icons">info</i><p>Please enter a valid last name as per PAN.</p></div>' +
-                '</div>' +
-              '</div>' +
-            '</div>' +
-            '<div class="field-wrapper">' +
-              '<label>Mobile number <span class="partner-required">*</span></label>' +
-              '<div class="properties-mobile-number-section">' +
-                '<input type="text" id="partnerMobile_' + num + '" class="partner-mobile" placeholder="10 digit mobile number" maxlength="14" columns_name="mobile_number" />' +
-              '</div>' +
-              '<div class="error-step3-handle" style="display: none"><i class="material-icons">info</i><p>Entered mobile number is in wrong format, please enter a valid 10-digit number.</p></div>' +
-            '</div>' +
-            '<div class="field-wrapper">' +
-              '<label>Email ID <span class="partner-required">*</span></label>' +
-              '<input type="email" id="partnerEmail_' + num + '" class="partner-email" placeholder="Enter ID" columns_name="email_id" />' +
-              '<div class="error-step3-handle" style="display: none"><i class="material-icons">info</i><p>Entered email ID is in wrong format, please enter a valid email id.</p></div>' +
-            '</div>' +
-            '<div class="field-wrapper">' +
-              '<label>PAN number <span class="partner-required">*</span></label>' +
-              '<input type="text" id="partnerPan_' + num + '" class="partner-pan" placeholder="Enter PAN" maxlength="10" style="text-transform: uppercase" columns_name="pan_number" />' +
-              '<div class="error-step3-handle" style="display: none"><i class="material-icons">info</i><p>Please enter a valid PAN number.</p></div>' +
-            '</div>' +
-            '<div class="field-wrapper">' +
-              '<label>Ownership control (%) <span class="partner-required">*</span></label>' +
-              '<div class="position">' +
-                '<input type="number" id="partnerOwnership_' + num + '" class="partner-ownership ownership-input" placeholder="0" min="1" max="100" columns_name="ownership_percentage" />' +
-                '<span class="percentage-owner">%</span>' +
-              '</div>' +
-              '<div class="error-step3-handle" style="display: none"><i class="material-icons">info</i><p>Percentage must be between 1 and 100.</p></div>' +
-            '</div>' +
-            '<div>' +
-              '<div class="proprietor-gender-section field-wrapper">' +
-                '<label>Gender <span class="partner-required">*</span></label>' +
-                '<div class="custom-select-wrapper gender-select" id="partnerGenderWrapper_' + num + '" columns_name="gender">' +
-                  '<div class="custom-select-trigger">' +
-                    '<span class="selected-option" id="partnerGenderSpan_' + num + '">Select gender</span>' +
-                    '<div class="select-right"><i class="material-icons">expand_more</i></div>' +
-                  '</div>' +
-                  '<div class="custom-select-options" style="display: none">' +
-                    '<div class="option-item" data-value="">Select gender</div>' +
-                    '<div class="option-item" data-value="Male">Male</div>' +
-                    '<div class="option-item" data-value="Female">Female</div>' +
-                    '<div class="option-item" data-value="Others">Others</div>' +
-                  '</div>' +
-                '</div>' +
-                '<select id="partnerGender_' + num + '" class="partner-gender" style="display: none" columns_name="gender">' +
-                  '<option value="">Select gender</option>' +
-                  '<option value="Male">Male</option>' +
-                  '<option value="Female">Female</option>' +
-                  '<option value="Others">Others</option>' +
-                '</select>' +
-              '</div>' +
-            '</div>' +
-            '<div>' +
-              '<div class="width field-wrapper">' +
-                '<label>Date of birth as per aadhaar <span class="incorporation-yy">(yyyy-mm-dd)</span> <span class="partner-required">*</span></label>' +
-                '<div class="date-input custom-datepicker-wrap">' +
-                  '<input type="text" id="partnerDob_' + num + '" class="partner-dob dobDate" placeholder="Select date (yyyy-mm-dd)" readonly columns_name="date_of_birth" />' +
-                  '<span class="material-icons custom-cal-icon">calendar_today</span>' +
-                  '<div class="custom-calendar-popup" id="partnerDobPopup_' + num + '" style="display: none"></div>' +
-                '</div>' +
-              '</div>' +
-            '</div>' +
-          '</div>' +
-          '<div class="proprietor-grid">' +
-            '<div>' +
-              '<div class="field-wrapper">' +
-                '<label>Address <span class="partner-required">*</span></label>' +
-                '<input type="text" id="partnerAddress_' + num + '" class="partner-address" placeholder="Enter address" columns_name="address" />' +
-                '<div class="error-step3-handle" style="display: none"><i class="material-icons">info</i><p>Please enter a valid Address.</p></div>' +
-              '</div>' +
-              '<div class="field-wrapper city-field cityAddressBlock" style="display: none">' +
-                '<label>City <span class="urc-p">*</span></label>' +
-                '<div class="custom-select-wrapper cityCustomSelect" id="partnerCityWrapper_' + num + '" columns_name="city">' +
-                  '<div class="custom-select-trigger">' +
-                    '<span class="selected-option" id="partnerCitySpan_' + num + '">Select city</span>' +
-                    '<div class="select-right"><i class="material-icons">expand_more</i></div>' +
-                  '</div>' +
-                  '<div class="custom-select-options" style="display: none">' +
-                    '<div class="option-item" data-value="">Select city</div>' +
-                  '</div>' +
-                '</div>' +
-                '<select id="partnerCity_' + num + '" class="city-select" style="display: none" columns_name="city"><option value="">Select city</option></select>' +
-              '</div>' +
-            '</div>' +
-            '<div>' +
-              '<div class="field-wrapper">' +
-                '<label>Pin code <span class="partner-required">*</span></label>' +
-                '<input type="text" inputmode="numeric" id="partnerPincode_' + num + '" class="partner-pincode pincode-input" placeholder="Enter pin code" maxlength="6" columns_name="pin_code" />' +
-                '<div class="error-step3-handle" style="display: none"><i class="material-icons">info</i><p>Entered pin code is in wrong format, please enter a valid 6 digit pin.</p></div>' +
-              '</div>' +
-              '<div class="field-wrapper city-field cityAddressBlock" style="display: none">' +
-                '<label>State <span class="urc-p">*</span></label>' +
-                '<div class="state-display-wrapper">' +
-                  '<input type="text" id="partnerState_' + num + '" class="partner-state state-input" placeholder="State" readonly columns_name="state" />' +
-                '</div>' +
-              '</div>' +
-            '</div>' +
-            '<div>' +
-              '<div class="proprietor-gender-section field-wrapper">' +
-                '<label>Community <span class="partner-required">*</span></label>' +
-                '<div class="custom-select-wrapper community-select" id="partnerCommunityWrapper_' + num + '" columns_name="community">' +
-                  '<div class="custom-select-trigger">' +
-                    '<span class="selected-option" id="partnerCommunitySpan_' + num + '">Select community</span>' +
-                    '<div class="select-right"><i class="material-icons">expand_more</i></div>' +
-                  '</div>' +
-                  '<div class="custom-select-options" style="display: none">' +
-                    '<div class="option-item" data-value="">Select community</div>' +
-                    '<div class="option-item" data-value="Hindu">Hindu</div>' +
-                    '<div class="option-item" data-value="Muslim">Muslim</div>' +
-                    '<div class="option-item" data-value="Sikh">Sikh</div>' +
-                    '<div class="option-item" data-value="Christian">Christian</div>' +
-                    '<div class="option-item" data-value="Jain">Jain</div>' +
-                    '<div class="option-item" data-value="Buddhist">Buddhist</div>' +
-                    '<div class="option-item" data-value="Parsi">Parsi</div>' +
-                    '<div class="option-item" data-value="Others">Others</div>' +
-                  '</div>' +
-                '</div>' +
-                '<select id="partnerCommunity_' + num + '" class="partner-community" style="display: none" columns_name="community">' +
-                  '<option value="">Select community</option>' +
-                  '<option value="Hindu">Hindu</option>' +
-                  '<option value="Muslim">Muslim</option>' +
-                  '<option value="Sikh">Sikh</option>' +
-                  '<option value="Christian">Christian</option>' +
-                  '<option value="Jain">Jain</option>' +
-                  '<option value="Buddhist">Buddhist</option>' +
-                  '<option value="Parsi">Parsi</option>' +
-                  '<option value="Others">Others</option>' +
-                '</select>' +
-              '</div>' +
-            '</div>' +
-            '<div>' +
-              '<div class="proprietor-gender-section field-wrapper">' +
-                '<label>Category <span class="partner-required">*</span></label>' +
-                '<div class="custom-select-wrapper category-select" id="partnerCategoryWrapper_' + num + '" columns_name="category">' +
-                  '<div class="custom-select-trigger">' +
-                    '<span class="selected-option" id="partnerCategorySpan_' + num + '">Select category</span>' +
-                    '<div class="select-right"><i class="material-icons">expand_more</i></div>' +
-                  '</div>' +
-                  '<div class="custom-select-options" style="display: none">' +
-                    '<div class="option-item" data-value="">Select category</div>' +
-                    '<div class="option-item" data-value="General">General</div>' +
-                    '<div class="option-item" data-value="OBC">OBC</div>' +
-                    '<div class="option-item" data-value="SC">SC</div>' +
-                    '<div class="option-item" data-value="ST">ST</div>' +
-                    '<div class="option-item" data-value="EWS">EWS</div>' +
-                  '</div>' +
-                '</div>' +
-                '<select id="partnerCategory_' + num + '" class="partner-category" style="display: none" columns_name="category">' +
-                  '<option value="">Select category</option>' +
-                  '<option value="General">General</option>' +
-                  '<option value="OBC">OBC</option>' +
-                  '<option value="SC">SC</option>' +
-                  '<option value="ST">ST</option>' +
-                  '<option value="EWS">EWS</option>' +
-                '</select>' +
-              '</div>' +
-            '</div>' +
-          '</div>' +
-          '<div class="partner-asset-top">' +
-            '<button type="button" id="partnerResetBtn_' + num + '" class="partner-reset-btn">Reset</button>' +
-            '<button type="button" id="partnerSaveBtn_' + num + '" class="partner-save-btn" disabled>Save</button>' +
-          '</div>' +
-        '</div>' +
-      '</div>'
+      '<div class="partner-accordion" data-partner="' +
+      num +
+      '">' +
+      '<div class="partner-accordion-header">' +
+      '<span class="partner-accordion-span">Partner ' +
+      num +
+      "</span>" +
+      '<i class="material-icons">expand_more</i>' +
+      "</div>" +
+      '<div class="partner-accordion-content" style="display: none">' +
+      '<div class="proprietor-grid custom-margin">' +
+      '<div class="proprietor-first-section">' +
+      '<div class="proprietor-gender">' +
+      "<label>Title</label>" +
+      '<div class="custom-select-wrapper title-select" id="partnerTitleWrapper_' +
+      num +
+      '" columns_name="title">' +
+      '<div class="custom-select-trigger">' +
+      '<span class="selected-option" id="partnerTitleSpan_' +
+      num +
+      '">Mr.</span>' +
+      '<div class="select-right"><i class="material-icons">expand_more</i></div>' +
+      "</div>" +
+      '<div class="custom-select-options" style="display: none">' +
+      '<div class="option-item selected" data-value="mr">Mr.</div>' +
+      '<div class="option-item" data-value="miss">Miss.</div>' +
+      '<div class="option-item" data-value="ms">Ms.</div>' +
+      '<div class="option-item" data-value="dr">Dr.</div>' +
+      "</div>" +
+      "</div>" +
+      '<select id="partnerTitle_' +
+      num +
+      '" class="partner-title" style="display: none" columns_name="title"><option value="mr" selected>Mr.</option><option value="miss">Miss.</option><option value="ms">Ms.</option><option value="dr">Dr.</option></select>' +
+      "</div>" +
+      '<div class="field-wrapper">' +
+      '<label>First name as per PAN <span class="partner-required">*</span></label>' +
+      '<input type="text" id="partnerFirstName_' +
+      num +
+      '" class="partner-first-name" placeholder="Enter first name" columns_name="first_name" />' +
+      '<div class="error-step3-handle" style="display: none"><i class="material-icons">info</i><p>Entered first name is in wrong format, please enter a valid name.</p></div>' +
+      "</div>" +
+      "</div>" +
+      "<div>" +
+      '<div class="properties-middle">' +
+      '<div class="custom-properties-middle">' +
+      '<label>Middle name <span class="incorporation-yy">(optional)</span></label>' +
+      '<input type="text" id="partnerMiddleName_' +
+      num +
+      '" class="partner-middle-name" placeholder="Enter middle name" columns_name="middle_name" />' +
+      "</div>" +
+      '<div class="custom-properties-middle field-wrapper error-state-pan">' +
+      '<label>Last name as per PAN <span class="partner-required">*</span></label>' +
+      '<input type="text" id="partnerLastName_' +
+      num +
+      '" class="partner-last-name" placeholder="Enter last name" columns_name="last_name" />' +
+      '<div class="error-step3-handle" style="display: none"><i class="material-icons">info</i><p>Please enter a valid last name as per PAN.</p></div>' +
+      "</div>" +
+      "</div>" +
+      "</div>" +
+      '<div class="field-wrapper">' +
+      '<label>Mobile number <span class="partner-required">*</span></label>' +
+      '<div class="properties-mobile-number-section">' +
+      '<input type="text" id="partnerMobile_' +
+      num +
+      '" class="partner-mobile" placeholder="10 digit mobile number" maxlength="14" columns_name="mobile_number" />' +
+      "</div>" +
+      '<div class="error-step3-handle" style="display: none"><i class="material-icons">info</i><p>Entered mobile number is in wrong format, please enter a valid 10-digit number.</p></div>' +
+      "</div>" +
+      '<div class="field-wrapper">' +
+      '<label>Email ID <span class="partner-required">*</span></label>' +
+      '<input type="email" id="partnerEmail_' +
+      num +
+      '" class="partner-email" placeholder="Enter ID" columns_name="email_id" />' +
+      '<div class="error-step3-handle" style="display: none"><i class="material-icons">info</i><p>Entered email ID is in wrong format, please enter a valid email id.</p></div>' +
+      "</div>" +
+      '<div class="field-wrapper">' +
+      '<label>PAN number <span class="partner-required">*</span></label>' +
+      '<input type="text" id="partnerPan_' +
+      num +
+      '" class="partner-pan" placeholder="Enter PAN" maxlength="10" style="text-transform: uppercase" columns_name="pan_number" />' +
+      '<div class="error-step3-handle" style="display: none"><i class="material-icons">info</i><p>Please enter a valid PAN number.</p></div>' +
+      "</div>" +
+      '<div class="field-wrapper">' +
+      '<label>Ownership control (%) <span class="partner-required">*</span></label>' +
+      '<div class="position">' +
+      '<input type="number" id="partnerOwnership_' +
+      num +
+      '" class="partner-ownership ownership-input" placeholder="0" min="1" max="100" columns_name="ownership_percentage" />' +
+      '<span class="percentage-owner">%</span>' +
+      "</div>" +
+      '<div class="error-step3-handle" style="display: none"><i class="material-icons">info</i><p>Percentage must be between 1 and 100.</p></div>' +
+      "</div>" +
+      "<div>" +
+      '<div class="proprietor-gender-section field-wrapper">' +
+      '<label>Gender <span class="partner-required">*</span></label>' +
+      '<div class="custom-select-wrapper gender-select" id="partnerGenderWrapper_' +
+      num +
+      '" columns_name="gender">' +
+      '<div class="custom-select-trigger">' +
+      '<span class="selected-option" id="partnerGenderSpan_' +
+      num +
+      '">Select gender</span>' +
+      '<div class="select-right"><i class="material-icons">expand_more</i></div>' +
+      "</div>" +
+      '<div class="custom-select-options" style="display: none">' +
+      '<div class="option-item" data-value="">Select gender</div>' +
+      '<div class="option-item" data-value="Male">Male</div>' +
+      '<div class="option-item" data-value="Female">Female</div>' +
+      '<div class="option-item" data-value="Others">Others</div>' +
+      "</div>" +
+      "</div>" +
+      '<select id="partnerGender_' +
+      num +
+      '" class="partner-gender" style="display: none" columns_name="gender">' +
+      '<option value="">Select gender</option>' +
+      '<option value="Male">Male</option>' +
+      '<option value="Female">Female</option>' +
+      '<option value="Others">Others</option>' +
+      "</select>" +
+      "</div>" +
+      "</div>" +
+      "<div>" +
+      '<div class="width field-wrapper">' +
+      '<label>Date of birth as per aadhaar <span class="incorporation-yy">(yyyy-mm-dd)</span> <span class="partner-required">*</span></label>' +
+      '<div class="date-input custom-datepicker-wrap">' +
+      '<input type="text" id="partnerDob_' +
+      num +
+      '" class="partner-dob dobDate" placeholder="Select date (yyyy-mm-dd)" readonly columns_name="date_of_birth" />' +
+      '<span class="material-icons custom-cal-icon">calendar_today</span>' +
+      '<div class="custom-calendar-popup" id="partnerDobPopup_' +
+      num +
+      '" style="display: none"></div>' +
+      "</div>" +
+      "</div>" +
+      "</div>" +
+      "</div>" +
+      '<div class="proprietor-grid">' +
+      "<div>" +
+      '<div class="field-wrapper">' +
+      '<label>Address <span class="partner-required">*</span></label>' +
+      '<input type="text" id="partnerAddress_' +
+      num +
+      '" class="partner-address" placeholder="Enter address" columns_name="address" />' +
+      '<div class="error-step3-handle" style="display: none"><i class="material-icons">info</i><p>Please enter a valid Address.</p></div>' +
+      "</div>" +
+      '<div class="field-wrapper city-field cityAddressBlock" style="display: none">' +
+      '<label>City <span class="urc-p">*</span></label>' +
+      '<div class="custom-select-wrapper cityCustomSelect" id="partnerCityWrapper_' +
+      num +
+      '" columns_name="city">' +
+      '<div class="custom-select-trigger">' +
+      '<span class="selected-option" id="partnerCitySpan_' +
+      num +
+      '">Select city</span>' +
+      '<div class="select-right"><i class="material-icons">expand_more</i></div>' +
+      "</div>" +
+      '<div class="custom-select-options" style="display: none">' +
+      '<div class="option-item" data-value="">Select city</div>' +
+      "</div>" +
+      "</div>" +
+      '<select id="partnerCity_' +
+      num +
+      '" class="city-select" style="display: none" columns_name="city"><option value="">Select city</option></select>' +
+      "</div>" +
+      "</div>" +
+      "<div>" +
+      '<div class="field-wrapper">' +
+      '<label>Pin code <span class="partner-required">*</span></label>' +
+      '<input type="text" inputmode="numeric" id="partnerPincode_' +
+      num +
+      '" class="partner-pincode pincode-input" placeholder="Enter pin code" maxlength="6" columns_name="pin_code" />' +
+      '<div class="error-step3-handle" style="display: none"><i class="material-icons">info</i><p>Entered pin code is in wrong format, please enter a valid 6 digit pin.</p></div>' +
+      "</div>" +
+      '<div class="field-wrapper city-field cityAddressBlock" style="display: none">' +
+      '<label>State <span class="urc-p">*</span></label>' +
+      '<div class="state-display-wrapper">' +
+      '<input type="text" id="partnerState_' +
+      num +
+      '" class="partner-state state-input" placeholder="State" readonly columns_name="state" />' +
+      "</div>" +
+      "</div>" +
+      "</div>" +
+      "<div>" +
+      '<div class="proprietor-gender-section field-wrapper">' +
+      '<label>Community <span class="partner-required">*</span></label>' +
+      '<div class="custom-select-wrapper community-select" id="partnerCommunityWrapper_' +
+      num +
+      '" columns_name="community">' +
+      '<div class="custom-select-trigger">' +
+      '<span class="selected-option" id="partnerCommunitySpan_' +
+      num +
+      '">Select community</span>' +
+      '<div class="select-right"><i class="material-icons">expand_more</i></div>' +
+      "</div>" +
+      '<div class="custom-select-options" style="display: none">' +
+      '<div class="option-item" data-value="">Select community</div>' +
+      '<div class="option-item" data-value="Hindu">Hindu</div>' +
+      '<div class="option-item" data-value="Muslim">Muslim</div>' +
+      '<div class="option-item" data-value="Sikh">Sikh</div>' +
+      '<div class="option-item" data-value="Christian">Christian</div>' +
+      '<div class="option-item" data-value="Jain">Jain</div>' +
+      '<div class="option-item" data-value="Buddhist">Buddhist</div>' +
+      '<div class="option-item" data-value="Parsi">Parsi</div>' +
+      '<div class="option-item" data-value="Others">Others</div>' +
+      "</div>" +
+      "</div>" +
+      '<select id="partnerCommunity_' +
+      num +
+      '" class="partner-community" style="display: none" columns_name="community">' +
+      '<option value="">Select community</option>' +
+      '<option value="Hindu">Hindu</option>' +
+      '<option value="Muslim">Muslim</option>' +
+      '<option value="Sikh">Sikh</option>' +
+      '<option value="Christian">Christian</option>' +
+      '<option value="Jain">Jain</option>' +
+      '<option value="Buddhist">Buddhist</option>' +
+      '<option value="Parsi">Parsi</option>' +
+      '<option value="Others">Others</option>' +
+      "</select>" +
+      "</div>" +
+      "</div>" +
+      "<div>" +
+      '<div class="proprietor-gender-section field-wrapper">' +
+      '<label>Category <span class="partner-required">*</span></label>' +
+      '<div class="custom-select-wrapper category-select" id="partnerCategoryWrapper_' +
+      num +
+      '" columns_name="category">' +
+      '<div class="custom-select-trigger">' +
+      '<span class="selected-option" id="partnerCategorySpan_' +
+      num +
+      '">Select category</span>' +
+      '<div class="select-right"><i class="material-icons">expand_more</i></div>' +
+      "</div>" +
+      '<div class="custom-select-options" style="display: none">' +
+      '<div class="option-item" data-value="">Select category</div>' +
+      '<div class="option-item" data-value="General">General</div>' +
+      '<div class="option-item" data-value="OBC">OBC</div>' +
+      '<div class="option-item" data-value="SC">SC</div>' +
+      '<div class="option-item" data-value="ST">ST</div>' +
+      '<div class="option-item" data-value="EWS">EWS</div>' +
+      "</div>" +
+      "</div>" +
+      '<select id="partnerCategory_' +
+      num +
+      '" class="partner-category" style="display: none" columns_name="category">' +
+      '<option value="">Select category</option>' +
+      '<option value="General">General</option>' +
+      '<option value="OBC">OBC</option>' +
+      '<option value="SC">SC</option>' +
+      '<option value="ST">ST</option>' +
+      '<option value="EWS">EWS</option>' +
+      "</select>" +
+      "</div>" +
+      "</div>" +
+      "</div>" +
+      '<div class="partner-asset-top">' +
+      '<button type="button" id="partnerResetBtn_' +
+      num +
+      '" class="partner-reset-btn">Reset</button>' +
+      '<button type="button" id="partnerSaveBtn_' +
+      num +
+      '" class="partner-save-btn" disabled>Save</button>' +
+      "</div>" +
+      "</div>" +
+      "</div>"
     );
   }
 
@@ -607,25 +701,42 @@
     const cleanPin = (pincode || "").replace(/\D/g, "");
     const num = $container.closest(".partner-accordion").data("partner");
     const cityBlock = $container.find(".cityAddressBlock");
-    const citySelect = $("#partnerCityWrapper_" + num).length ? $("#partnerCityWrapper_" + num) : $container.find(".cityCustomSelect");
-    const stateInput = $("#partnerState_" + num).length ? $("#partnerState_" + num) : $container.find(".partner-state, .state-input");
+    const citySelect = $("#partnerCityWrapper_" + num).length
+      ? $("#partnerCityWrapper_" + num)
+      : $container.find(".cityCustomSelect");
+    const stateInput = $("#partnerState_" + num).length
+      ? $("#partnerState_" + num)
+      : $container.find(".partner-state, .state-input");
 
     if (cleanPin.length === 6 && pincodeData[cleanPin]) {
       const info = pincodeData[cleanPin];
       cityBlock.show();
 
       if (stateInput.length) {
-        stateInput.val(info.state).removeClass("is-error").addClass("is-success");
+        stateInput
+          .val(info.state)
+          .removeClass("is-error")
+          .addClass("is-success");
       }
 
       if (citySelect.length) {
         const optionsContainer = citySelect.find(".custom-select-options");
-        const triggerSpan = citySelect.find(".custom-select-trigger .selected-option");
-        const hiddenSelect = $("#partnerCity_" + num).length ? $("#partnerCity_" + num) : citySelect.siblings("select.city-select");
+        const triggerSpan = citySelect.find(
+          ".custom-select-trigger .selected-option",
+        );
+        const hiddenSelect = $("#partnerCity_" + num).length
+          ? $("#partnerCity_" + num)
+          : citySelect.siblings("select.city-select");
 
         optionsContainer.empty();
         info.cities.forEach(function (city) {
-          optionsContainer.append('<div class="option-item" data-value="' + city + '">' + city + '</div>');
+          optionsContainer.append(
+            '<div class="option-item" data-value="' +
+              city +
+              '">' +
+              city +
+              "</div>",
+          );
         });
 
         const selectedCity = info.cities[0] || "";
@@ -633,11 +744,15 @@
         if (hiddenSelect.length) {
           hiddenSelect.empty();
           info.cities.forEach(function (city) {
-            hiddenSelect.append('<option value="' + city + '">' + city + '</option>');
+            hiddenSelect.append(
+              '<option value="' + city + '">' + city + "</option>",
+            );
           });
           hiddenSelect.val(selectedCity);
         }
-        optionsContainer.find('.option-item[data-value="' + selectedCity + '"]').addClass("selected");
+        optionsContainer
+          .find('.option-item[data-value="' + selectedCity + '"]')
+          .addClass("selected");
       }
     } else if (cleanPin.length === 6) {
       cityBlock.show();
@@ -648,7 +763,8 @@
       }
     } else {
       cityBlock.hide();
-      if (stateInput.length) stateInput.val("").removeClass("is-error is-success");
+      if (stateInput.length)
+        stateInput.val("").removeClass("is-error is-success");
       if (citySelect.length) {
         citySelect.find(".selected-option").text("Select city");
         citySelect.siblings("select").val("");
@@ -664,56 +780,69 @@
   // ==========================================================================
   // CUSTOM SELECT DROPDOWN LOGIC
   // ==========================================================================
-  $(document).on("click", "#partnershipStep3Modal .custom-select-trigger", function (e) {
-    e.stopPropagation();
-    const wrapper = $(this).closest(".custom-select-wrapper");
-    const options = wrapper.find(".custom-select-options");
-    const isOpen = options.is(":visible");
+  $(document).on(
+    "click",
+    "#partnershipStep3Modal .custom-select-trigger",
+    function (e) {
+      e.stopPropagation();
+      const wrapper = $(this).closest(".custom-select-wrapper");
+      const options = wrapper.find(".custom-select-options");
+      const isOpen = options.is(":visible");
 
-    $("#partnershipStep3Modal .custom-select-options").not(options).hide();
-    $("#partnershipStep3Modal .custom-select-trigger").not(this).removeClass("active");
+      $("#partnershipStep3Modal .custom-select-options").not(options).hide();
+      $("#partnershipStep3Modal .custom-select-trigger")
+        .not(this)
+        .removeClass("active");
 
-    if (isOpen) {
+      if (isOpen) {
+        options.hide();
+        $(this).removeClass("active");
+      } else {
+        options.show();
+        $(this).addClass("active");
+      }
+    },
+  );
+
+  $(document).on(
+    "click",
+    "#partnershipStep3Modal .custom-select-options .option-item",
+    function (e) {
+      e.stopPropagation();
+      const wrapper = $(this).closest(".custom-select-wrapper");
+      const trigger = wrapper.find(".custom-select-trigger");
+      const selectedSpan = trigger.find(".selected-option");
+      const hiddenSelect = wrapper.siblings("select");
+      const options = wrapper.find(".custom-select-options");
+
+      const value = $(this).data("value");
+      const text = $(this).text().trim();
+
+      selectedSpan.text(text).removeClass("placeholder");
+
+      if (hiddenSelect.length) {
+        hiddenSelect.val(value);
+        hiddenSelect.trigger("change");
+      }
+
+      options.find(".option-item").removeClass("selected");
+      $(this).addClass("selected");
+
       options.hide();
-      $(this).removeClass("active");
-    } else {
-      options.show();
-      $(this).addClass("active");
-    }
-  });
+      trigger.removeClass("active");
 
-  $(document).on("click", "#partnershipStep3Modal .custom-select-options .option-item", function (e) {
-    e.stopPropagation();
-    const wrapper = $(this).closest(".custom-select-wrapper");
-    const trigger = wrapper.find(".custom-select-trigger");
-    const selectedSpan = trigger.find(".selected-option");
-    const hiddenSelect = wrapper.siblings("select");
-    const options = wrapper.find(".custom-select-options");
-
-    const value = $(this).data("value");
-    const text = $(this).text().trim();
-
-    selectedSpan.text(text).removeClass("placeholder");
-
-    if (hiddenSelect.length) {
-      hiddenSelect.val(value);
-      hiddenSelect.trigger("change");
-    }
-
-    options.find(".option-item").removeClass("selected");
-    $(this).addClass("selected");
-
-    options.hide();
-    trigger.removeClass("active");
-
-    const $accordion = wrapper.closest(".partner-accordion");
-    if ($accordion.length && !$accordion.hasClass("saved")) {
-      updateValidationState($accordion);
-    }
-  });
+      const $accordion = wrapper.closest(".partner-accordion");
+      if ($accordion.length && !$accordion.hasClass("saved")) {
+        updateValidationState($accordion);
+      }
+    },
+  );
 
   $(document).on("click", function (e) {
-    if (!$(e.target).closest("#partnershipStep3Modal .custom-select-wrapper").length) {
+    if (
+      !$(e.target).closest("#partnershipStep3Modal .custom-select-wrapper")
+        .length
+    ) {
       $("#partnershipStep3Modal .custom-select-options").hide();
       $("#partnershipStep3Modal .custom-select-trigger").removeClass("active");
     }
@@ -727,10 +856,14 @@
     "input",
     '#partnershipStep3Modal input.partner-first-name, #partnershipStep3Modal input.partner-middle-name, #partnershipStep3Modal input.partner-last-name, #partnershipStep3Modal input[placeholder*="first name"], #partnershipStep3Modal input[placeholder*="middle name"], #partnershipStep3Modal input[placeholder*="last name"]',
     function () {
-      $(this).val($(this).val().replace(/[^a-zA-Z\s]/g, ""));
+      $(this).val(
+        $(this)
+          .val()
+          .replace(/[^a-zA-Z\s]/g, ""),
+      );
       const $acc = $(this).closest(".partner-accordion");
       if ($acc.length) updateValidationState($acc);
-    }
+    },
   );
 
   // Mobile: numbers only, max 10
@@ -743,23 +876,31 @@
       $(this).val(clean);
       const $acc = $(this).closest(".partner-accordion");
       if ($acc.length) updateValidationState($acc);
-    }
+    },
   );
 
   $(document).on(
     "blur",
     '#partnershipStep3Modal input.partner-mobile, #partnershipStep3Modal input[placeholder="10 digit mobile number"]',
     function () {
-      let clean = $(this).val().replace(/^\+91\s*/, "").replace(/\D/g, "");
+      let clean = $(this)
+        .val()
+        .replace(/^\+91\s*/, "")
+        .replace(/\D/g, "");
       if (clean.startsWith("91") && clean.length === 12) clean = clean.slice(2);
-      const errorDiv = $(this).closest(".field-wrapper").find(".error-step3-handle");
+      const errorDiv = $(this)
+        .closest(".field-wrapper")
+        .find(".error-step3-handle");
 
       if (clean.length > 0 && clean.length !== 10) {
         errorDiv.show();
         $(this).addClass("is-error").removeClass("is-success");
       } else if (clean.length === 10) {
         errorDiv.hide();
-        $(this).val("+91 " + clean).removeClass("is-error").addClass("is-success");
+        $(this)
+          .val("+91 " + clean)
+          .removeClass("is-error")
+          .addClass("is-success");
       } else {
         errorDiv.hide();
         $(this).removeClass("is-error is-success");
@@ -767,7 +908,7 @@
 
       const $acc = $(this).closest(".partner-accordion");
       if ($acc.length) updateValidationState($acc);
-    }
+    },
   );
 
   // Email: no spaces, validation
@@ -778,7 +919,7 @@
       $(this).val($(this).val().replace(/\s/g, ""));
       const $acc = $(this).closest(".partner-accordion");
       if ($acc.length) updateValidationState($acc);
-    }
+    },
   );
 
   $(document).on(
@@ -786,7 +927,9 @@
     '#partnershipStep3Modal input.partner-email, #partnershipStep3Modal input[placeholder="Enter ID"]',
     function () {
       const val = $(this).val().trim();
-      const errorDiv = $(this).closest(".field-wrapper").find(".error-step3-handle");
+      const errorDiv = $(this)
+        .closest(".field-wrapper")
+        .find(".error-step3-handle");
       const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
 
       if (val.length > 0 && !isValid) {
@@ -802,7 +945,7 @@
 
       const $acc = $(this).closest(".partner-accordion");
       if ($acc.length) updateValidationState($acc);
-    }
+    },
   );
 
   // PAN: uppercase, alphanumeric, 10 chars
@@ -810,10 +953,16 @@
     "input",
     '#partnershipStep3Modal input.partner-pan, #partnershipStep3Modal input[placeholder="Enter PAN"]',
     function () {
-      $(this).val($(this).val().replace(/[^a-zA-Z0-9]/g, "").toUpperCase().slice(0, 10));
+      $(this).val(
+        $(this)
+          .val()
+          .replace(/[^a-zA-Z0-9]/g, "")
+          .toUpperCase()
+          .slice(0, 10),
+      );
       const $acc = $(this).closest(".partner-accordion");
       if ($acc.length) updateValidationState($acc);
-    }
+    },
   );
 
   $(document).on(
@@ -821,8 +970,11 @@
     '#partnershipStep3Modal input.partner-pan, #partnershipStep3Modal input[placeholder="Enter PAN"]',
     function () {
       const val = $(this).val().trim();
-      const errorDiv = $(this).closest(".field-wrapper").find(".error-step3-handle");
-      const isValid = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(val) || val.length === 10;
+      const errorDiv = $(this)
+        .closest(".field-wrapper")
+        .find(".error-step3-handle");
+      const isValid =
+        /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(val) || val.length === 10;
 
       if (val.length > 0 && !isValid) {
         errorDiv.show();
@@ -837,7 +989,7 @@
 
       const $acc = $(this).closest(".partner-accordion");
       if ($acc.length) updateValidationState($acc);
-    }
+    },
   );
 
   // Pin code: digits only, autofill
@@ -853,7 +1005,7 @@
       }
       const $acc = $(this).closest(".partner-accordion");
       if ($acc.length) updateValidationState($acc);
-    }
+    },
   );
 
   $(document).on(
@@ -861,7 +1013,9 @@
     '#partnershipStep3Modal input.partner-pincode, #partnershipStep3Modal input.pincode-input, #partnershipStep3Modal input[placeholder="Enter pin code"]',
     function () {
       const val = $(this).val().replace(/\D/g, "");
-      const errorDiv = $(this).closest(".field-wrapper").find(".error-step3-handle");
+      const errorDiv = $(this)
+        .closest(".field-wrapper")
+        .find(".error-step3-handle");
       const $container = $(this).closest(".partner-accordion-content");
 
       if (val.length > 0 && val.length !== 6) {
@@ -878,7 +1032,7 @@
 
       const $acc = $(this).closest(".partner-accordion");
       if ($acc.length) updateValidationState($acc);
-    }
+    },
   );
 
   // Address
@@ -886,23 +1040,27 @@
     "input",
     '#partnershipStep3Modal input.partner-address, #partnershipStep3Modal input[placeholder="Enter address"]',
     function () {
-      $(this).val($(this).val().replace(/[^a-zA-Z0-9\s,.-]/g, ""));
+      $(this).val(
+        $(this)
+          .val()
+          .replace(/[^a-zA-Z0-9\s,.-]/g, ""),
+      );
       const $acc = $(this).closest(".partner-accordion");
       if ($acc.length) updateValidationState($acc);
-    }
+    },
   );
 
   // Ownership: 1 to 100
   $(document).on(
     "input",
-    '#partnershipStep3Modal input.partner-ownership, #partnershipStep3Modal input.ownership-input',
+    "#partnershipStep3Modal input.partner-ownership, #partnershipStep3Modal input.ownership-input",
     function () {
       let val = parseFloat($(this).val());
       if (val > 100) $(this).val(100);
       if (val < 0) $(this).val(0);
       const $acc = $(this).closest(".partner-accordion");
       if ($acc.length) updateValidationState($acc);
-    }
+    },
   );
 
   // Focus clears error
@@ -920,7 +1078,7 @@
       if ($accordion.length && !$accordion.hasClass("saved")) {
         updateValidationState($accordion);
       }
-    }
+    },
   );
 
   // ==========================================================================
@@ -939,19 +1097,39 @@
     const email = ($("#partnerEmail_" + num).val() || "").trim();
     const pan = ($("#partnerPan_" + num).val() || "").trim().toUpperCase();
     const ownership = ($("#partnerOwnership_" + num).val() || "").trim();
-    const gender = ($("#partnerGender_" + num).val() || $("#partnerGenderSpan_" + num).text() || "").trim();
+    const gender = (
+      $("#partnerGender_" + num).val() ||
+      $("#partnerGenderSpan_" + num).text() ||
+      ""
+    ).trim();
     const dob = ($("#partnerDob_" + num).val() || "").trim();
     const address = ($("#partnerAddress_" + num).val() || "").trim();
     const pincode = ($("#partnerPincode_" + num).val() || "").trim();
-    const city = ($("#partnerCity_" + num).val() || $("#partnerCitySpan_" + num).text() || "").trim();
+    const city = (
+      $("#partnerCity_" + num).val() ||
+      $("#partnerCitySpan_" + num).text() ||
+      ""
+    ).trim();
     const state = ($("#partnerState_" + num).val() || "").trim();
-    const community = ($("#partnerCommunity_" + num).val() || $("#partnerCommunitySpan_" + num).text() || "").trim();
-    const category = ($("#partnerCategory_" + num).val() || $("#partnerCategorySpan_" + num).text() || "").trim();
+    const community = (
+      $("#partnerCommunity_" + num).val() ||
+      $("#partnerCommunitySpan_" + num).text() ||
+      ""
+    ).trim();
+    const category = (
+      $("#partnerCategory_" + num).val() ||
+      $("#partnerCategorySpan_" + num).text() ||
+      ""
+    ).trim();
 
     // Console log values selected by unique ID as requested
     console.log(`[isAccordionDataValid - Partner ${num} Field Values]`, {
       partnerNumber: num,
-      title: ($("#partnerTitle_" + num).val() || $("#partnerTitleSpan_" + num).text() || "Mr.").trim(),
+      title: (
+        $("#partnerTitle_" + num).val() ||
+        $("#partnerTitleSpan_" + num).text() ||
+        "Mr."
+      ).trim(),
       first_name: firstName,
       middle_name: middleName,
       last_name: lastName,
@@ -978,12 +1156,20 @@
 
     // Ownership verification (1-100)
     const ownershipNum = parseFloat(ownership);
-    const ownershipValid = !isNaN(ownershipNum) && ownershipNum > 0 && ownershipNum <= 100;
+    const ownershipValid =
+      !isNaN(ownershipNum) && ownershipNum > 0 && ownershipNum <= 100;
 
     // Dropdown verifications
-    const genderValid = gender !== "" && gender !== "Select gender" && gender !== "Select";
-    const communityValid = community !== "" && community !== "Select community" && community !== "Select";
-    const categoryValid = category !== "" && category !== "Select category" && category !== "Select";
+    const genderValid =
+      gender !== "" && gender !== "Select gender" && gender !== "Select";
+    const communityValid =
+      community !== "" &&
+      community !== "Select community" &&
+      community !== "Select";
+    const categoryValid =
+      category !== "" &&
+      category !== "Select category" &&
+      category !== "Select";
 
     // DOB verification
     const dobValid = dob !== "" && dob !== "Select date (yyyy-mm-dd)";
@@ -993,7 +1179,10 @@
     const pinValid = cleanPin.length === 6;
 
     // Email verification
-    const emailValid = email.length > 0 && email.indexOf("@") !== -1 && email.indexOf(".") !== -1;
+    const emailValid =
+      email.length > 0 &&
+      email.indexOf("@") !== -1 &&
+      email.indexOf(".") !== -1;
 
     return (
       firstName.length >= 1 &&
@@ -1015,12 +1204,22 @@
     if (!$accordion || $accordion.hasClass("saved")) return;
     const num = $accordion.data("partner");
     const isValid = isAccordionDataValid($accordion);
-    const $btn = $("#partnerSaveBtn_" + num).length ? $("#partnerSaveBtn_" + num) : $accordion.find(".partner-save-btn");
+    const $btn = $("#partnerSaveBtn_" + num).length
+      ? $("#partnerSaveBtn_" + num)
+      : $accordion.find(".partner-save-btn");
 
     if (isValid) {
-      $btn.prop("disabled", false).removeAttr("disabled").addClass("enabled").removeClass("disabled");
+      $btn
+        .prop("disabled", false)
+        .removeAttr("disabled")
+        .addClass("enabled")
+        .removeClass("disabled");
     } else {
-      $btn.prop("disabled", true).attr("disabled", "disabled").addClass("disabled").removeClass("enabled");
+      $btn
+        .prop("disabled", true)
+        .attr("disabled", "disabled")
+        .addClass("disabled")
+        .removeClass("enabled");
     }
   }
 
@@ -1030,8 +1229,12 @@
   function validatePartnershipStep3() {
     const $targetModal = $("#partnershipStep3Modal");
     const count = parseInt($targetModal.find("#partnerCount").val()) || 0;
-    const total = $targetModal.find("#partnerAccordionContainer .partner-accordion").length;
-    const saved = $targetModal.find("#partnerAccordionContainer .partner-accordion.saved").length;
+    const total = $targetModal.find(
+      "#partnerAccordionContainer .partner-accordion",
+    ).length;
+    const saved = $targetModal.find(
+      "#partnerAccordionContainer .partner-accordion.saved",
+    ).length;
 
     return count >= 2 && count <= 20 && total === count && saved === count;
   }
@@ -1039,8 +1242,12 @@
   function checkAllPartnersSaved() {
     const isValid = validatePartnershipStep3();
     const $targetModal = $("#partnershipStep3Modal");
-    const $nextBtn = $targetModal.find("#partnershipStep3NextBtn, #step3NextBtn");
-    const $saveExitBtn = $targetModal.find("#partnershipSaveExitBtn, .saveExitBtn");
+    const $nextBtn = $targetModal.find(
+      "#partnershipStep3NextBtn, #step3NextBtn",
+    );
+    const $saveExitBtn = $targetModal.find(
+      "#partnershipSaveExitBtn, .saveExitBtn",
+    );
 
     if (isValid) {
       $nextBtn
@@ -1069,7 +1276,7 @@
 
     if (!$errorDiv.length) {
       $errorDiv = $(
-        '<div class="error-step3-handle" style="display: none"><i class="material-icons">info</i><p>Please enter at least 2 partners.</p></div>'
+        '<div class="error-step3-handle" style="display: none"><i class="material-icons">info</i><p>Please enter at least 2 partners.</p></div>',
       );
       $(this).after($errorDiv);
     }
@@ -1117,82 +1324,121 @@
   // ==========================================================================
   // ACCORDION HEADER TOGGLE
   // ==========================================================================
-  $(document).on("click", "#partnershipStep3Modal .partner-accordion-header", function (e) {
-    e.stopPropagation();
-    const $currentAccordion = $(this).closest(".partner-accordion");
-    if ($currentAccordion.hasClass("saved")) return;
+  $(document).on(
+    "click",
+    "#partnershipStep3Modal .partner-accordion-header",
+    function (e) {
+      e.stopPropagation();
+      const $currentAccordion = $(this).closest(".partner-accordion");
+      if ($currentAccordion.hasClass("saved")) return;
 
-    const $currentContent = $currentAccordion.find(".partner-accordion-content");
-    const isVisible = $currentContent.is(":visible");
+      const $currentContent = $currentAccordion.find(
+        ".partner-accordion-content",
+      );
+      const isVisible = $currentContent.is(":visible");
 
-    // Close other open accordions
-    $("#partnershipStep3Modal .partner-accordion")
-      .not($currentAccordion)
-      .not(".saved")
-      .each(function () {
-        $(this).removeClass("active");
-        $(this).find(".partner-accordion-content").slideUp(200);
-        $(this).find(".partner-accordion-header i.material-icons").text("expand_more");
-      });
+      // Close other open accordions
+      $("#partnershipStep3Modal .partner-accordion")
+        .not($currentAccordion)
+        .not(".saved")
+        .each(function () {
+          $(this).removeClass("active");
+          $(this).find(".partner-accordion-content").slideUp(200);
+          $(this)
+            .find(".partner-accordion-header i.material-icons")
+            .text("expand_more");
+        });
 
-    if (isVisible) {
-      $currentAccordion.removeClass("active");
-      $currentContent.slideUp(200);
-      $(this).find("i.material-icons").text("expand_more");
-    } else {
-      $currentAccordion.addClass("active");
-      $currentContent.slideDown(200);
-      $(this).find("i.material-icons").text("expand_less");
-      updateValidationState($currentAccordion);
-    }
-  });
+      if (isVisible) {
+        $currentAccordion.removeClass("active");
+        $currentContent.slideUp(200);
+        $(this).find("i.material-icons").text("expand_more");
+      } else {
+        $currentAccordion.addClass("active");
+        $currentContent.slideDown(200);
+        $(this).find("i.material-icons").text("expand_less");
+        updateValidationState($currentAccordion);
+      }
+    },
+  );
 
   // ==========================================================================
   // SAVE, EDIT & RESET PARTNER ACCORDION
   // ==========================================================================
   // SAVE
-  $(document).on("click", "#partnershipStep3Modal .partner-save-btn", function (e) {
-    e.preventDefault();
-    e.stopPropagation();
+  $(document).on(
+    "click",
+    "#partnershipStep3Modal .partner-save-btn",
+    function (e) {
+      e.preventDefault();
+      e.stopPropagation();
 
-    const $accordion = $(this).closest(".partner-accordion");
-    if (!isAccordionDataValid($accordion)) return;
+      const $accordion = $(this).closest(".partner-accordion");
+      if (!isAccordionDataValid($accordion)) return;
 
-    const num = $accordion.data("partner");
-    const $content = $accordion.find(".partner-accordion-content");
+      const num = $accordion.data("partner");
+      const $content = $accordion.find(".partner-accordion-content");
 
-    const title = ($("#partnerTitle_" + num).val() || $("#partnerTitleSpan_" + num).text() || "Mr.").trim();
-    const firstName = ($("#partnerFirstName_" + num).val() || "").trim();
-    const middleName = ($("#partnerMiddleName_" + num).val() || "").trim();
-    const lastName = ($("#partnerLastName_" + num).val() || "").trim();
-    const fullName = (title + " " + firstName + (middleName ? " " + middleName : "") + " " + lastName).trim();
+      const title = (
+        $("#partnerTitle_" + num).val() ||
+        $("#partnerTitleSpan_" + num).text() ||
+        "Mr."
+      ).trim();
+      const firstName = ($("#partnerFirstName_" + num).val() || "").trim();
+      const middleName = ($("#partnerMiddleName_" + num).val() || "").trim();
+      const lastName = ($("#partnerLastName_" + num).val() || "").trim();
+      const fullName = (
+        title +
+        " " +
+        firstName +
+        (middleName ? " " + middleName : "") +
+        " " +
+        lastName
+      ).trim();
 
-    let mobile = ($("#partnerMobile_" + num).val() || "").trim();
-    let mobileClean = mobile.replace(/\D/g, "");
-    if (mobileClean.startsWith("91") && mobileClean.length === 12) mobileClean = mobileClean.slice(2);
-    if (mobileClean.length === 10) mobile = "+91 " + mobileClean;
+      let mobile = ($("#partnerMobile_" + num).val() || "").trim();
+      let mobileClean = mobile.replace(/\D/g, "");
+      if (mobileClean.startsWith("91") && mobileClean.length === 12)
+        mobileClean = mobileClean.slice(2);
+      if (mobileClean.length === 10) mobile = "+91 " + mobileClean;
 
-    const email = ($("#partnerEmail_" + num).val() || "").trim();
-    const pan = ($("#partnerPan_" + num).val() || "").trim().toUpperCase();
-    const ownership = ($("#partnerOwnership_" + num).val() || "").trim();
+      const email = ($("#partnerEmail_" + num).val() || "").trim();
+      const pan = ($("#partnerPan_" + num).val() || "").trim().toUpperCase();
+      const ownership = ($("#partnerOwnership_" + num).val() || "").trim();
 
-    const gender = ($("#partnerGender_" + num).val() || $("#partnerGenderSpan_" + num).text() || "").trim();
-    const dob = ($("#partnerDob_" + num).val() || "").trim();
+      const gender = (
+        $("#partnerGender_" + num).val() ||
+        $("#partnerGenderSpan_" + num).text() ||
+        ""
+      ).trim();
+      const dob = ($("#partnerDob_" + num).val() || "").trim();
 
-    const community = ($("#partnerCommunity_" + num).val() || $("#partnerCommunitySpan_" + num).text() || "").trim();
-    const category = ($("#partnerCategory_" + num).val() || $("#partnerCategorySpan_" + num).text() || "").trim();
+      const community = (
+        $("#partnerCommunity_" + num).val() ||
+        $("#partnerCommunitySpan_" + num).text() ||
+        ""
+      ).trim();
+      const category = (
+        $("#partnerCategory_" + num).val() ||
+        $("#partnerCategorySpan_" + num).text() ||
+        ""
+      ).trim();
 
-    const address = ($("#partnerAddress_" + num).val() || "").trim();
-    const pincode = ($("#partnerPincode_" + num).val() || "").trim();
-    const city = ($("#partnerCity_" + num).val() || $("#partnerCitySpan_" + num).text() || "").trim();
-    const state = ($("#partnerState_" + num).val() || "").trim();
+      const address = ($("#partnerAddress_" + num).val() || "").trim();
+      const pincode = ($("#partnerPincode_" + num).val() || "").trim();
+      const city = (
+        $("#partnerCity_" + num).val() ||
+        $("#partnerCitySpan_" + num).text() ||
+        ""
+      ).trim();
+      const state = ($("#partnerState_" + num).val() || "").trim();
 
-    let fullAddress = address;
-    if (city && city !== "Select city") fullAddress += ", " + city;
-    if (state && state !== "Not found") fullAddress += ", " + state;
-    if (pincode) fullAddress += " - " + pincode;
+      let fullAddress = address;
+      if (city && city !== "Select city") fullAddress += ", " + city;
+      if (state && state !== "Not found") fullAddress += ", " + state;
+      if (pincode) fullAddress += " - " + pincode;
 
-    const summaryHtml = `
+      const summaryHtml = `
       <div class="partner-summary">
         <div class="partner-summary-grid">
           <div><p class="partner-summary-label">Name</p><p class="partner-summary-value">${fullName}</p></div>
@@ -1208,83 +1454,119 @@
         </div>
       </div>`;
 
-    $accordion.find(".partner-summary").remove();
-    $accordion.find(".partner-edit-btn").remove();
-    $accordion.find(".partner-accordion-header i.material-icons").hide();
+      $accordion.find(".partner-summary").remove();
+      $accordion.find(".partner-edit-btn").remove();
+      $accordion.find(".partner-accordion-header i.material-icons").hide();
 
-    $accordion
-      .find(".partner-accordion-header")
-      .append('<span class="partner-edit-btn"><i class="material-icons">edit</i> Edit</span>');
+      $accordion
+        .find(".partner-accordion-header")
+        .append(
+          '<span class="partner-edit-btn"><i class="material-icons">edit</i> Edit</span>',
+        );
 
-    $accordion.find(".partner-accordion-header").after(summaryHtml);
-    $accordion.addClass("saved").removeClass("active");
-    $content.slideUp(200);
+      $accordion.find(".partner-accordion-header").after(summaryHtml);
+      $accordion.addClass("saved").removeClass("active");
+      $content.slideUp(200);
 
-    checkAllPartnersSaved();
-  });
+      checkAllPartnersSaved();
+    },
+  );
 
   // EDIT
-  $(document).on("click", "#partnershipStep3Modal .partner-edit-btn", function (e) {
-    e.preventDefault();
-    e.stopPropagation();
+  $(document).on(
+    "click",
+    "#partnershipStep3Modal .partner-edit-btn",
+    function (e) {
+      e.preventDefault();
+      e.stopPropagation();
 
-    const $accordion = $(this).closest(".partner-accordion");
-    $accordion.find(".partner-summary").remove();
-    $accordion.find(".partner-edit-btn").remove();
-    $accordion.find(".partner-accordion-header i.material-icons").show().text("expand_less");
+      const $accordion = $(this).closest(".partner-accordion");
+      $accordion.find(".partner-summary").remove();
+      $accordion.find(".partner-edit-btn").remove();
+      $accordion
+        .find(".partner-accordion-header i.material-icons")
+        .show()
+        .text("expand_less");
 
-    $accordion.removeClass("saved").addClass("active");
-    $accordion.find(".partner-accordion-content").slideDown(200);
+      $accordion.removeClass("saved").addClass("active");
+      $accordion.find(".partner-accordion-content").slideDown(200);
 
-    updateValidationState($accordion);
-    checkAllPartnersSaved();
-  });
+      updateValidationState($accordion);
+      checkAllPartnersSaved();
+    },
+  );
 
   // RESET
-  $(document).on("click", "#partnershipStep3Modal .partner-reset-btn", function (e) {
-    e.preventDefault();
-    e.stopPropagation();
+  $(document).on(
+    "click",
+    "#partnershipStep3Modal .partner-reset-btn",
+    function (e) {
+      e.preventDefault();
+      e.stopPropagation();
 
-    const $accordion = $(this).closest(".partner-accordion");
-    const num = $accordion.data("partner");
+      const $accordion = $(this).closest(".partner-accordion");
+      const num = $accordion.data("partner");
 
-    if (num) {
-      $("#partnerFirstName_" + num).val("").removeClass("is-error is-success");
-      $("#partnerMiddleName_" + num).val("").removeClass("is-error is-success");
-      $("#partnerLastName_" + num).val("").removeClass("is-error is-success");
-      $("#partnerMobile_" + num).val("").removeClass("is-error is-success");
-      $("#partnerEmail_" + num).val("").removeClass("is-error is-success");
-      $("#partnerPan_" + num).val("").removeClass("is-error is-success");
-      $("#partnerOwnership_" + num).val("").removeClass("is-error is-success");
-      $("#partnerDob_" + num).val("").removeClass("is-error is-success");
-      $("#partnerAddress_" + num).val("").removeClass("is-error is-success");
-      $("#partnerPincode_" + num).val("").removeClass("is-error is-success");
-      $("#partnerState_" + num).val("").removeClass("is-error is-success");
+      if (num) {
+        $("#partnerFirstName_" + num)
+          .val("")
+          .removeClass("is-error is-success");
+        $("#partnerMiddleName_" + num)
+          .val("")
+          .removeClass("is-error is-success");
+        $("#partnerLastName_" + num)
+          .val("")
+          .removeClass("is-error is-success");
+        $("#partnerMobile_" + num)
+          .val("")
+          .removeClass("is-error is-success");
+        $("#partnerEmail_" + num)
+          .val("")
+          .removeClass("is-error is-success");
+        $("#partnerPan_" + num)
+          .val("")
+          .removeClass("is-error is-success");
+        $("#partnerOwnership_" + num)
+          .val("")
+          .removeClass("is-error is-success");
+        $("#partnerDob_" + num)
+          .val("")
+          .removeClass("is-error is-success");
+        $("#partnerAddress_" + num)
+          .val("")
+          .removeClass("is-error is-success");
+        $("#partnerPincode_" + num)
+          .val("")
+          .removeClass("is-error is-success");
+        $("#partnerState_" + num)
+          .val("")
+          .removeClass("is-error is-success");
 
-      $("#partnerTitleSpan_" + num).text("Mr.");
-      $("#partnerTitle_" + num).val("mr");
+        $("#partnerTitleSpan_" + num).text("Mr.");
+        $("#partnerTitle_" + num).val("mr");
 
-      $("#partnerGenderSpan_" + num).text("Select gender");
-      $("#partnerGender_" + num).val("");
+        $("#partnerGenderSpan_" + num).text("Select gender");
+        $("#partnerGender_" + num).val("");
 
-      $("#partnerCommunitySpan_" + num).text("Select community");
-      $("#partnerCommunity_" + num).val("");
+        $("#partnerCommunitySpan_" + num).text("Select community");
+        $("#partnerCommunity_" + num).val("");
 
-      $("#partnerCategorySpan_" + num).text("Select category");
-      $("#partnerCategory_" + num).val("");
+        $("#partnerCategorySpan_" + num).text("Select category");
+        $("#partnerCategory_" + num).val("");
 
-      $("#partnerCitySpan_" + num).text("Select city");
-      $("#partnerCity_" + num).val("");
-    } else {
-      $accordion.find("input").val("").removeClass("is-error is-success");
-      $accordion.find("select").val("");
-    }
+        $("#partnerCitySpan_" + num).text("Select city");
+        $("#partnerCity_" + num).val("");
+      } else {
+        $accordion.find("input").val("").removeClass("is-error is-success");
+        $accordion.find("select").val("");
+      }
 
-    $accordion.find(".error-step3-handle").hide();
-    $accordion.find(".cityAddressBlock").hide();
+      $accordion.find(".error-step3-handle").hide();
+      $accordion.find(".cityAddressBlock").hide();
 
-    updateValidationState($accordion);
-  });
+      updateValidationState($accordion);
+    },
+  );
 
   // ==========================================================================
   // INITIALIZATION ON READY
@@ -1311,5 +1593,4 @@
     validate: validatePartnershipStep3,
     checkSaved: checkAllPartnersSaved,
   };
-
 })(jQuery);

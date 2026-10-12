@@ -382,7 +382,6 @@
     box-shadow 0.2s ease;
 }
 
-
 .partner-accordion.saved {
   background-color: #ffffff;
   border: none;
@@ -661,9 +660,45 @@
   font-size: 12px;
 }
 
-/* --------------------------------------------------------------------------
-   7. Responsive Media Queries (Tablet & Mobile Bottom Sheet/Navigation Style)
-   -------------------------------------------------------------------------- */
+#partnerConfirmationModal .custom-modal {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+  margin: auto !important;
+  width: 40%;
+  height: 40% !important;
+  background-color: #ffffff;
+  border-radius: 8px;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  padding: 16px 32px !important;
+}
+
+.partner-confirmation-actions {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.partner-confirmation-message {
+  font-size: 18px;
+  padding: 16px !important;
+  border-radius: 8px;
+  background-color: #fef9f6;
+  margin-top: 0.5rem !important;
+  min-height: auto;
+  max-height: 50%;
+  overflow-y: auto;
+}
+
 @media screen and (max-width: 1024px) {
   #partnershipStep3Modal .custom-modal,
   #reviewModal .custom-modal,
@@ -680,6 +715,11 @@
   .proprietor-grid {
     width: 100%;
   }
+
+  #partnerConfirmationModal .custom-modal {
+    width: 60%;
+    height: 40% !important;
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -692,14 +732,16 @@
   #reviewModal.custom-modal-overlay.show,
   #reviewModal.custom-modal-overlay.active,
   #reviewModal.custom-modal-overlay[style*="display: block"],
-  #reviewModal.custom-modal-overlay[style*="display: flex"] {
+  #reviewModal.custom-modal-overlay[style*="display: flex"],
+  #partnerConfirmationModal.custom-modal[style*="display: block"],
+  #partnerConfirmationModal.custom-modal[style*="display: flex"] {
     align-items: flex-end !important;
     padding: 0 !important;
   }
 
   #partnershipStep3Modal .custom-modal,
   #reviewModal .custom-modal,
-  .custom-modal.sanction-modal {
+  #partnerConfirmationModal .custom-modal .custom-modal.sanction-modal {
     width: 100% !important;
     max-width: 100% !important;
     border-radius: 16px 16px 0 0 !important;
@@ -737,6 +779,9 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
   }
+  #partnerConfirmationModal .custom-modal {
+    width: 100% !important;
+  }
 }
 
 /* Mobile & Small Mobile Screens (576px and below - Bottom Navigation / Sheet style) */
@@ -766,7 +811,6 @@
     margin: 0 !important;
     padding: 0px !important;
   }
-
   #partnershipStep3Modal .application-number {
     flex-direction: column;
   }
@@ -825,6 +869,9 @@
 
   .partner-bottom input[type="number"] {
     max-width: 100%;
+  }
+  #partnerConfirmationModal .custom-modal {
+    width: 100% !important;
   }
 }
 
