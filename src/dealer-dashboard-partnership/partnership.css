@@ -963,7 +963,41 @@
 }
 /* tooltip fix end */
 
-/* Step 3 Partner input validation states */
+/* Step 3 Partner input validation states & smoothness */
+.proprietor-grid .field-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.error-step3-handle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+  color: #da1e28;
+  font-size: 12px;
+  line-height: 16px;
+  will-change: height, opacity;
+}
+
+.error-step3-handle .material-icons {
+  font-size: 14px;
+  flex-shrink: 0;
+  color: #da1e28;
+}
+
+.error-step3-handle p {
+  margin: 0;
+  color: #da1e28;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+#partnershipStep3Modal input {
+  transition: border-color 0.22s ease, background-color 0.22s ease, box-shadow 0.22s ease;
+}
+
 #partnershipStep3Modal input.is-error,
 #partnershipStep3Modal .proprietor-grid input.is-error {
   border: 1px solid #da1e28 !important;
@@ -972,5 +1006,7 @@
 
 #partnershipStep3Modal input.is-success,
 #partnershipStep3Modal .proprietor-grid input.is-success {
-  border-color: #24a148;
+  border: 1px solid #24a148 !important;
+  background-color: #ffffff !important;
 }
+
