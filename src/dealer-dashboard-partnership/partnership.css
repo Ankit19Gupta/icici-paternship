@@ -962,3 +962,15 @@
   opacity: 1;
 }
 /* tooltip fix end */
+
+/* Step 3 Partner input validation states */
+#partnershipStep3Modal input.is-error,
+#partnershipStep3Modal .proprietor-grid input.is-error {
+  border: 1px solid #da1e28 !important;
+  background-color: #fbe9ea !important;
+}
+
+#partnershipStep3Modal input.is-success,
+#partnershipStep3Modal .proprietor-grid input.is-success {
+  border-color: #24a148;
+}

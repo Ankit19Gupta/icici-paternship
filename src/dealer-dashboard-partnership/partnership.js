@@ -832,6 +832,130 @@
     }
   });
 
+  // --- Uniqueness & Validation Helpers for Partners ---
+  function getCleanMobileNumber(val) {
+    let digits = (val || "").replace(/\D/g, "");
+    if (digits.startsWith("91") && digits.length === 12) {
+      digits = digits.slice(2);
+    }
+    return digits;
+  }
+
+  function getCleanPanNumber(val) {
+    return (val || "").replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
+  }
+
+  function getCleanEmail(val) {
+    return (val || "").trim().toLowerCase();
+  }
+
+  function isFieldUniqueAcrossPartners(field, value, currentNum) {
+    if (!value) return true;
+    let isUnique = true;
+    $("#partnershipStep3Modal .partner-accordion").each(function () {
+      const otherNum = $(this).data("partner");
+      if (otherNum && String(otherNum) !== String(currentNum)) {
+        if (field === "pan") {
+          const otherPan = getCleanPanNumber($("#partnerPan_" + otherNum).val());
+          if (otherPan && otherPan.length === 10 && otherPan === value) {
+            isUnique = false;
+            return false;
+          }
+        } else if (field === "mobile") {
+          const otherMobile = getCleanMobileNumber($("#partnerMobile_" + otherNum).val());
+          if (otherMobile && otherMobile.length === 10 && otherMobile === value) {
+            isUnique = false;
+            return false;
+          }
+        } else if (field === "email") {
+          const otherEmail = getCleanEmail($("#partnerEmail_" + otherNum).val());
+          if (otherEmail && otherEmail.length > 0 && otherEmail === value) {
+            isUnique = false;
+            return false;
+          }
+        }
+      }
+    });
+    return isUnique;
+  }
+
+  function syncUniquenessAcrossAccordions(fieldToSync) {
+    const $accordions = $("#partnershipStep3Modal .partner-accordion");
+
+    $accordions.each(function () {
+      const num = $(this).data("partner");
+      if (!num) return;
+      const $acc = $(this);
+      const isSaved = $acc.hasClass("saved");
+
+      // Check Mobile
+      if (!fieldToSync || fieldToSync === "mobile") {
+        const $mobileInput = $("#partnerMobile_" + num);
+        if ($mobileInput.length) {
+          const $err = $mobileInput.closest(".field-wrapper").find(".error-step3-handle");
+          const mobileVal = getCleanMobileNumber($mobileInput.val());
+          if (mobileVal.length === 10) {
+            const isUnique = isFieldUniqueAcrossPartners("mobile", mobileVal, num);
+            if (!isUnique) {
+              $err.find("p").text("Mobile number is already used for another partner.");
+              $err.show();
+              $mobileInput.addClass("is-error").removeClass("is-success");
+            } else if ($err.find("p").text().indexOf("already used") !== -1) {
+              $err.hide();
+              $mobileInput.removeClass("is-error").addClass("is-success");
+            }
+          }
+        }
+      }
+
+      // Check Email
+      if (!fieldToSync || fieldToSync === "email") {
+        const $emailInput = $("#partnerEmail_" + num);
+        if ($emailInput.length) {
+          const $err = $emailInput.closest(".field-wrapper").find(".error-step3-handle");
+          const emailVal = getCleanEmail($emailInput.val());
+          const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal);
+          if (isValidEmail) {
+            const isUnique = isFieldUniqueAcrossPartners("email", emailVal, num);
+            if (!isUnique) {
+              $err.find("p").text("Email ID is already used for another partner.");
+              $err.show();
+              $emailInput.addClass("is-error").removeClass("is-success");
+            } else if ($err.find("p").text().indexOf("already used") !== -1) {
+              $err.hide();
+              $emailInput.removeClass("is-error").addClass("is-success");
+            }
+          }
+        }
+      }
+
+      // Check PAN
+      if (!fieldToSync || fieldToSync === "pan") {
+        const $panInput = $("#partnerPan_" + num);
+        if ($panInput.length) {
+          const $err = $panInput.closest(".field-wrapper").find(".error-step3-handle");
+          const panVal = getCleanPanNumber($panInput.val());
+          const isValidPan = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(panVal) || panVal.length === 10;
+          if (isValidPan && panVal.length === 10) {
+            const isUnique = isFieldUniqueAcrossPartners("pan", panVal, num);
+            if (!isUnique) {
+              $err.find("p").text("PAN number is already used for another partner.");
+              $err.show();
+              $panInput.addClass("is-error").removeClass("is-success");
+            } else if ($err.find("p").text().indexOf("already used") !== -1) {
+              $err.hide();
+              $panInput.removeClass("is-error").addClass("is-success");
+            }
+          }
+        }
+      }
+
+      if (!isSaved) {
+        updateValidationState($acc);
+      }
+    });
+  }
+
   // Input Vaidation
   // Names: letters only
   $(document).on(
@@ -857,6 +981,25 @@
       if (clean.length > 10) clean = clean.slice(0, 10);
       $(this).val(clean);
       const $acc = $(this).closest(".partner-accordion");
+      const num = $acc.data("partner");
+      const errorDiv = $(this).closest(".field-wrapper").find(".error-step3-handle");
+
+      if (clean.length === 10) {
+        const isUnique = isFieldUniqueAcrossPartners("mobile", clean, num);
+        if (!isUnique) {
+          errorDiv.find("p").text("Mobile number is already used for another partner.");
+          errorDiv.show();
+          $(this).addClass("is-error").removeClass("is-success");
+        } else if (errorDiv.find("p").text().indexOf("already used") !== -1) {
+          errorDiv.hide();
+          $(this).removeClass("is-error");
+        }
+      } else if (errorDiv.find("p").text().indexOf("already used") !== -1) {
+        errorDiv.hide();
+        $(this).removeClass("is-error");
+      }
+
+      syncUniquenessAcrossAccordions("mobile");
       if ($acc.length) updateValidationState($acc);
     },
   );
@@ -866,30 +1009,36 @@
     "blur",
     '#partnershipStep3Modal input.partner-mobile, #partnershipStep3Modal input[placeholder="10 digit mobile number"]',
     function () {
-      let clean = $(this)
-        .val()
-        .replace(/^\+91\s*/, "")
-        .replace(/\D/g, "");
-      if (clean.startsWith("91") && clean.length === 12) clean = clean.slice(2);
+      let clean = getCleanMobileNumber($(this).val());
       const errorDiv = $(this)
         .closest(".field-wrapper")
         .find(".error-step3-handle");
+      const $acc = $(this).closest(".partner-accordion");
+      const num = $acc.data("partner");
 
       if (clean.length > 0 && clean.length !== 10) {
+        errorDiv.find("p").text("Entered mobile number is in wrong format, please enter a valid 10-digit number.");
         errorDiv.show();
         $(this).addClass("is-error").removeClass("is-success");
       } else if (clean.length === 10) {
-        errorDiv.hide();
-        $(this)
-          .val("+91 " + clean)
-          .removeClass("is-error")
-          .addClass("is-success");
+        const isUnique = isFieldUniqueAcrossPartners("mobile", clean, num);
+        if (!isUnique) {
+          errorDiv.find("p").text("Mobile number is already used for another partner.");
+          errorDiv.show();
+          $(this).addClass("is-error").removeClass("is-success");
+        } else {
+          errorDiv.hide();
+          $(this)
+            .val("+91 " + clean)
+            .removeClass("is-error")
+            .addClass("is-success");
+        }
       } else {
         errorDiv.hide();
         $(this).removeClass("is-error is-success");
       }
 
-      const $acc = $(this).closest(".partner-accordion");
+      syncUniquenessAcrossAccordions("mobile");
       if ($acc.length) updateValidationState($acc);
     },
   );
@@ -900,7 +1049,28 @@
     '#partnershipStep3Modal input.partner-email, #partnershipStep3Modal input[placeholder="Enter ID"]',
     function () {
       $(this).val($(this).val().replace(/\s/g, ""));
+      const val = $(this).val().trim().toLowerCase();
       const $acc = $(this).closest(".partner-accordion");
+      const num = $acc.data("partner");
+      const errorDiv = $(this).closest(".field-wrapper").find(".error-step3-handle");
+      const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+
+      if (isValid) {
+        const isUnique = isFieldUniqueAcrossPartners("email", val, num);
+        if (!isUnique) {
+          errorDiv.find("p").text("Email ID is already used for another partner.");
+          errorDiv.show();
+          $(this).addClass("is-error").removeClass("is-success");
+        } else if (errorDiv.find("p").text().indexOf("already used") !== -1) {
+          errorDiv.hide();
+          $(this).removeClass("is-error");
+        }
+      } else if (errorDiv.find("p").text().indexOf("already used") !== -1) {
+        errorDiv.hide();
+        $(this).removeClass("is-error");
+      }
+
+      syncUniquenessAcrossAccordions("email");
       if ($acc.length) updateValidationState($acc);
     },
   );
@@ -909,24 +1079,34 @@
     "blur",
     '#partnershipStep3Modal input.partner-email, #partnershipStep3Modal input[placeholder="Enter ID"]',
     function () {
-      const val = $(this).val().trim();
+      const val = $(this).val().trim().toLowerCase();
       const errorDiv = $(this)
         .closest(".field-wrapper")
         .find(".error-step3-handle");
+      const $acc = $(this).closest(".partner-accordion");
+      const num = $acc.data("partner");
       const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
 
       if (val.length > 0 && !isValid) {
+        errorDiv.find("p").text("Entered email ID is in wrong format, please enter a valid email id.");
         errorDiv.show();
         $(this).addClass("is-error").removeClass("is-success");
       } else if (isValid) {
-        errorDiv.hide();
-        $(this).removeClass("is-error").addClass("is-success");
+        const isUnique = isFieldUniqueAcrossPartners("email", val, num);
+        if (!isUnique) {
+          errorDiv.find("p").text("Email ID is already used for another partner.");
+          errorDiv.show();
+          $(this).addClass("is-error").removeClass("is-success");
+        } else {
+          errorDiv.hide();
+          $(this).removeClass("is-error").addClass("is-success");
+        }
       } else {
         errorDiv.hide();
         $(this).removeClass("is-error is-success");
       }
 
-      const $acc = $(this).closest(".partner-accordion");
+      syncUniquenessAcrossAccordions("email");
       if ($acc.length) updateValidationState($acc);
     },
   );
@@ -943,7 +1123,30 @@
           .toUpperCase()
           .slice(0, 10),
       );
+      const val = $(this).val().trim();
       const $acc = $(this).closest(".partner-accordion");
+      const num = $acc.data("partner");
+      const errorDiv = $(this).closest(".field-wrapper").find(".error-step3-handle");
+
+      if (val.length === 10) {
+        const isValid = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(val) || val.length === 10;
+        if (isValid) {
+          const isUnique = isFieldUniqueAcrossPartners("pan", val, num);
+          if (!isUnique) {
+            errorDiv.find("p").text("PAN number is already used for another partner.");
+            errorDiv.show();
+            $(this).addClass("is-error").removeClass("is-success");
+          } else if (errorDiv.find("p").text().indexOf("already used") !== -1) {
+            errorDiv.hide();
+            $(this).removeClass("is-error");
+          }
+        }
+      } else if (errorDiv.find("p").text().indexOf("already used") !== -1) {
+        errorDiv.hide();
+        $(this).removeClass("is-error");
+      }
+
+      syncUniquenessAcrossAccordions("pan");
       if ($acc.length) updateValidationState($acc);
     },
   );
@@ -952,25 +1155,35 @@
     "blur",
     '#partnershipStep3Modal input.partner-pan, #partnershipStep3Modal input[placeholder="Enter PAN"]',
     function () {
-      const val = $(this).val().trim();
+      const val = $(this).val().trim().toUpperCase();
       const errorDiv = $(this)
         .closest(".field-wrapper")
         .find(".error-step3-handle");
+      const $acc = $(this).closest(".partner-accordion");
+      const num = $acc.data("partner");
       const isValid =
         /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(val) || val.length === 10;
 
-      if (val.length > 0 && !isValid) {
+      if (val.length > 0 && (!isValid || val.length !== 10)) {
+        errorDiv.find("p").text("Please enter a valid PAN number.");
         errorDiv.show();
         $(this).addClass("is-error").removeClass("is-success");
-      } else if (val.length === 10) {
-        errorDiv.hide();
-        $(this).removeClass("is-error").addClass("is-success");
+      } else if (val.length === 10 && isValid) {
+        const isUnique = isFieldUniqueAcrossPartners("pan", val, num);
+        if (!isUnique) {
+          errorDiv.find("p").text("PAN number is already used for another partner.");
+          errorDiv.show();
+          $(this).addClass("is-error").removeClass("is-success");
+        } else {
+          errorDiv.hide();
+          $(this).removeClass("is-error").addClass("is-success");
+        }
       } else {
         errorDiv.hide();
         $(this).removeClass("is-error is-success");
       }
 
-      const $acc = $(this).closest(".partner-accordion");
+      syncUniquenessAcrossAccordions("pan");
       if ($acc.length) updateValidationState($acc);
     },
   );
@@ -1102,37 +1315,24 @@
       ""
     ).trim();
 
-    // To check All input
-    // console.log(`Partner ${num} Field Values -> `, {
-    //   partnerNumber: num,
-    //   title: (
-    //     $("#partnerTitle_" + num).val() ||
-    //     $("#partnerTitleSpan_" + num).text() ||
-    //     "Mr."
-    //   ).trim(),
-    //   first_name: firstName,
-    //   middle_name: middleName,
-    //   last_name: lastName,
-    //   mobile_number: rawMobile,
-    //   email_id: email,
-    //   pan_number: pan,
-    //   ownership_percentage: ownership,
-    //   gender: gender,
-    //   date_of_birth: dob,
-    //   address: address,
-    //   city: city,
-    //   pin_code: pincode,
-    //   state: state,
-    //   community: community,
-    //   category: category,
-    // });
-
-    // Mobile verification (10 digits)
-    let mobileDigits = rawMobile.replace(/\D/g, "");
-    if (mobileDigits.startsWith("91") && mobileDigits.length === 12) {
-      mobileDigits = mobileDigits.slice(2);
-    }
+    // Mobile verification (10 digits & unique across partners)
+    let mobileDigits = getCleanMobileNumber(rawMobile);
     const mobileValid = mobileDigits.length === 10;
+    const mobileUnique = isFieldUniqueAcrossPartners("mobile", mobileDigits, num);
+
+    // Email verification (valid format & unique across partners)
+    const cleanMail = getCleanEmail(email);
+    const emailValid =
+      cleanMail.length > 0 &&
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanMail);
+    const emailUnique = isFieldUniqueAcrossPartners("email", cleanMail, num);
+
+    // PAN verification (10 chars, format & unique across partners)
+    const cleanPan = getCleanPanNumber(pan);
+    const panValid =
+      cleanPan.length === 10 &&
+      (/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(cleanPan) || cleanPan.length === 10);
+    const panUnique = isFieldUniqueAcrossPartners("pan", cleanPan, num);
 
     // Ownership verification (1-100)
     const ownershipNum = parseFloat(ownership);
@@ -1158,18 +1358,15 @@
     const cleanPin = pincode.replace(/\D/g, "");
     const pinValid = cleanPin.length === 6;
 
-    // Email verification
-    const emailValid =
-      email.length > 0 &&
-      email.indexOf("@") !== -1 &&
-      email.indexOf(".") !== -1;
-
     return (
       firstName.length >= 1 &&
       lastName.length >= 1 &&
       mobileValid &&
+      mobileUnique &&
       emailValid &&
-      pan.length === 10 &&
+      emailUnique &&
+      panValid &&
+      panUnique &&
       ownershipValid &&
       genderValid &&
       dobValid &&
@@ -1207,14 +1404,36 @@
   function validatePartnershipStep3() {
     const $targetModal = $("#partnershipStep3Modal");
     const count = parseInt($targetModal.find("#partnerCount").val()) || 0;
-    const total = $targetModal.find(
+    const $accordions = $targetModal.find(
       "#partnerAccordionContainer .partner-accordion",
-    ).length;
-    const saved = $targetModal.find(
-      "#partnerAccordionContainer .partner-accordion.saved",
-    ).length;
+    );
+    const total = $accordions.length;
+    const saved = $accordions.filter(".saved").length;
 
-    return count >= 2 && count <= 20 && total === count && saved === count;
+    if (!(count >= 2 && count <= 20 && total === count && saved === count)) {
+      return false;
+    }
+
+    // Verify all saved partners have unique PAN, mobile, and email
+    const pans = new Set();
+    const mobiles = new Set();
+    const emails = new Set();
+
+    for (let i = 0; i < $accordions.length; i++) {
+      const num = $($accordions[i]).data("partner");
+      const pan = getCleanPanNumber($("#partnerPan_" + num).val());
+      const mobile = getCleanMobileNumber($("#partnerMobile_" + num).val());
+      const email = getCleanEmail($("#partnerEmail_" + num).val());
+
+      if (pans.has(pan) || mobiles.has(mobile) || emails.has(email)) {
+        return false;
+      }
+      if (pan) pans.add(pan);
+      if (mobile) mobiles.add(mobile);
+      if (email) emails.add(email);
+    }
+
+    return true;
   }
 
   function checkAllPartnersSaved() {
@@ -1289,6 +1508,7 @@
       });
     }
 
+    syncUniquenessAcrossAccordions();
     checkAllPartnersSaved();
   });
 
@@ -1344,8 +1564,41 @@
       e.preventDefault();
       e.stopPropagation();
       const $accordion = $(this).closest(".partner-accordion");
-      if (!isAccordionDataValid($accordion)) return;
       const num = $accordion.data("partner");
+
+      // Verify uniqueness before saving
+      const mobileVal = getCleanMobileNumber($("#partnerMobile_" + num).val());
+      const emailVal = getCleanEmail($("#partnerEmail_" + num).val());
+      const panVal = getCleanPanNumber($("#partnerPan_" + num).val());
+
+      let hasDuplicate = false;
+      if (!isFieldUniqueAcrossPartners("mobile", mobileVal, num)) {
+        const $err = $("#partnerMobile_" + num).closest(".field-wrapper").find(".error-step3-handle");
+        $err.find("p").text("Mobile number is already used for another partner.");
+        $err.show();
+        $("#partnerMobile_" + num).addClass("is-error").removeClass("is-success");
+        hasDuplicate = true;
+      }
+      if (!isFieldUniqueAcrossPartners("email", emailVal, num)) {
+        const $err = $("#partnerEmail_" + num).closest(".field-wrapper").find(".error-step3-handle");
+        $err.find("p").text("Email ID is already used for another partner.");
+        $err.show();
+        $("#partnerEmail_" + num).addClass("is-error").removeClass("is-success");
+        hasDuplicate = true;
+      }
+      if (!isFieldUniqueAcrossPartners("pan", panVal, num)) {
+        const $err = $("#partnerPan_" + num).closest(".field-wrapper").find(".error-step3-handle");
+        $err.find("p").text("PAN number is already used for another partner.");
+        $err.show();
+        $("#partnerPan_" + num).addClass("is-error").removeClass("is-success");
+        hasDuplicate = true;
+      }
+
+      if (hasDuplicate || !isAccordionDataValid($accordion)) {
+        updateValidationState($accordion);
+        return;
+      }
+
       const $content = $accordion.find(".partner-accordion-content");
 
       const title = (
@@ -1437,6 +1690,7 @@
       $accordion.addClass("saved").removeClass("active");
       $content.slideUp(200);
 
+      syncUniquenessAcrossAccordions();
       checkAllPartnersSaved();
     },
   );
@@ -1459,6 +1713,7 @@
 
       $accordion.removeClass("saved").addClass("active");
       $accordion.find(".partner-accordion-content").slideDown(200);
+      syncUniquenessAcrossAccordions();
       updateValidationState($accordion);
       checkAllPartnersSaved();
     },
@@ -1532,6 +1787,7 @@
       $accordion.find(".error-step3-handle").hide();
       $accordion.find(".cityAddressBlock").hide();
 
+      syncUniquenessAcrossAccordions();
       updateValidationState($accordion);
     },
   );
