@@ -503,15 +503,15 @@
       '<div class="select-right"><i class="material-icons">expand_more</i></div>' +
       "</div>" +
       '<div class="custom-select-options" style="display: none">' +
-      '<div class="option-item selected" data-value="mr">Mr.</div>' +
-      '<div class="option-item" data-value="miss">Miss.</div>' +
-      '<div class="option-item" data-value="ms">Ms.</div>' +
-      '<div class="option-item" data-value="dr">Dr.</div>' +
+      '<div class="option-item selected" data-value="Mr.">Mr.</div>' +
+      '<div class="option-item" data-value="Miss.">Miss.</div>' +
+      '<div class="option-item" data-value="Ms.">Ms.</div>' +
+      '<div class="option-item" data-value="Dr.">Dr.</div>' +
       "</div>" +
       "</div>" +
       '<select id="partnerTitle_' +
       num +
-      '" class="partner-title" style="display: none" columns_name="title"><option value="mr" selected>Mr.</option><option value="miss">Miss.</option><option value="ms">Ms.</option><option value="dr">Dr.</option></select>' +
+      '" class="partner-title" style="display: none" columns_name="title"><option value="Mr." selected>Mr.</option><option value="Miss.">Miss.</option><option value="Ms.">Ms.</option><option value="Dr.">Dr.</option></select>' +
       "</div>" +
       '<div class="field-wrapper">' +
       '<label>First name as per PAN <span class="partner-required">*</span></label>' +
@@ -911,6 +911,13 @@
 
   function getCleanEmail(val) {
     return (val || "").trim().toLowerCase();
+  }
+
+  function formatPartnerTitle(val) {
+    if (!val) return "Mr.";
+    let clean = val.trim().replace(/\.+$/, "");
+    if (!clean) return "Mr.";
+    return clean.charAt(0).toUpperCase() + clean.slice(1).toLowerCase() + ".";
   }
 
   function isFieldUniqueAcrossPartners(field, value, currentNum) {
@@ -1769,11 +1776,12 @@
 
       const $content = $accordion.find(".partner-accordion-content");
 
-      const title = (
-        $("#partnerTitle_" + num).val() ||
+      const rawTitle = (
         $("#partnerTitleSpan_" + num).text() ||
+        $("#partnerTitle_" + num).val() ||
         "Mr."
       ).trim();
+      const title = formatPartnerTitle(rawTitle);
       const firstName = ($("#partnerFirstName_" + num).val() || "").trim();
       const middleName = ($("#partnerMiddleName_" + num).val() || "").trim();
       const lastName = ($("#partnerLastName_" + num).val() || "").trim();
@@ -1934,7 +1942,7 @@
           .removeClass("is-error is-success");
 
         $("#partnerTitleSpan_" + num).text("Mr.");
-        $("#partnerTitle_" + num).val("mr");
+        $("#partnerTitle_" + num).val("Mr.");
 
         $("#partnerGenderSpan_" + num).text("Select gender");
         $("#partnerGender_" + num).val("");
