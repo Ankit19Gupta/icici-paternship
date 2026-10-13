@@ -770,3 +770,33 @@ function showToast(type, title, message) {
       $(this).removeClass("toast-flex");
     });
 }
+
+// If You Want To Persist Any Modal Then you can add just Id inside PERSISTENT_MODAL_IDS
+const PERSISTENT_MODAL_IDS = [
+  "partnershipStep3Modal",
+  "partnerConfirmationModal",
+];
+
+document.addEventListener(
+  "click",
+  function (e) {
+    for (let i = 0; i < PERSISTENT_MODAL_IDS.length; i++) {
+      const id = PERSISTENT_MODAL_IDS[i];
+      const modalEl = document.getElementById(id);
+      if (modalEl && $(modalEl).is(":visible")) {
+        if (
+          e.target === modalEl ||
+          (e.target.classList &&
+            e.target.classList.contains("custom-modal-overlay") &&
+            e.target.id === id)
+        ) {
+          e.preventDefault();
+          e.stopPropagation();
+          e.stopImmediatePropagation();
+          return false;
+        }
+      }
+    }
+  },
+  true,
+);

@@ -889,3 +889,14 @@
   border: 1px solid #24a148 !important;
   background-color: #ffffff !important;
 } */
+
+/* ==========================================================================
+   Persistent Modal Backdrop - fix by Ankit start
+   In future, add any modal ID here to ensure modal overlay maintains static backdrop
+   ========================================================================== */
+#partnershipStep3Modal.custom-modal-overlay,
+#partnerConfirmationModal.custom-modal-overlay {
+  cursor: default;
+}
+/* Persistent Modal Backdrop - fix by Ankit end */
+

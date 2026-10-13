@@ -116,7 +116,9 @@
             const inp = wrap.querySelector(".dobDate, .partner-dob");
             inp.value = formatYMD(cellDate);
             pop.style.display = "none";
-            $(pop).closest(".partner-accordion, .partner-accordion-content").removeClass("calendar-open");
+            $(pop)
+              .closest(".partner-accordion, .partner-accordion-content")
+              .removeClass("calendar-open");
             resetAccordionCalendarSpace(pop);
             $(inp).trigger("input").trigger("change");
 
@@ -285,9 +287,11 @@
       const content = pop.closest(".partner-accordion-content");
       if (content) content.style.paddingBottom = "";
     } else {
-      document.querySelectorAll(".partner-accordion-content").forEach(function (c) {
-        c.style.paddingBottom = "";
-      });
+      document
+        .querySelectorAll(".partner-accordion-content")
+        .forEach(function (c) {
+          c.style.paddingBottom = "";
+        });
     }
   }
 
@@ -313,7 +317,9 @@
     state.view = "year";
     renderCalendar(state, pop);
     pop.style.display = "flex";
-    $(pop).closest(".partner-accordion, .partner-accordion-content").addClass("calendar-open");
+    $(pop)
+      .closest(".partner-accordion, .partner-accordion-content")
+      .addClass("calendar-open");
     setTimeout(() => adjustAccordionCalendarSpace(pop), 20);
 
     // Ensure stepScroll container allows user to scroll down and see entire calendar
@@ -345,7 +351,9 @@
       document.querySelectorAll(".custom-calendar-popup").forEach(function (p) {
         if (p !== pop) {
           p.style.display = "none";
-          $(p).closest(".partner-accordion, .partner-accordion-content").removeClass("calendar-open");
+          $(p)
+            .closest(".partner-accordion, .partner-accordion-content")
+            .removeClass("calendar-open");
           resetAccordionCalendarSpace(p);
         }
       });
@@ -354,7 +362,9 @@
         openCustomPicker(wrap);
       } else {
         pop.style.display = "none";
-        $(pop).closest(".partner-accordion, .partner-accordion-content").removeClass("calendar-open");
+        $(pop)
+          .closest(".partner-accordion, .partner-accordion-content")
+          .removeClass("calendar-open");
         resetAccordionCalendarSpace(pop);
       }
     },
@@ -365,7 +375,9 @@
     if ($(e.target).closest(".custom-datepicker-wrap").length === 0) {
       document.querySelectorAll(".custom-calendar-popup").forEach(function (p) {
         p.style.display = "none";
-        $(p).closest(".partner-accordion, .partner-accordion-content").removeClass("calendar-open");
+        $(p)
+          .closest(".partner-accordion, .partner-accordion-content")
+          .removeClass("calendar-open");
       });
       resetAccordionCalendarSpace();
     }
@@ -927,19 +939,29 @@
       const otherNum = $(this).data("partner");
       if (otherNum && String(otherNum) !== String(currentNum)) {
         if (field === "pan") {
-          const otherPan = getCleanPanNumber($("#partnerPan_" + otherNum).val());
+          const otherPan = getCleanPanNumber(
+            $("#partnerPan_" + otherNum).val(),
+          );
           if (otherPan && otherPan.length === 10 && otherPan === value) {
             isUnique = false;
             return false;
           }
         } else if (field === "mobile") {
-          const otherMobile = getCleanMobileNumber($("#partnerMobile_" + otherNum).val());
-          if (otherMobile && otherMobile.length === 10 && otherMobile === value) {
+          const otherMobile = getCleanMobileNumber(
+            $("#partnerMobile_" + otherNum).val(),
+          );
+          if (
+            otherMobile &&
+            otherMobile.length === 10 &&
+            otherMobile === value
+          ) {
             isUnique = false;
             return false;
           }
         } else if (field === "email") {
-          const otherEmail = getCleanEmail($("#partnerEmail_" + otherNum).val());
+          const otherEmail = getCleanEmail(
+            $("#partnerEmail_" + otherNum).val(),
+          );
           if (otherEmail && otherEmail.length > 0 && otherEmail === value) {
             isUnique = false;
             return false;
@@ -963,12 +985,20 @@
       if (!fieldToSync || fieldToSync === "mobile") {
         const $mobileInput = $("#partnerMobile_" + num);
         if ($mobileInput.length) {
-          const $err = $mobileInput.closest(".field-wrapper").find(".error-step3-handle");
+          const $err = $mobileInput
+            .closest(".field-wrapper")
+            .find(".error-step3-handle");
           const mobileVal = getCleanMobileNumber($mobileInput.val());
           if (mobileVal.length === 10) {
-            const isUnique = isFieldUniqueAcrossPartners("mobile", mobileVal, num);
+            const isUnique = isFieldUniqueAcrossPartners(
+              "mobile",
+              mobileVal,
+              num,
+            );
             if (!isUnique) {
-              $err.find("p").text("Mobile number is already used for another partner.");
+              $err
+                .find("p")
+                .text("Mobile number is already used for another partner.");
               $err.show();
               $mobileInput.addClass("is-error").removeClass("is-success");
             } else if ($err.find("p").text().indexOf("already used") !== -1) {
@@ -983,13 +1013,21 @@
       if (!fieldToSync || fieldToSync === "email") {
         const $emailInput = $("#partnerEmail_" + num);
         if ($emailInput.length) {
-          const $err = $emailInput.closest(".field-wrapper").find(".error-step3-handle");
+          const $err = $emailInput
+            .closest(".field-wrapper")
+            .find(".error-step3-handle");
           const emailVal = getCleanEmail($emailInput.val());
           const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal);
           if (isValidEmail) {
-            const isUnique = isFieldUniqueAcrossPartners("email", emailVal, num);
+            const isUnique = isFieldUniqueAcrossPartners(
+              "email",
+              emailVal,
+              num,
+            );
             if (!isUnique) {
-              $err.find("p").text("Email ID is already used for another partner.");
+              $err
+                .find("p")
+                .text("Email ID is already used for another partner.");
               $err.show();
               $emailInput.addClass("is-error").removeClass("is-success");
             } else if ($err.find("p").text().indexOf("already used") !== -1) {
@@ -1004,13 +1042,18 @@
       if (!fieldToSync || fieldToSync === "pan") {
         const $panInput = $("#partnerPan_" + num);
         if ($panInput.length) {
-          const $err = $panInput.closest(".field-wrapper").find(".error-step3-handle");
+          const $err = $panInput
+            .closest(".field-wrapper")
+            .find(".error-step3-handle");
           const panVal = getCleanPanNumber($panInput.val());
-          const isValidPan = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(panVal) || panVal.length === 10;
+          const isValidPan =
+            /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(panVal) || panVal.length === 10;
           if (isValidPan && panVal.length === 10) {
             const isUnique = isFieldUniqueAcrossPartners("pan", panVal, num);
             if (!isUnique) {
-              $err.find("p").text("PAN number is already used for another partner.");
+              $err
+                .find("p")
+                .text("PAN number is already used for another partner.");
               $err.show();
               $panInput.addClass("is-error").removeClass("is-success");
             } else if ($err.find("p").text().indexOf("already used") !== -1) {
@@ -1039,7 +1082,9 @@
           .replace(/[^a-zA-Z\s]/g, ""),
       );
       const val = $(this).val().trim();
-      const $errorDiv = $(this).closest(".field-wrapper").find(".error-step3-handle");
+      const $errorDiv = $(this)
+        .closest(".field-wrapper")
+        .find(".error-step3-handle");
       const isMiddle =
         $(this).hasClass("partner-middle-name") ||
         ($(this).attr("placeholder") &&
@@ -1064,7 +1109,9 @@
     '#partnershipStep3Modal input.partner-first-name, #partnershipStep3Modal input[placeholder*="first name"]',
     function () {
       const val = $(this).val().trim();
-      const $errorDiv = $(this).closest(".field-wrapper").find(".error-step3-handle");
+      const $errorDiv = $(this)
+        .closest(".field-wrapper")
+        .find(".error-step3-handle");
 
       if (val.length > 0 && val.length < 3) {
         $errorDiv.find("p").text("First name must be at least 3 characters.");
@@ -1089,7 +1136,9 @@
     '#partnershipStep3Modal input.partner-middle-name, #partnershipStep3Modal input[placeholder*="middle name"]',
     function () {
       const val = $(this).val().trim();
-      const $errorDiv = $(this).closest(".field-wrapper").find(".error-step3-handle");
+      const $errorDiv = $(this)
+        .closest(".field-wrapper")
+        .find(".error-step3-handle");
 
       if (val.length > 0 && val.length < 3) {
         $errorDiv.find("p").text("Middle name must be at least 3 characters.");
@@ -1114,7 +1163,9 @@
     '#partnershipStep3Modal input.partner-last-name, #partnershipStep3Modal input[placeholder*="last name"]',
     function () {
       const val = $(this).val().trim();
-      const $errorDiv = $(this).closest(".field-wrapper").find(".error-step3-handle");
+      const $errorDiv = $(this)
+        .closest(".field-wrapper")
+        .find(".error-step3-handle");
 
       if (val.length > 0 && val.length < 3) {
         $errorDiv.find("p").text("Last name must be at least 3 characters.");
@@ -1143,12 +1194,16 @@
       $(this).val(clean);
       const $acc = $(this).closest(".partner-accordion");
       const num = $acc.data("partner");
-      const errorDiv = $(this).closest(".field-wrapper").find(".error-step3-handle");
+      const errorDiv = $(this)
+        .closest(".field-wrapper")
+        .find(".error-step3-handle");
 
       if (clean.length === 10) {
         const isUnique = isFieldUniqueAcrossPartners("mobile", clean, num);
         if (!isUnique) {
-          errorDiv.find("p").text("Mobile number is already used for another partner.");
+          errorDiv
+            .find("p")
+            .text("Mobile number is already used for another partner.");
           errorDiv.show();
           $(this).addClass("is-error").removeClass("is-success");
         } else if (errorDiv.find("p").text().indexOf("already used") !== -1) {
@@ -1178,13 +1233,19 @@
       const num = $acc.data("partner");
 
       if (clean.length > 0 && clean.length !== 10) {
-        errorDiv.find("p").text("Entered mobile number is in wrong format, please enter a valid 10-digit number.");
+        errorDiv
+          .find("p")
+          .text(
+            "Entered mobile number is in wrong format, please enter a valid 10-digit number.",
+          );
         errorDiv.show();
         $(this).addClass("is-error").removeClass("is-success");
       } else if (clean.length === 10) {
         const isUnique = isFieldUniqueAcrossPartners("mobile", clean, num);
         if (!isUnique) {
-          errorDiv.find("p").text("Mobile number is already used for another partner.");
+          errorDiv
+            .find("p")
+            .text("Mobile number is already used for another partner.");
           errorDiv.show();
           $(this).addClass("is-error").removeClass("is-success");
         } else {
@@ -1213,13 +1274,17 @@
       const val = $(this).val().trim().toLowerCase();
       const $acc = $(this).closest(".partner-accordion");
       const num = $acc.data("partner");
-      const errorDiv = $(this).closest(".field-wrapper").find(".error-step3-handle");
+      const errorDiv = $(this)
+        .closest(".field-wrapper")
+        .find(".error-step3-handle");
       const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
 
       if (isValid) {
         const isUnique = isFieldUniqueAcrossPartners("email", val, num);
         if (!isUnique) {
-          errorDiv.find("p").text("Email ID is already used for another partner.");
+          errorDiv
+            .find("p")
+            .text("Email ID is already used for another partner.");
           errorDiv.show();
           $(this).addClass("is-error").removeClass("is-success");
         } else if (errorDiv.find("p").text().indexOf("already used") !== -1) {
@@ -1249,13 +1314,19 @@
       const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
 
       if (val.length > 0 && !isValid) {
-        errorDiv.find("p").text("Entered email ID is in wrong format, please enter a valid email id.");
+        errorDiv
+          .find("p")
+          .text(
+            "Entered email ID is in wrong format, please enter a valid email id.",
+          );
         errorDiv.show();
         $(this).addClass("is-error").removeClass("is-success");
       } else if (isValid) {
         const isUnique = isFieldUniqueAcrossPartners("email", val, num);
         if (!isUnique) {
-          errorDiv.find("p").text("Email ID is already used for another partner.");
+          errorDiv
+            .find("p")
+            .text("Email ID is already used for another partner.");
           errorDiv.show();
           $(this).addClass("is-error").removeClass("is-success");
         } else {
@@ -1287,14 +1358,19 @@
       const val = $(this).val().trim();
       const $acc = $(this).closest(".partner-accordion");
       const num = $acc.data("partner");
-      const errorDiv = $(this).closest(".field-wrapper").find(".error-step3-handle");
+      const errorDiv = $(this)
+        .closest(".field-wrapper")
+        .find(".error-step3-handle");
 
       if (val.length === 10) {
-        const isValid = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(val) || val.length === 10;
+        const isValid =
+          /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(val) || val.length === 10;
         if (isValid) {
           const isUnique = isFieldUniqueAcrossPartners("pan", val, num);
           if (!isUnique) {
-            errorDiv.find("p").text("PAN number is already used for another partner.");
+            errorDiv
+              .find("p")
+              .text("PAN number is already used for another partner.");
             errorDiv.show();
             $(this).addClass("is-error").removeClass("is-success");
           } else if (errorDiv.find("p").text().indexOf("already used") !== -1) {
@@ -1332,7 +1408,9 @@
       } else if (val.length === 10 && isValid) {
         const isUnique = isFieldUniqueAcrossPartners("pan", val, num);
         if (!isUnique) {
-          errorDiv.find("p").text("PAN number is already used for another partner.");
+          errorDiv
+            .find("p")
+            .text("PAN number is already used for another partner.");
           errorDiv.show();
           $(this).addClass("is-error").removeClass("is-success");
         } else {
@@ -1479,13 +1557,16 @@
     // Mobile verification (10 digits & unique across partners)
     let mobileDigits = getCleanMobileNumber(rawMobile);
     const mobileValid = mobileDigits.length === 10;
-    const mobileUnique = isFieldUniqueAcrossPartners("mobile", mobileDigits, num);
+    const mobileUnique = isFieldUniqueAcrossPartners(
+      "mobile",
+      mobileDigits,
+      num,
+    );
 
     // Email verification (valid format & unique across partners)
     const cleanMail = getCleanEmail(email);
     const emailValid =
-      cleanMail.length > 0 &&
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanMail);
+      cleanMail.length > 0 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanMail);
     const emailUnique = isFieldUniqueAcrossPartners("email", cleanMail, num);
 
     // PAN verification (10 chars, format & unique across partners)
@@ -1708,9 +1789,14 @@
         .not(".saved")
         .each(function () {
           $(this).removeClass("active calendar-open");
-          $(this).find(".partner-accordion-content").removeClass("calendar-open").slideUp(200);
+          $(this)
+            .find(".partner-accordion-content")
+            .removeClass("calendar-open")
+            .slideUp(200);
           $(this).find(".custom-calendar-popup").hide();
-          resetAccordionCalendarSpace($(this).find(".custom-calendar-popup")[0]);
+          resetAccordionCalendarSpace(
+            $(this).find(".custom-calendar-popup")[0],
+          );
           $(this)
             .find(".partner-accordion-header i.material-icons")
             .text("expand_more");
@@ -1720,7 +1806,9 @@
         $currentAccordion.removeClass("active calendar-open");
         $currentContent.removeClass("calendar-open").slideUp(200);
         $currentAccordion.find(".custom-calendar-popup").hide();
-        resetAccordionCalendarSpace($currentAccordion.find(".custom-calendar-popup")[0]);
+        resetAccordionCalendarSpace(
+          $currentAccordion.find(".custom-calendar-popup")[0],
+        );
         $(this).find("i.material-icons").text("expand_more");
       } else {
         $currentAccordion.addClass("active");
@@ -1748,24 +1836,38 @@
 
       let hasDuplicate = false;
       if (!isFieldUniqueAcrossPartners("mobile", mobileVal, num)) {
-        const $err = $("#partnerMobile_" + num).closest(".field-wrapper").find(".error-step3-handle");
-        $err.find("p").text("Mobile number is already used for another partner.");
+        const $err = $("#partnerMobile_" + num)
+          .closest(".field-wrapper")
+          .find(".error-step3-handle");
+        $err
+          .find("p")
+          .text("Mobile number is already used for another partner.");
         $err.show();
-        $("#partnerMobile_" + num).addClass("is-error").removeClass("is-success");
+        $("#partnerMobile_" + num)
+          .addClass("is-error")
+          .removeClass("is-success");
         hasDuplicate = true;
       }
       if (!isFieldUniqueAcrossPartners("email", emailVal, num)) {
-        const $err = $("#partnerEmail_" + num).closest(".field-wrapper").find(".error-step3-handle");
+        const $err = $("#partnerEmail_" + num)
+          .closest(".field-wrapper")
+          .find(".error-step3-handle");
         $err.find("p").text("Email ID is already used for another partner.");
         $err.show();
-        $("#partnerEmail_" + num).addClass("is-error").removeClass("is-success");
+        $("#partnerEmail_" + num)
+          .addClass("is-error")
+          .removeClass("is-success");
         hasDuplicate = true;
       }
       if (!isFieldUniqueAcrossPartners("pan", panVal, num)) {
-        const $err = $("#partnerPan_" + num).closest(".field-wrapper").find(".error-step3-handle");
+        const $err = $("#partnerPan_" + num)
+          .closest(".field-wrapper")
+          .find(".error-step3-handle");
         $err.find("p").text("PAN number is already used for another partner.");
         $err.show();
-        $("#partnerPan_" + num).addClass("is-error").removeClass("is-success");
+        $("#partnerPan_" + num)
+          .addClass("is-error")
+          .removeClass("is-success");
         hasDuplicate = true;
       }
 
@@ -1988,4 +2090,6 @@
     validate: validatePartnershipStep3,
     checkSaved: checkAllPartnersSaved,
   };
+
+ 
 })(jQuery);
