@@ -447,24 +447,17 @@
     openPartnershipStep3Modal();
   });
 
-  // Proceed / Next Button
-  $(document).on(
-    "click",
-    "#partnershipStep3NextBtn, #step3NextBtn",
-    function (e) {
-      e.preventDefault();
-      if ($(this).prop("disabled")) return;
-
-      if (validatePartnershipStep3()) {
-        closePartnershipStep3Modal();
-        if ($("#step4Modal").length) {
-          $("#step4Modal").show();
-        } else if ($("#reviewModal").length) {
-          $("#reviewModal").show();
-        }
+  // Proceed - Next Button
+  $(document).on("click", "#partnershipStep3NextBtn", function (e) {
+    e.preventDefault();
+    if ($(this).prop("disabled")) return;
+    if (validatePartnershipStep3()) {
+      closePartnershipStep3Modal();
+      if ($("#step4Modal").length) {
+        $("#step4Modal").show();
       }
-    },
-  );
+    }
+  });
 
   // Dynamic Partner Html Page
   function getPartnerFormHtml(num) {
