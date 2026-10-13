@@ -198,7 +198,7 @@
   flex: 0 1 auto;
 }
 .partnership-orange-btn {
-  background-color: #f37021;
+  background-color: #e3530f;
   color: #ffffff;
   border: none;
   transition: all 0.2s ease;
@@ -226,7 +226,7 @@
 .saveExitBtn {
   background: none;
   border: none;
-  color: #f37021 !important;
+  color: #e3530f !important;
   font-size: 16px;
   line-height: 16px;
   font-weight: 700;
@@ -373,7 +373,7 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  color: #f37021;
+  color: #e3530f;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
@@ -381,6 +381,7 @@
   border-radius: 4px;
   transition: background-color 0.2s ease;
 }
+
 .partner-asset-top {
   display: flex;
   justify-content: flex-end;
@@ -443,8 +444,6 @@
   color: #ffffff !important;
   cursor: pointer !important;
 }
-
-
 
 #partnerConfirmationModal .custom-modal {
   position: relative !important;
