@@ -597,7 +597,6 @@
       '<div class="select-right"><i class="material-icons">expand_more</i></div>' +
       "</div>" +
       '<div class="custom-select-options" style="display: none">' +
-      '<div class="option-item" data-value="">Select gender</div>' +
       '<div class="option-item" data-value="Male">Male</div>' +
       '<div class="option-item" data-value="Female">Female</div>' +
       '<div class="option-item" data-value="Others">Others</div>' +
@@ -649,7 +648,6 @@
       '<div class="select-right"><i class="material-icons">expand_more</i></div>' +
       "</div>" +
       '<div class="custom-select-options" style="display: none">' +
-      '<div class="option-item" data-value="">Select city</div>' +
       "</div>" +
       "</div>" +
       '<select id="partnerCity_' +
@@ -687,7 +685,6 @@
       '<div class="select-right"><i class="material-icons">expand_more</i></div>' +
       "</div>" +
       '<div class="custom-select-options" style="display: none">' +
-      '<div class="option-item" data-value="">Select community</div>' +
       '<div class="option-item" data-value="Hindu">Hindu</div>' +
       '<div class="option-item" data-value="Muslim">Muslim</div>' +
       '<div class="option-item" data-value="Sikh">Sikh</div>' +
@@ -726,7 +723,6 @@
       '<div class="select-right"><i class="material-icons">expand_more</i></div>' +
       "</div>" +
       '<div class="custom-select-options" style="display: none">' +
-      '<div class="option-item" data-value="">Select category</div>' +
       '<div class="option-item" data-value="General">General</div>' +
       '<div class="option-item" data-value="OBC">OBC</div>' +
       '<div class="option-item" data-value="SC">SC</div>' +
@@ -824,6 +820,7 @@
       if (citySelect.length) {
         citySelect.find(".selected-option").text("Select city");
         citySelect.siblings("select").val("");
+        citySelect.find(".custom-select-options").empty();
       }
     } else {
       cityBlock.hide();
@@ -832,6 +829,7 @@
       if (citySelect.length) {
         citySelect.find(".selected-option").text("Select city");
         citySelect.siblings("select").val("");
+        citySelect.find(".custom-select-options").empty();
       }
     }
 
@@ -2057,6 +2055,8 @@
 
         $("#partnerCitySpan_" + num).text("Select city");
         $("#partnerCity_" + num).val("");
+        $("#partnerCityWrapper_" + num).find(".custom-select-options").empty();
+        $accordion.find(".custom-select-options .option-item").removeClass("selected");
       } else {
         $accordion.find("input").val("").removeClass("is-error is-success");
         $accordion.find("select").val("");
