@@ -179,6 +179,9 @@
   margin-right: 10px !important;
   margin: 5px 0px;
   padding: 24px 32px;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch;
 }
 
 #partnershipStep3Modal .stepScroll::-webkit-scrollbar,
@@ -375,7 +378,7 @@
   border: 1px solid #9f9f9f;
   border-radius: 8px;
   background-color: #ffffff;
-  overflow: hidden;
+  overflow: visible !important;
   margin-bottom: 16px;
   transition:
     border-color 0.2s ease,
@@ -385,6 +388,7 @@
 .partner-accordion.saved {
   background-color: #ffffff;
   border: none;
+  overflow: hidden;
 }
 
 .partner-accordion-header {
@@ -410,6 +414,34 @@
 
 .partner-accordion-content {
   padding: 16px;
+  height: auto !important;
+  overflow: visible !important;
+  transition: padding-bottom 0.2s ease;
+}
+
+.partner-accordion.calendar-open,
+.partner-accordion-content.calendar-open {
+  overflow: visible !important;
+  height: auto !important;
+}
+
+.custom-datepicker-wrap {
+  position: relative;
+  cursor: pointer;
+}
+
+.custom-calendar-popup {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 9999 !important;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  width: 360px;
+  max-width: 100%;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  box-sizing: border-box;
 }
 
 /* Saved Summary State */
@@ -794,6 +826,8 @@
   #partnershipStep3Modal .stepScroll,
   #reviewModal .stepScroll {
     padding: 16px 20px;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
   }
 
   #partnershipStep3Modal .modal-footer,
@@ -857,6 +891,15 @@
   #partnershipStep3Modal .stepScroll,
   #reviewModal .stepScroll {
     padding: 14px 16px;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+
+  .custom-calendar-popup {
+    width: 100% !important;
+    min-width: 280px !important;
+    max-width: calc(100vw - 32px) !important;
+    left: 0 !important;
   }
 
   #partnershipStep3Modal .modal-footer,
@@ -995,7 +1038,10 @@
 }
 
 #partnershipStep3Modal input {
-  transition: border-color 0.22s ease, background-color 0.22s ease, box-shadow 0.22s ease;
+  transition:
+    border-color 0.22s ease,
+    background-color 0.22s ease,
+    box-shadow 0.22s ease;
 }
 
 #partnershipStep3Modal input.is-error,
@@ -1009,4 +1055,3 @@
   border: 1px solid #24a148 !important;
   background-color: #ffffff !important;
 }
-

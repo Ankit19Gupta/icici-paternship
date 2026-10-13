@@ -116,6 +116,8 @@
             const inp = wrap.querySelector(".dobDate, .partner-dob");
             inp.value = formatYMD(cellDate);
             pop.style.display = "none";
+            $(pop).closest(".partner-accordion, .partner-accordion-content").removeClass("calendar-open");
+            resetAccordionCalendarSpace(pop);
             $(inp).trigger("input").trigger("change");
 
             const $accordion = $(wrap).closest(".partner-accordion");
@@ -251,6 +253,42 @@
         setTimeout(() => scrollTarget.scrollIntoView({ block: "center" }), 10);
       }
     }
+
+    if (pop.style.display !== "none") {
+      setTimeout(() => adjustAccordionCalendarSpace(pop), 20);
+    }
+  }
+
+  function adjustAccordionCalendarSpace(pop) {
+    if (!pop || pop.style.display === "none") return;
+    const content = pop.closest(".partner-accordion-content");
+    if (!content) return;
+
+    // Reset inline padding to measure natural bottom
+    content.style.paddingBottom = "";
+
+    const popRect = pop.getBoundingClientRect();
+    const contentRect = content.getBoundingClientRect();
+
+    // Check if popup exceeds accordion content bottom
+    const overflow = popRect.bottom - contentRect.bottom;
+    if (overflow > 0) {
+      // Only take whatever height is actually needed, no extra white space
+      content.style.paddingBottom = Math.ceil(overflow + 14) + "px";
+    } else {
+      content.style.paddingBottom = "";
+    }
+  }
+
+  function resetAccordionCalendarSpace(pop) {
+    if (pop) {
+      const content = pop.closest(".partner-accordion-content");
+      if (content) content.style.paddingBottom = "";
+    } else {
+      document.querySelectorAll(".partner-accordion-content").forEach(function (c) {
+        c.style.paddingBottom = "";
+      });
+    }
   }
 
   function openCustomPicker(wrap) {
@@ -275,6 +313,23 @@
     state.view = "year";
     renderCalendar(state, pop);
     pop.style.display = "flex";
+    $(pop).closest(".partner-accordion, .partner-accordion-content").addClass("calendar-open");
+    setTimeout(() => adjustAccordionCalendarSpace(pop), 20);
+
+    // Ensure stepScroll container allows user to scroll down and see entire calendar
+    setTimeout(function () {
+      const scrollContainer = $("#partnershipStep3Modal .stepScroll")[0];
+      if (scrollContainer && pop) {
+        const popRect = pop.getBoundingClientRect();
+        const containerRect = scrollContainer.getBoundingClientRect();
+        if (popRect.bottom > containerRect.bottom - 20) {
+          scrollContainer.scrollBy({
+            top: popRect.bottom - containerRect.bottom + 40,
+            behavior: "smooth",
+          });
+        }
+      }
+    }, 50);
   }
 
   // Custom Calendar Toggle Handler
@@ -288,13 +343,19 @@
 
       const pop = wrap.querySelector(".custom-calendar-popup");
       document.querySelectorAll(".custom-calendar-popup").forEach(function (p) {
-        if (p !== pop) p.style.display = "none";
+        if (p !== pop) {
+          p.style.display = "none";
+          $(p).closest(".partner-accordion, .partner-accordion-content").removeClass("calendar-open");
+          resetAccordionCalendarSpace(p);
+        }
       });
 
       if (pop.style.display === "none" || pop.style.display === "") {
         openCustomPicker(wrap);
       } else {
         pop.style.display = "none";
+        $(pop).closest(".partner-accordion, .partner-accordion-content").removeClass("calendar-open");
+        resetAccordionCalendarSpace(pop);
       }
     },
   );
@@ -304,7 +365,9 @@
     if ($(e.target).closest(".custom-datepicker-wrap").length === 0) {
       document.querySelectorAll(".custom-calendar-popup").forEach(function (p) {
         p.style.display = "none";
+        $(p).closest(".partner-accordion, .partner-accordion-content").removeClass("calendar-open");
       });
+      resetAccordionCalendarSpace();
     }
   });
 
@@ -957,7 +1020,7 @@
   }
 
   // Input Vaidation
-  // Names: letters only
+  // Contains Names: letters only
   $(document).on(
     "input",
     '#partnershipStep3Modal input.partner-first-name, #partnershipStep3Modal input.partner-middle-name, #partnershipStep3Modal input.partner-last-name, #partnershipStep3Modal input[placeholder*="first name"], #partnershipStep3Modal input[placeholder*="middle name"], #partnershipStep3Modal input[placeholder*="last name"]',
@@ -972,7 +1035,7 @@
     },
   );
 
-  // Mobile: numbers only, max 10
+  // Contains Mobile: numbers only, max 10
   $(document).on(
     "input",
     '#partnershipStep3Modal input.partner-mobile, #partnershipStep3Modal input[placeholder="10 digit mobile number"]',
@@ -1536,16 +1599,20 @@
         .not($currentAccordion)
         .not(".saved")
         .each(function () {
-          $(this).removeClass("active");
-          $(this).find(".partner-accordion-content").slideUp(200);
+          $(this).removeClass("active calendar-open");
+          $(this).find(".partner-accordion-content").removeClass("calendar-open").slideUp(200);
+          $(this).find(".custom-calendar-popup").hide();
+          resetAccordionCalendarSpace($(this).find(".custom-calendar-popup")[0]);
           $(this)
             .find(".partner-accordion-header i.material-icons")
             .text("expand_more");
         });
 
       if (isVisible) {
-        $currentAccordion.removeClass("active");
-        $currentContent.slideUp(200);
+        $currentAccordion.removeClass("active calendar-open");
+        $currentContent.removeClass("calendar-open").slideUp(200);
+        $currentAccordion.find(".custom-calendar-popup").hide();
+        resetAccordionCalendarSpace($currentAccordion.find(".custom-calendar-popup")[0]);
         $(this).find("i.material-icons").text("expand_more");
       } else {
         $currentAccordion.addClass("active");
