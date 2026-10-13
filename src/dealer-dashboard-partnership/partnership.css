@@ -20,7 +20,6 @@
 }
 
 #partnershipStep3Modal .custom-modal,
-#reviewModal .custom-modal,
 .custom-modal.sanction-modal {
   position: relative !important;
   top: auto !important;
@@ -40,9 +39,7 @@
   padding: 0px;
 }
 
-#partnershipStep3Modal .sanction-header-div,
-#reviewModal .sanction-header-div,
-#reviewModal .review-header {
+#partnershipStep3Modal .sanction-header-div {
   flex-shrink: 0;
   padding: 16px 32px;
   background: #fef9f6;
@@ -52,8 +49,7 @@
   box-shadow: 0px 0px 20px 0px #50505029;
 }
 
-#partnershipStep3Modal .modal-close-btn,
-#reviewModal .modal-close-btn {
+#partnershipStep3Modal .modal-close-btn {
   position: absolute;
   top: 16px;
   right: 16px;
@@ -70,8 +66,7 @@
   z-index: 12;
 }
 
-#partnershipStep3Modal .modal-close-btn:hover,
-#reviewModal .modal-close-btn:hover {
+#partnershipStep3Modal .modal-close-btn:hover {
   background-color: #f0f0f0;
 }
 
@@ -112,68 +107,29 @@
   padding-bottom: 6px !important;
 }
 
-#partnershipStep3Modal .application-number,
-#reviewModal .application-number {
+#partnershipStep3Modal .application-number {
   font-size: 12px;
   color: #2f2f2f;
   display: flex;
   gap: 4px;
 }
 
-#partnershipStep3Modal .application-number span,
-#reviewModal .application-number span {
+#partnershipStep3Modal .application-number span {
   color: #6f6f6f;
 }
 
-#partnershipStep3Modal .copy-contact,
-#reviewModal .copy-contact {
+#partnershipStep3Modal .copy-contact {
   display: inline-flex;
   align-items: center;
   cursor: pointer;
   color: #f37021;
 }
 
-#partnershipStep3Modal .copy-icon,
-#reviewModal .copy-icon {
+#partnershipStep3Modal .copy-icon {
   font-size: 15px;
   margin-top: 2px !important;
 }
-
-/* Review Header Specific */
-#reviewModal .review-header {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-}
-
-#reviewModal .review-header .img {
-  width: 44px;
-  height: 44px;
-  flex-shrink: 0;
-}
-
-#reviewModal .right-section-review {
-  flex: 1;
-}
-
-#reviewModal .review-title2 {
-  font-size: 18px;
-  font-weight: 700;
-  color: #1a1a1a;
-  margin: 0 0 6px 0;
-}
-
-#reviewModal .clip-section {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-/* --------------------------------------------------------------------------
-   3. Scrollable Main Body (Only stepScroll scrolls inside the modal)
-   -------------------------------------------------------------------------- */
-#partnershipStep3Modal .stepScroll,
-#reviewModal .stepScroll {
+#partnershipStep3Modal .stepScroll {
   height: calc(100% - 230px);
   max-height: calc(100% - 230px);
   margin-right: 10px !important;
@@ -184,49 +140,24 @@
   -webkit-overflow-scrolling: touch;
 }
 
-#partnershipStep3Modal .stepScroll::-webkit-scrollbar,
-#reviewModal .stepScroll::-webkit-scrollbar {
+#partnershipStep3Modal .stepScroll::-webkit-scrollbar {
   width: 6px;
 }
 
-#partnershipStep3Modal .stepScroll::-webkit-scrollbar-track,
-#reviewModal .stepScroll::-webkit-scrollbar-track {
+#partnershipStep3Modal .stepScroll::-webkit-scrollbar-track {
   background: #f1f1f1;
   border-radius: 3px;
 }
 
-#partnershipStep3Modal .stepScroll::-webkit-scrollbar-thumb,
-#reviewModal .stepScroll::-webkit-scrollbar-thumb {
+#partnershipStep3Modal .stepScroll::-webkit-scrollbar-thumb {
   background: #cccccc;
   border-radius: 3px;
 }
 
-#partnershipStep3Modal .stepScroll::-webkit-scrollbar-thumb:hover,
-#reviewModal .stepScroll::-webkit-scrollbar-thumb:hover {
+#partnershipStep3Modal .stepScroll::-webkit-scrollbar-thumb:hover {
   background: #aaaaaa;
 }
-
-/* --------------------------------------------------------------------------
-   4. Sticky Modal Footer & Actions
-   -------------------------------------------------------------------------- */
-/* #partnershipStep3Modal .modal-footer,
-#reviewModal .modal-footer,
-.terms-review .modal-footer {
-  flex-shrink: 0;
-  padding: 16px 32px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #ffffff;
-  position: sticky;
-  bottom: 0;
-  z-index: 10;
-  box-sizing: border-box;
-} */
-
-#partnershipStep3Modal .modal-footer,
-#reviewModal .modal-footer,
-.terms-review .modal-footer {
+#partnershipStep3Modal .modal-footer {
   flex-shrink: 0;
   padding: 16px 32px;
   display: flex;
@@ -240,43 +171,11 @@
   box-sizing: border-box;
 }
 
-#reviewModal .terms-review {
-  flex-shrink: 0;
-  background-color: #ffffff;
-  border-top: 1px solid #e0e0e0;
-  padding: 12px 32px 16px 32px;
-}
-
-#reviewModal .terms-review label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  color: #333333;
-  cursor: pointer;
-  margin-bottom: 12px;
-}
-
-#reviewModal .terms-review .modal-footer {
-  padding: 0;
-  border-top: none;
-}
-
-#reviewModal .terms-conditions {
-  color: #f37021;
-  font-weight: 600;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-#partnershipStep3Modal .footer-actions,
-#reviewModal .footer-actions {
+#partnershipStep3Modal .footer-actions {
   display: flex;
   align-items: center;
   gap: 12px;
 }
-
-/* Reusable Action Buttons */
 .partnership-orange-btn,
 .partnership-outline-orange-btn {
   box-sizing: border-box;
@@ -545,7 +444,7 @@
   cursor: pointer !important;
 }
 
-/* Error handle */
+/* Error handling */
 .error-step3-handle {
   display: flex;
   align-items: center;
@@ -562,133 +461,6 @@
 .error-step3-handle p {
   margin: 0;
   color: #d32f2f;
-  font-size: 12px;
-}
-
-/* --------------------------------------------------------------------------
-   6. Review Modal Components
-   -------------------------------------------------------------------------- */
-.review-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.review-grid2 {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  background-color: #f9f9f9;
-  padding: 16px 20px;
-  border-radius: 8px;
-}
-
-.review-title {
-  font-size: 12px;
-  color: #666666;
-  margin-bottom: 4px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.review-subtitle {
-  font-size: 16px;
-  font-weight: 700;
-  color: #1a1a1a;
-}
-
-.accordian-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.accordian {
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.opne-accordian {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 20px;
-  background-color: #f9f9f9;
-  cursor: pointer;
-}
-
-.opne-accordian .title {
-  font-size: 15px;
-  font-weight: 600;
-  color: #1a1a1a;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.accordian-content {
-  padding: 16px 20px;
-  border-top: 1px solid #eeeeee;
-  background-color: #ffffff;
-}
-
-.accordian-content-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 16px 20px;
-}
-
-.accordian-content-grid label {
-  font-size: 12px;
-  color: #666666;
-  display: block;
-  margin-bottom: 2px;
-}
-
-.accordian-content-grid p {
-  font-size: 14px;
-  font-weight: 600;
-  color: #1a1a1a;
-  margin: 0;
-}
-
-.review-gst-section {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-weight: 600;
-  color: #2e7d32;
-  margin-top: 12px;
-  margin-bottom: 8px;
-}
-
-.partner-badge {
-  background-color: #e8f0fe;
-  color: #1a73e8;
-  font-size: 12px;
-  font-weight: 600;
-  padding: 2px 8px;
-  border-radius: 12px;
-}
-
-.partner-title {
-  font-size: 14px;
-  font-weight: 700;
-  color: #f37021;
-  margin: 12px 0 8px 0;
-}
-
-.file-link {
-  color: #1a73e8 !important;
-  font-weight: 600;
-}
-
-.file-link span {
-  color: #666666;
-  font-weight: 400;
   font-size: 12px;
 }
 
@@ -764,7 +536,6 @@
 
 @media screen and (max-width: 1024px) {
   #partnershipStep3Modal .custom-modal,
-  #reviewModal .custom-modal,
   .custom-modal.sanction-modal {
     width: 100%;
     max-width: 85%;
@@ -790,17 +561,12 @@
   #partnershipStep3Modal.custom-modal-overlay.show,
   #partnershipStep3Modal.custom-modal-overlay.active,
   #partnershipStep3Modal.custom-modal-overlay[style*="display: block"],
-  #partnershipStep3Modal.custom-modal-overlay[style*="display: flex"],
-  #reviewModal.custom-modal-overlay.modal-visible,
-  #reviewModal.custom-modal-overlay.show,
-  #reviewModal.custom-modal-overlay.active,
-  #reviewModal.custom-modal-overlay[style*="display: block"],
-  #reviewModal.custom-modal-overlay[style*="display: flex"] {
+  #partnershipStep3Modal.custom-modal-overlay[style*="display: flex"] {
     align-items: flex-end !important;
     padding: 0 !important;
   }
 
-  /* fix bottom sheet - Overlay alignment to bottom (Add any modal ID here to replicate bottom sheet) */
+  /* Bottom Sheet */
   #partnerConfirmationModal,
   #partnerConfirmationModal.custom-modal-overlay,
   #partnerConfirmationModal.custom-modal-overlay.modal-visible,
@@ -814,8 +580,7 @@
     padding: 0 !important;
   }
 
-  #partnershipStep3Modal .custom-modal,
-  #reviewModal .custom-modal {
+  #partnershipStep3Modal .custom-modal {
     width: 100% !important;
     max-width: 100% !important;
     border-radius: 16px 16px 0 0 !important;
@@ -825,7 +590,7 @@
     padding: 0px !important;
   }
 
-  /* fix bottom sheet - Reusable Bottom Sheet Modal Card (Add any modal ID here to replicate bottom sheet) */
+  /* Bottom Sheet */
   #partnerConfirmationModal .custom-modal,
   #partnerConfirmationModal .partner-confirmation-modal,
   .custom-bottom-sheet-overlay .custom-modal,
@@ -851,7 +616,7 @@
     overflow: hidden !important;
   }
 
-  /* fix bottom sheet - Message & Actions for mobile & tablet */
+  /* Bottom Sheet */
   #partnerConfirmationModal .partner-confirmation-message,
   .custom-bottom-sheet-modal .partner-confirmation-message {
     font-size: 14px !important;
@@ -881,31 +646,23 @@
     width: 100%;
   }
 
-  #partnershipStep3Modal .sanction-header-div,
-  #reviewModal .review-header {
+  #partnershipStep3Modal .sanction-header-div {
     padding: 16px;
   }
 
-  #partnershipStep3Modal .stepScroll,
-  #reviewModal .stepScroll {
+  #partnershipStep3Modal .stepScroll {
     padding: 16px 20px;
     overflow-y: auto !important;
     overflow-x: hidden !important;
   }
 
-  #partnershipStep3Modal .modal-footer,
-  #reviewModal .modal-footer {
+  #partnershipStep3Modal .modal-footer {
     padding: 14px 20px;
   }
 
   .partner-summary-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px 16px;
-  }
-
-  .review-grid2 {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
   }
 }
 
@@ -914,18 +671,12 @@
   #partnershipStep3Modal.custom-modal-overlay.show,
   #partnershipStep3Modal.custom-modal-overlay.active,
   #partnershipStep3Modal.custom-modal-overlay[style*="display: block"],
-  #partnershipStep3Modal.custom-modal-overlay[style*="display: flex"],
-  #reviewModal.custom-modal-overlay.modal-visible,
-  #reviewModal.custom-modal-overlay.show,
-  #reviewModal.custom-modal-overlay.active,
-  #reviewModal.custom-modal-overlay[style*="display: block"],
-  #reviewModal.custom-modal-overlay[style*="display: flex"] {
+  #partnershipStep3Modal.custom-modal-overlay[style*="display: flex"] {
     align-items: flex-end !important;
     padding: 0 !important;
   }
 
   #partnershipStep3Modal .custom-modal,
-  #reviewModal .custom-modal,
   .custom-modal.sanction-modal {
     width: 100% !important;
     max-width: 100% !important;
@@ -943,13 +694,11 @@
     width: 100%;
   }
 
-  #partnershipStep3Modal .sanction-header-div,
-  #reviewModal .review-header {
+  #partnershipStep3Modal .sanction-header-div {
     padding: 16px;
   }
 
-  #partnershipStep3Modal .stepScroll,
-  #reviewModal .stepScroll {
+  #partnershipStep3Modal .stepScroll {
     padding: 14px 16px;
     overflow-y: auto !important;
     overflow-x: hidden !important;
@@ -962,32 +711,26 @@
     left: 0 !important;
   }
 
-  #partnershipStep3Modal .modal-footer,
-  #reviewModal .modal-footer {
+  #partnershipStep3Modal .modal-footer {
     padding: 12px 16px;
     gap: 12px;
   }
 
-  #partnershipStep3Modal .footer-actions,
-  #reviewModal .footer-actions {
+  #partnershipStep3Modal .footer-actions {
     width: 100%;
     justify-content: space-between;
   }
 
-  #partnershipStep3Modal .footer-actions button,
-  #reviewModal .footer-actions button {
+  #partnershipStep3Modal .footer-actions button {
     flex: 1;
   }
 
-  #partnershipStep3Modal .saveExitBtn,
-  #reviewModal .saveExitBtn {
+  #partnershipStep3Modal .saveExitBtn {
     width: 100%;
     text-align: left;
   }
 
-  .partner-summary-grid,
-  .review-grid2,
-  .accordian-content-grid {
+  .partner-summary-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
   }
@@ -1003,7 +746,7 @@
   .partner-bottom input[type="number"] {
     max-width: 100%;
   }
-  /* fix bottom sheet - Reusable bottom sheet for 576px (Add any modal ID here to replicate bottom sheet) */
+  /* Bottom Sheet */
   #partnerConfirmationModal,
   #partnerConfirmationModal.custom-modal-overlay,
   #partnerConfirmationModal.custom-modal-overlay.modal-visible,
@@ -1159,8 +902,8 @@
   background-color: #fbe9ea !important;
 }
 
-#partnershipStep3Modal input.is-success,
+/* #partnershipStep3Modal input.is-success,
 #partnershipStep3Modal .proprietor-grid input.is-success {
   border: 1px solid #24a148 !important;
   background-color: #ffffff !important;
-}
+} */
