@@ -1,6 +1,5 @@
 (function ($) {
   "use strict";
-
   const pincodeData = {
     400051: { cities: ["Bandra East", "Mumbai"], state: "Maharashtra" },
     400001: { cities: ["Fort", "Mumbai"], state: "Maharashtra" },
@@ -102,7 +101,6 @@
         const cell = document.createElement("div");
         cell.className = "day";
         cell.textContent = day;
-
         if (cellDate > today) cell.classList.add("disabled");
         if (sameDay(cellDate, today)) cell.classList.add("today");
         if (state.selected && sameDay(cellDate, state.selected))
@@ -139,7 +137,6 @@
     today.setHours(0, 0, 0, 0);
     const grid = document.createElement("div");
     grid.className = "months";
-
     MONTHS.forEach(function (m, idx) {
       const item = document.createElement("div");
       item.className = "month-item";
@@ -186,7 +183,6 @@
         if (yr === state.viewYear && state.selected)
           item.classList.add("selected");
         if (yr === today.getFullYear()) item.classList.add("current");
-
         if (yr <= today.getFullYear()) {
           item.addEventListener("click", function (e) {
             e.stopPropagation();
@@ -204,10 +200,8 @@
 
   function renderCalendar(state, pop) {
     pop.innerHTML = "";
-
     const nav = document.createElement("div");
     nav.className = "nav-dropdown";
-
     const yBtn = document.createElement("div");
     yBtn.className = "dd" + (state.view === "year" ? " active" : "");
     yBtn.innerHTML =
@@ -265,17 +259,11 @@
     if (!pop || pop.style.display === "none") return;
     const content = pop.closest(".partner-accordion-content");
     if (!content) return;
-
-    // Reset inline padding to measure natural bottom
     content.style.paddingBottom = "";
-
     const popRect = pop.getBoundingClientRect();
     const contentRect = content.getBoundingClientRect();
-
-    // Check if popup exceeds accordion content bottom
     const overflow = popRect.bottom - contentRect.bottom;
     if (overflow > 0) {
-      // Only take whatever height is actually needed, no extra white space
       content.style.paddingBottom = Math.ceil(overflow + 14) + "px";
     } else {
       content.style.paddingBottom = "";
@@ -298,11 +286,9 @@
   function openCustomPicker(wrap) {
     const pop = wrap.querySelector(".custom-calendar-popup");
     if (!pop) return;
-
     if (!pop._calState) pop._calState = initCalState();
     const state = pop._calState;
     const inp = wrap.querySelector(".dobDate, .partner-dob");
-
     if (inp && inp.value) {
       const parts = inp.value.split("-");
       if (parts.length === 3) {
@@ -321,8 +307,6 @@
       .closest(".partner-accordion, .partner-accordion-content")
       .addClass("calendar-open");
     setTimeout(() => adjustAccordionCalendarSpace(pop), 20);
-
-    // Ensure stepScroll container allows user to scroll down and see entire calendar
     setTimeout(function () {
       const scrollContainer = $("#partnershipStep3Modal .stepScroll")[0];
       if (scrollContainer && pop) {
@@ -346,7 +330,6 @@
       e.stopPropagation();
       const wrap = $(this).closest(".custom-datepicker-wrap")[0];
       if (!wrap) return;
-
       const pop = wrap.querySelector(".custom-calendar-popup");
       document.querySelectorAll(".custom-calendar-popup").forEach(function (p) {
         if (p !== pop) {
@@ -383,7 +366,7 @@
     }
   });
 
-  // REMOVE PREVIOUS CONFLICTING HANDLERS
+  // Remove previous conflict handlers
   $(document).off("click", ".partner-accordion-header");
   $(document).off("click", ".partner-save-btn");
   $(document).off("click", ".partner-edit-btn");
@@ -395,7 +378,7 @@
   $(document).off("click", "#modalPartnershipStep3CloseBtn");
   $(document).off("click", "#partnershipSaveExitBtn");
 
-  // MODAL NAVIGATION & UTILITIES
+  // Modal navigation and utilities
   function openPartnershipStep3Modal() {
     $("#partnershipStep3Modal").show();
     checkAllPartnersSaved();
@@ -405,14 +388,13 @@
     $("#partnershipStep3Modal").hide();
   }
 
-  // Copy Application Number to Clipboard
+  // Copy application number to clipboard
   $(document).on(
     "click",
     "#partnershipStep3Modal .copy-contact, #partnershipStep3Modal .copy-icon",
     function () {
       const appNo = $("#partnershipApplicationNumber").text().trim();
       if (!appNo) return;
-
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(appNo);
       } else {
@@ -440,23 +422,19 @@
     closePartnershipStep3Modal();
   });
 
-  $(document).on(
-    "click",
-    "#cancelPartnershipStep3Btn, #cancelStep3Btn",
-    function (e) {
-      e.preventDefault();
-      closePartnershipStep3Modal();
-      if ($("#step2Modal").length) {
-        $("#step2Modal").show();
-      }
-    },
-  );
+  //  Back handlers
+  $(document).on("click", "#cancelPartnershipStep3Btn", function (e) {
+    e.preventDefault();
+    closePartnershipStep3Modal();
+    if ($("#step2Modal").length) {
+      $("#step2Modal").show();
+    }
+  });
 
   // Save & Exit Handler
   $(document).on("click", "#partnershipSaveExitBtn", function (e) {
     e.preventDefault();
     if ($(this).hasClass("disabled-link") || $(this).prop("disabled")) return;
-
     closePartnershipStep3Modal();
     if ($("#saveProgressModal").length) {
       $("#saveProgressModal").show();
@@ -906,7 +884,7 @@
     }
   });
 
-  // --- Uniqueness & Validation Helpers for Partners ---
+  // Uniqueness & Validation Helpers for Partners
   function getCleanMobileNumber(val) {
     let digits = (val || "").replace(/\D/g, "");
     if (digits.startsWith("91") && digits.length === 12) {
@@ -2055,8 +2033,12 @@
 
         $("#partnerCitySpan_" + num).text("Select city");
         $("#partnerCity_" + num).val("");
-        $("#partnerCityWrapper_" + num).find(".custom-select-options").empty();
-        $accordion.find(".custom-select-options .option-item").removeClass("selected");
+        $("#partnerCityWrapper_" + num)
+          .find(".custom-select-options")
+          .empty();
+        $accordion
+          .find(".custom-select-options .option-item")
+          .removeClass("selected");
       } else {
         $accordion.find("input").val("").removeClass("is-error is-success");
         $accordion.find("select").val("");
@@ -2090,6 +2072,4 @@
     validate: validatePartnershipStep3,
     checkSaved: checkAllPartnersSaved,
   };
-
- 
 })(jQuery);

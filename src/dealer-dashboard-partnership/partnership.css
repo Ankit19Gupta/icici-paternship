@@ -19,8 +19,8 @@
   align-items: center !important;
 }
 
-#partnershipStep3Modal .custom-modal,
-.custom-modal.sanction-modal {
+#partnershipStep3Modal .custom-modal
+/* .custom-modal.sanction-modal */ {
   position: relative !important;
   top: auto !important;
   left: auto !important;
@@ -517,8 +517,7 @@
 }
 
 @media screen and (max-width: 1024px) {
-  #partnershipStep3Modal .custom-modal,
-  .custom-modal.sanction-modal {
+  #partnershipStep3Modal .custom-modal {
     width: 100%;
     max-width: 85%;
     max-height: 88% !important;
@@ -662,8 +661,7 @@
     padding: 0 !important;
   }
 
-  #partnershipStep3Modal .custom-modal,
-  .custom-modal.sanction-modal {
+  #partnershipStep3Modal .custom-modal {
     width: 100% !important;
     max-width: 100% !important;
     border-radius: 16px 16px 0 0 !important;
