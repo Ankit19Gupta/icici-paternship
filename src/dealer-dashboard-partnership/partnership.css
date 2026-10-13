@@ -646,6 +646,10 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 12px 16px;
   }
+
+  #partnershipStep3Modal .application-number {
+    align-items: start !important;
+  }
 }
 
 @media screen and (max-width: 576px) {
@@ -780,6 +784,9 @@
     flex: 1 !important;
     height: 44px !important;
   }
+  #partnershipStep3Modal .application-number {
+    align-items: start !important;
+  }
 }
 
 /* % fix */
@@ -899,4 +906,3 @@
   cursor: default;
 }
 /* Persistent Modal Backdrop - fix by Ankit end */
-
