@@ -1473,7 +1473,7 @@
     const total = $accordions.length;
     const saved = $accordions.filter(".saved").length;
 
-    if (!(count >= 2 && count <= 20 && total === count && saved === count)) {
+    if (!(count >= 2 && count <= 14 && total === count && saved === count)) {
       return false;
     }
 
@@ -1547,9 +1547,9 @@
       $(this).removeClass("is-error");
     }
 
-    if (count > 20) {
-      count = 20;
-      $(this).val(20);
+    if (count > 14) {
+      count = 14;
+      $(this).val(14);
     }
 
     if (count < 2) {
