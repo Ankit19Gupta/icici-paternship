@@ -444,25 +444,7 @@
   cursor: pointer !important;
 }
 
-/* Error handling */
-.error-step3-handle {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 4px;
-  color: #d32f2f;
-  font-size: 12px;
-}
 
-.error-step3-handle .material-icons {
-  font-size: 14px;
-}
-
-.error-step3-handle p {
-  margin: 0;
-  color: #d32f2f;
-  font-size: 12px;
-}
 
 #partnerConfirmationModal .custom-modal {
   position: relative !important;

@@ -518,23 +518,24 @@
       '<input type="text" id="partnerFirstName_' +
       num +
       '" class="partner-first-name" placeholder="Enter first name" columns_name="first_name" />' +
-      '<div class="error-step3-handle" style="display: none"><i class="material-icons">info</i><p>Entered first name is in wrong format, please enter a valid name.</p></div>' +
+      '<div class="error-step3-handle" style="display: none"><i class="material-icons">info</i><p>First name must be at least 3 characters.</p></div>' +
       "</div>" +
       "</div>" +
       "<div>" +
       '<div class="properties-middle">' +
-      '<div class="custom-properties-middle">' +
+      '<div class="custom-properties-middle field-wrapper">' +
       '<label>Middle name <span class="incorporation-yy">(optional)</span></label>' +
       '<input type="text" id="partnerMiddleName_' +
       num +
       '" class="partner-middle-name" placeholder="Enter middle name" columns_name="middle_name" />' +
+      '<div class="error-step3-handle" style="display: none"><i class="material-icons">info</i><p>Middle name must be at least 3 characters.</p></div>' +
       "</div>" +
       '<div class="custom-properties-middle field-wrapper error-state-pan">' +
       '<label>Last name as per PAN <span class="partner-required">*</span></label>' +
       '<input type="text" id="partnerLastName_' +
       num +
       '" class="partner-last-name" placeholder="Enter last name" columns_name="last_name" />' +
-      '<div class="error-step3-handle" style="display: none"><i class="material-icons">info</i><p>Please enter a valid last name as per PAN.</p></div>' +
+      '<div class="error-step3-handle" style="display: none"><i class="material-icons">info</i><p>Last name must be at least 3 characters.</p></div>' +
       "</div>" +
       "</div>" +
       "</div>" +
@@ -1020,7 +1021,7 @@
   }
 
   // Input Vaidation
-  // Contains Names: letters only
+  // Contains Names: letters only, min 3 characters
   $(document).on(
     "input",
     '#partnershipStep3Modal input.partner-first-name, #partnershipStep3Modal input.partner-middle-name, #partnershipStep3Modal input.partner-last-name, #partnershipStep3Modal input[placeholder*="first name"], #partnershipStep3Modal input[placeholder*="middle name"], #partnershipStep3Modal input[placeholder*="last name"]',
@@ -1030,6 +1031,96 @@
           .val()
           .replace(/[^a-zA-Z\s]/g, ""),
       );
+      const val = $(this).val().trim();
+      const $errorDiv = $(this).closest(".field-wrapper").find(".error-step3-handle");
+      const isMiddle =
+        $(this).hasClass("partner-middle-name") ||
+        ($(this).attr("placeholder") &&
+          $(this).attr("placeholder").indexOf("middle name") !== -1);
+
+      if (val.length >= 3) {
+        $errorDiv.hide();
+        $(this).removeClass("is-error");
+      } else if (isMiddle && val.length === 0) {
+        $errorDiv.hide();
+        $(this).removeClass("is-error is-success");
+      }
+
+      const $acc = $(this).closest(".partner-accordion");
+      if ($acc.length) updateValidationState($acc);
+    },
+  );
+
+  // First name blur: min 3 characters (mandatory)
+  $(document).on(
+    "blur",
+    '#partnershipStep3Modal input.partner-first-name, #partnershipStep3Modal input[placeholder*="first name"]',
+    function () {
+      const val = $(this).val().trim();
+      const $errorDiv = $(this).closest(".field-wrapper").find(".error-step3-handle");
+
+      if (val.length > 0 && val.length < 3) {
+        $errorDiv.find("p").text("First name must be at least 3 characters.");
+        $errorDiv.show();
+        $(this).addClass("is-error").removeClass("is-success");
+      } else if (val.length >= 3) {
+        $errorDiv.hide();
+        $(this).removeClass("is-error").addClass("is-success");
+      } else {
+        $errorDiv.hide();
+        $(this).removeClass("is-error is-success");
+      }
+
+      const $acc = $(this).closest(".partner-accordion");
+      if ($acc.length) updateValidationState($acc);
+    },
+  );
+
+  // Middle name blur: min 3 characters (optional, valid if empty)
+  $(document).on(
+    "blur",
+    '#partnershipStep3Modal input.partner-middle-name, #partnershipStep3Modal input[placeholder*="middle name"]',
+    function () {
+      const val = $(this).val().trim();
+      const $errorDiv = $(this).closest(".field-wrapper").find(".error-step3-handle");
+
+      if (val.length > 0 && val.length < 3) {
+        $errorDiv.find("p").text("Middle name must be at least 3 characters.");
+        $errorDiv.show();
+        $(this).addClass("is-error").removeClass("is-success");
+      } else if (val.length >= 3) {
+        $errorDiv.hide();
+        $(this).removeClass("is-error").addClass("is-success");
+      } else {
+        $errorDiv.hide();
+        $(this).removeClass("is-error is-success");
+      }
+
+      const $acc = $(this).closest(".partner-accordion");
+      if ($acc.length) updateValidationState($acc);
+    },
+  );
+
+  // Last name blur: min 3 characters (mandatory)
+  $(document).on(
+    "blur",
+    '#partnershipStep3Modal input.partner-last-name, #partnershipStep3Modal input[placeholder*="last name"]',
+    function () {
+      const val = $(this).val().trim();
+      const $errorDiv = $(this).closest(".field-wrapper").find(".error-step3-handle");
+
+      if (val.length > 0 && val.length < 3) {
+        $errorDiv.find("p").text("Last name must be at least 3 characters.");
+        $errorDiv.show();
+        $(this).addClass("is-error").removeClass("is-success");
+      } else if (val.length >= 3) {
+        $errorDiv.hide();
+        $(this).removeClass("is-error").addClass("is-success");
+      } else {
+        $errorDiv.hide();
+        $(this).removeClass("is-error is-success");
+      }
+
       const $acc = $(this).closest(".partner-accordion");
       if ($acc.length) updateValidationState($acc);
     },
@@ -1421,9 +1512,19 @@
     const cleanPin = pincode.replace(/\D/g, "");
     const pinValid = cleanPin.length === 6;
 
+    // Name validations (min 3 characters, alphabetical; middle name optional)
+    const firstNameValid =
+      firstName.length >= 3 && /^[a-zA-Z\s]+$/.test(firstName);
+    const middleNameValid =
+      middleName.length === 0 ||
+      (middleName.length >= 3 && /^[a-zA-Z\s]+$/.test(middleName));
+    const lastNameValid =
+      lastName.length >= 3 && /^[a-zA-Z\s]+$/.test(lastName);
+
     return (
-      firstName.length >= 1 &&
-      lastName.length >= 1 &&
+      firstNameValid &&
+      middleNameValid &&
+      lastNameValid &&
       mobileValid &&
       mobileUnique &&
       emailValid &&
