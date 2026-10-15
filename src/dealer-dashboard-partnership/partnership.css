@@ -786,8 +786,6 @@
     align-items: start !important;
   }
 }
-
-/* % fix */
 .position {
   position: relative;
   display: block;
@@ -810,7 +808,6 @@
   pointer-events: none;
   line-height: 1;
 }
-/* % fix end */
 
 /* tooltip fix */
 .custom-tooltip-global {
@@ -845,7 +842,6 @@
 }
 /* tooltip fix end */
 
-/* Step 3 Partner input validation states & smoothness */
 .proprietor-grid .field-wrapper {
   position: relative;
   display: flex;
@@ -894,13 +890,7 @@
   border: 1px solid #24a148 !important;
   background-color: #ffffff !important;
 } */
-
-/* ==========================================================================
-   Persistent Modal Backdrop - fix by Ankit start
-   In future, add any modal ID here to ensure modal overlay maintains static backdrop
-   ========================================================================== */
 #partnershipStep3Modal.custom-modal-overlay,
 #partnerConfirmationModal.custom-modal-overlay {
   cursor: default;
 }
-/* Persistent Modal Backdrop - fix by Ankit end */
