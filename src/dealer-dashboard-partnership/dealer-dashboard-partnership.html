@@ -9,7 +9,9 @@
     <link rel="stylesheet" href="../assets/css/material-icons.css" />
     <link rel="stylesheet" href="../assets/css/material-symbols.css" />
     <!-- Consolidated Partnership Flow Stylesheet -->
-    <link rel="stylesheet" href="./scf-patnership.css" />
+    <!-- <link rel="stylesheet" href="./scf-patnership.css" /> -->
+    <link rel="stylesheet" href="./dashboard.css" />
+    <link rel="stylesheet" href="./partnership.css" />
 
     <!-- Old CSS files commented out after consolidating into scf-patnership.css
     <link rel="stylesheet" href="./dealer-dashboard-partnership.css" />
@@ -3274,11 +3276,11 @@
       </div>
     </div>
 
-    <!-- Apply for sanction - step 3 modal -->
-    <div class="custom-modal-overlay" id="step3Modal">
+    <!-- Apply for sanction Updated - partnership step 3 modal -->
+    <div class="custom-modal-overlay" id="partnershipStep3Modal">
       <div class="custom-modal form-modal sanction-modal">
         <div class="sanction-header-div">
-          <button class="modal-close-btn" id="modalStep3CloseBtn">
+          <button class="modal-close-btn" id="modalPartnershipStep3CloseBtn">
             <span class="material-icons">close</span>
           </button>
           <h2>Apply for dealer finance</h2>
@@ -3298,16 +3300,18 @@
 
             <div class="application-number">
               Application number:
-              <span id="applicationNumber">CLB-000203606-PRO</span>
-              <div class="copy-contact">
-                <span class="material-icons copy-icon">content_copy</span>
+              <div>
+                <span id="partnershipApplicationNumber">CLB-000203606-PRO</span>
+                <div class="copy-contact">
+                  <span class="material-icons copy-icon">content_copy</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
         <div class="stepScroll">
-          <div class="proprietor-wrapper">
+          <div class="partnership-wrapper">
             <div class="partner-bottom">
               <label class="partner-label-number">
                 Number of partners
@@ -3326,12 +3330,25 @@
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="disabled-link saveExitBtn">
+          <button
+            type="button"
+            class="disabled-link saveExitBtn"
+            id="partnershipSaveExitBtn"
+          >
             Save & exit
           </button>
           <div class="footer-actions">
-            <button class="outline-orange-btn" id="cancelStep3Btn">Back</button>
-            <button class="orange-btn" id="step3NextBtn" disabled>
+            <button
+              class="partnership-outline-orange-btn"
+              id="cancelPartnershipStep3Btn"
+            >
+              Back
+            </button>
+            <button
+              class="partnership-orange-btn"
+              id="partnershipStep3NextBtn"
+              disabled
+            >
               Proceed
             </button>
           </div>
@@ -4010,16 +4027,22 @@
           <h5 class="modal-title">Please confirm</h5>
         </div>
         <p class="partner-confirmation-message">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam
-          tempore quisquam error doloribus recusandae at dolores, illum
-          architecto deleniti quidem cumque ips.
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit.
         </p>
         <div class="partner-confirmation-actions">
-          <button type="button" class="outline-orange-btn" data-close-modal>
+          <button
+            type="button"
+            class="partnership-outline-orange-btn"
+            data-close-modal
+          >
             No
           </button>
 
-          <button type="button" class="orange-btn" id="confirmPartnerBtn">
+          <button
+            type="button"
+            class="partnership-outline-orange-btn"
+            id="confirmPartnerBtn"
+          >
             Yes
           </button>
         </div>
@@ -4396,12 +4419,16 @@
     <script src="../assets/js/global.js"></script>
 
     <!-- Consolidated Partnership Flow JavaScript -->
-    <script src="./scf-patnership.js"></script>
+    <script src="./partnership.js"></script>
+    <script src="./dashboardTabFunction.js"></script>
+    <!-- <script src="./dealer-dashboard-partnership.js"></script> -->
 
     <!-- Old JS files commented out after consolidating into scf-patnership.js
     <script src="./dealer-dashboard-partnership.js"></script>
     <script src="./dashboardTabFunction.js"></script>
     -->
+    <!-- <script src="./dealer-dashboard-partnership.js"></script>
+    <script src="./dashboardTabFunction.js"></script> -->
 
     <script>
       var loadedSections = 0;
