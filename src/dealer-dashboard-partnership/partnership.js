@@ -322,19 +322,13 @@
     }, 50);
   }
 
-  // ================================================================
-  // CUSTOM CALENDAR - calendar fix by Ankit
-  // Scoped to #partnershipStep3Modal with stopImmediatePropagation
-  // to prevent double-toggle, bubbling, and conflicts with external handlers
-  // ================================================================
+  // Custom Calender
   function setupPartnershipCalendarHandlers() {
     const $modal = $("#partnershipStep3Modal");
     if (!$modal.length) return;
 
     $modal.off("click.partnershipCalendar");
     $modal.off("click.partnershipCalendarOutside");
-
-    // calendar fix by Ankit: Don't close or toggle calendar when clicking inside the calendar popup itself
     $modal.on(
       "click.partnershipCalendar",
       ".custom-calendar-popup",
@@ -344,7 +338,6 @@
       },
     );
 
-    // calendar fix by Ankit: Scoped toggle handler on the input & calendar icon only (not the parent wrap)
     $modal.on(
       "click.partnershipCalendar",
       ".custom-datepicker-wrap input, .custom-datepicker-wrap .custom-cal-icon",
@@ -352,8 +345,6 @@
         e.preventDefault();
         e.stopPropagation();
         if (e.stopImmediatePropagation) e.stopImmediatePropagation();
-
-        // Close any open custom select dropdowns
         $modal.find(".custom-select-options").hide();
         $modal.find(".custom-select-trigger").removeClass("active");
         $modal.find(".custom-select-wrapper").removeClass("active");
@@ -363,7 +354,6 @@
         const pop = wrap.querySelector(".custom-calendar-popup");
         if (!pop) return;
 
-        // Close all other calendar popups in this modal
         $modal.find(".custom-calendar-popup").each(function () {
           if (this !== pop) {
             this.style.display = "none";
@@ -388,7 +378,6 @@
       },
     );
 
-    // calendar fix by Ankit: Close calendar when clicking outside within the modal
     $modal.on("click.partnershipCalendarOutside", function (e) {
       if ($(e.target).closest(".custom-datepicker-wrap").length === 0) {
         $modal.find(".custom-calendar-popup").each(function () {
@@ -402,10 +391,7 @@
     });
   }
 
-  // Initial call to attach calendar handlers to #partnershipStep3Modal
   setupPartnershipCalendarHandlers();
-
-  // calendar fix by Ankit: Document level fallback
   $(document).off(
     "click.partnershipCalendarFallback",
     "#partnershipStep3Modal .custom-datepicker-wrap input, #partnershipStep3Modal .custom-datepicker-wrap .custom-cal-icon",
@@ -438,8 +424,7 @@
         }
       });
 
-      const isClosed =
-        pop.style.display === "none" || pop.style.display === "";
+      const isClosed = pop.style.display === "none" || pop.style.display === "";
       if (isClosed) {
         openCustomPicker(wrap);
       } else {
@@ -452,7 +437,6 @@
     },
   );
 
-  // calendar fix by Ankit: Document level click-outside handler
   $(document).off("click.partnershipCalendarDocOutside");
   $(document).on("click.partnershipCalendarDocOutside", function (e) {
     if ($(e.target).closest(".custom-datepicker-wrap").length === 0) {
@@ -467,7 +451,6 @@
   });
 
   // Remove previous conflict handlers
-  // dropdown & calendar fix by Ankit: Remove previous/conflicting handlers
   $(document).off("click", "#partnershipStep3Modal .custom-select-trigger");
   $(document).off(
     "click",
@@ -496,10 +479,8 @@
   $(document).off("click", "#modalPartnershipStep3CloseBtn");
   $(document).off("click", "#partnershipSaveExitBtn");
 
-  // Modal navigation and utilities
   function openPartnershipStep3Modal() {
     $("#partnershipStep3Modal").show();
-    // dropdown & calendar fix by Ankit: Ensure handlers are cleanly bound
     setupPartnershipDropdownHandlers();
     setupPartnershipCalendarHandlers();
     checkAllPartnersSaved();
