@@ -33,6 +33,10 @@
   ];
   const MIN_YEAR = 1940;
 
+  // variables to manage partner reduction confirmation
+  let pendingPartnerReductionCount = null;
+  let previousPartnerCount = 0;
+
   function pad(n) {
     return n < 10 ? "0" + n : "" + n;
   }
@@ -474,10 +478,13 @@
   $(document).off("click", ".partner-reset-btn");
   $(document).off("input change", "#partnerCount");
   $(document).off("focus", "#partnerCount");
+  $(document).off("blur", "#partnerCount"); // fix by ankit Confirmation
   $(document).off("click", "#partnershipStep3NextBtn, #step3NextBtn");
   $(document).off("click", "#cancelPartnershipStep3Btn, #cancelStep3Btn");
   $(document).off("click", "#modalPartnershipStep3CloseBtn");
   $(document).off("click", "#partnershipSaveExitBtn");
+  $(document).off("click", "#confirmPartnerBtn"); // fix by ankit Confirmation
+  $(document).off("click", "#cancelPartnerBtn"); // fix by ankit Confirmation
 
   function openPartnershipStep3Modal() {
     $("#partnershipStep3Modal").show();
@@ -488,6 +495,9 @@
 
   function closePartnershipStep3Modal() {
     $("#partnershipStep3Modal").hide();
+    // fix by ankit Confirmation: close confirmation modal if partnership modal is closed
+    $("#partnerConfirmationModal").removeClass("show").hide();
+    pendingPartnerReductionCount = null;
   }
 
   // Copy application number to clipboard
@@ -1922,8 +1932,20 @@
     }
   }
 
-  // Partner count
+  // Prevent some char in partnershipInput
+  $(document).on("keydown", "#partnerCount", function (e) {
+    const blockedKey = ["e", "E", "+", "-", "."];
+    if (blockedKey.includes(e.key)) {
+      e.preventDefault();
+    }
+  });
+
+  // fix by ankit Confirmation: Partner count handler with confirmation modal when reducing count
   $(document).on("input change", "#partnerCount", function () {
+    if ($("#partnerConfirmationModal").is(":visible")) {
+      return;
+    }
+
     let count = parseInt($(this).val()) || 0;
     const $container = $("#partnerAccordionContainer");
     let $errorDiv = $(this).siblings(".error-step3-handle");
@@ -1948,32 +1970,114 @@
       $(this).val(14);
     }
 
-    if (count < 2) {
-      $container.empty();
-      checkAllPartnersSaved();
-      return;
-    }
-
     const currentCount = $container.find(".partner-accordion").length;
-    if (count > currentCount) {
-      for (let i = currentCount + 1; i <= count; i++) {
-        $container.append(getPartnerFormHtml(i));
-      }
-    } else if (count < currentCount) {
-      $container.find(".partner-accordion").each(function () {
-        if ($(this).data("partner") > count) {
-          $(this).remove();
-        }
-      });
-    }
 
-    syncUniquenessAcrossAccordions();
-    checkAllPartnersSaved();
+    // Case 1: Increasing partner count
+    if (count > currentCount) {
+      if (count >= 2) {
+        for (let i = currentCount + 1; i <= count; i++) {
+          $container.append(getPartnerFormHtml(i));
+        }
+        previousPartnerCount = count;
+        syncUniquenessAcrossAccordions();
+        checkAllPartnersSaved();
+      }
+    }
+    // Case 2: Decreasing partner count
+    else if (count >= 2 && count < currentCount && currentCount > 0) {
+      pendingPartnerReductionCount = count;
+      previousPartnerCount = currentCount;
+      $("#partnerConfirmationModal").show();
+    } else if (count === currentCount && count >= 2) {
+      previousPartnerCount = count;
+    }
   });
 
+  // fix by ankit Confirmation: track accordion count on focus
   $(document).on("focus", "#partnerCount", function () {
     $(this).siblings(".error-step3-handle").hide();
     $(this).removeClass("is-error");
+    const current = $("#partnerAccordionContainer .partner-accordion").length;
+    if (current > 0) {
+      previousPartnerCount = current;
+    }
+  });
+
+  // fix by ankit Confirmation: on blur
+  $(document).on("blur", "#partnerCount", function () {
+    if (!$("#partnerConfirmationModal").is(":visible")) {
+      const val = $(this).val();
+      const count = parseInt(val) || 0;
+      const actualCount = $(
+        "#partnerAccordionContainer .partner-accordion",
+      ).length;
+
+      if (count < 2) {
+        if (actualCount >= 2) {
+          $(this).val(actualCount);
+          $(this).siblings(".error-step3-handle").hide();
+          $(this).removeClass("is-error");
+        } else if (val === "") {
+          $(this).siblings(".error-step3-handle").hide();
+          $(this).removeClass("is-error");
+        } else {
+          $(this).siblings(".error-step3-handle").show();
+          $(this).addClass("is-error");
+        }
+      }
+    }
+  });
+
+  // fix by ankit Confirmation: No button click handler - do nothing, keep accordions as-is and revert input
+  $(document).on(
+    "click",
+    "#cancelPartnerBtn, #partnerConfirmationModal [data-close-modal]",
+    function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      $("#partnerConfirmationModal").removeClass("show").hide();
+      const existingCount = $(
+        "#partnerAccordionContainer .partner-accordion",
+      ).length;
+      $("#partnerCount").val(existingCount || previousPartnerCount || "");
+      $("#partnerCount").siblings(".error-step3-handle").hide();
+      $("#partnerCount").removeClass("is-error");
+      pendingPartnerReductionCount = null;
+    },
+  );
+
+  // fix by ankit Confirmation: Yes button click handler - delete extra accordions from bottom
+  $(document).on("click", "#confirmPartnerBtn", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+
+    $("#partnerConfirmationModal").removeClass("show").hide();
+
+    let targetCount =
+      pendingPartnerReductionCount !== null
+        ? pendingPartnerReductionCount
+        : parseInt($("#partnerCount").val()) || 0;
+
+    if (targetCount < 2) {
+      targetCount = 2;
+    }
+    const $container = $("#partnerAccordionContainer");
+    $container.find(".partner-accordion").each(function () {
+      const partnerNum = parseInt($(this).data("partner"), 10);
+      if (partnerNum > targetCount) {
+        $(this).remove();
+      }
+    });
+
+    $("#partnerCount").siblings(".error-step3-handle").hide();
+    $("#partnerCount").removeClass("is-error");
+    $("#partnerCount").val(targetCount);
+    previousPartnerCount = targetCount;
+    pendingPartnerReductionCount = null;
+    syncUniquenessAcrossAccordions();
+    checkAllPartnersSaved();
   });
 
   // Accordion Toggle
@@ -2285,6 +2389,9 @@
 
   // INITIALIZATION ON READY
   function resetPartnershipStep3Form() {
+    pendingPartnerReductionCount = null;
+    previousPartnerCount = 0;
+    $("#partnerConfirmationModal").removeClass("show").hide();
     const $targetModal = $("#partnershipStep3Modal");
     $targetModal.find("#partnerCount").val("");
     $targetModal.find("#partnerAccordionContainer").empty();

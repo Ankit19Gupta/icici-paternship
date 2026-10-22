@@ -4015,7 +4015,7 @@
       </div>
     </div>
 
-    <!-- PartnerConfirmationModal Modal  -->
+    <!-- fix by ankit Confirmation: PartnerConfirmationModal Modal  -->
     <div id="partnerConfirmationModal" class="custom-modal-overlay">
       <div class="custom-modal partner-confirmation-modal">
         <div class="d-flex gap-3 align-items-center">
@@ -4027,17 +4027,19 @@
           <h5 class="modal-title">Please confirm</h5>
         </div>
         <p class="partner-confirmation-message">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+          Are you sure you want to reduce the number of partners? The extra partner details will be removed.
         </p>
         <div class="partner-confirmation-actions">
+          <!-- fix by ankit Confirmation: No button with cancelPartnerBtn id -->
           <button
             type="button"
             class="partnership-outline-orange-btn"
-            data-close-modal
+            id="cancelPartnerBtn"
           >
             No
           </button>
 
+          <!-- fix by ankit Confirmation: Yes button with confirmPartnerBtn id -->
           <button
             type="button"
             class="partnership-outline-orange-btn"

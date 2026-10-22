@@ -909,3 +909,8 @@
 #partnershipStep3Modal .custom-select-options {
   z-index: 1051 !important;
 }
+
+/* fix by ankit Confirmation: Ensure partnerConfirmationModal sits above partnershipStep3Modal */
+#partnerConfirmationModal.custom-modal-overlay {
+  z-index: 1060 !important;
+}
