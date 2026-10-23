@@ -178,7 +178,8 @@
   gap: 12px;
 }
 .partnership-orange-btn,
-.partnership-outline-orange-btn {
+.partnership-outline-orange-btn,
+.partnership-outline-orange-btn-confirmation {
   box-sizing: border-box;
   display: inline-flex;
   align-items: center;
@@ -197,6 +198,13 @@
   cursor: pointer;
   white-space: nowrap;
   flex: 0 1 auto;
+}
+
+.partnership-outline-orange-btn-confirmation {
+  background-color: #e3530f;
+  color: #ffffff;
+  border: none;
+  transition: all 0.2s ease;
 }
 .partnership-orange-btn {
   background-color: #e3530f;

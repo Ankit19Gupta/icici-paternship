@@ -495,7 +495,6 @@
 
   function closePartnershipStep3Modal() {
     $("#partnershipStep3Modal").hide();
-    // fix by ankit Confirmation: close confirmation modal if partnership modal is closed
     $("#partnerConfirmationModal").removeClass("show").hide();
     pendingPartnerReductionCount = null;
   }
@@ -551,12 +550,6 @@
     if ($("#saveProgressModal").length) {
       $("#saveProgressModal").show();
     }
-  });
-
-  // Step 2 Next Button -> Open Partnership Step 3
-  $(document).on("click", "#step2NextBtn", function () {
-    $("#step2Modal").hide();
-    openPartnershipStep3Modal();
   });
 
   // Proceed - Next Button
@@ -922,16 +915,10 @@
     }
   }
 
-  // ================================================================
-  // CUSTOM SELECT DROPDOWN - dropdown fix by Ankit
-  // Use scoped event delegation on #partnershipStep3Modal so clicks
-  // are intercepted before document-level handlers can conflict or double-toggle
-  // ================================================================
   function setupPartnershipDropdownHandlers() {
     const $modal = $("#partnershipStep3Modal");
     if (!$modal.length) return;
 
-    // Clean up any previously attached handlers on the modal
     $modal.off("click.partnershipDropdown", ".custom-select-trigger");
     $modal.off(
       "click.partnershipDropdown",
@@ -939,7 +926,6 @@
     );
     $modal.off("click.partnershipDropdownClose");
 
-    // dropdown fix by Ankit: Trigger click handler scoped directly to #partnershipStep3Modal
     $modal.on(
       "click.partnershipDropdown",
       ".custom-select-trigger",
@@ -1987,7 +1973,11 @@
     else if (count >= 2 && count < currentCount && currentCount > 0) {
       pendingPartnerReductionCount = count;
       previousPartnerCount = currentCount;
+      const diffCount = currentCount - count;
       $("#partnerConfirmationModal").show();
+      $(".partner-confirmation-message").text(
+        `Are you sure you want to reduce the number of partners? The below ${diffCount} partner(s) details will be removed.`,
+      );
     } else if (count === currentCount && count >= 2) {
       previousPartnerCount = count;
     }
@@ -2400,7 +2390,6 @@
   }
 
   $(document).ready(function () {
-    // dropdown & calendar fix by Ankit: Ensure handlers are initialized on document ready
     setupPartnershipDropdownHandlers();
     setupPartnershipCalendarHandlers();
     checkAllPartnersSaved();
