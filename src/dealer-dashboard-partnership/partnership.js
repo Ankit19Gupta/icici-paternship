@@ -33,6 +33,10 @@
   ];
   const MIN_YEAR = 1940;
 
+  // variables to manage partner reduction confirmation
+  let pendingPartnerReductionCount = null;
+  let previousPartnerCount = 0;
+
   function pad(n) {
     return n < 10 ? "0" + n : "" + n;
   }
@@ -322,26 +326,110 @@
     }, 50);
   }
 
-  // Custom Calendar Toggle Handler
+  // Custom Calender
+  function setupPartnershipCalendarHandlers() {
+    const $modal = $("#partnershipStep3Modal");
+    if (!$modal.length) return;
+
+    $modal.off("click.partnershipCalendar");
+    $modal.off("click.partnershipCalendarOutside");
+    $modal.on(
+      "click.partnershipCalendar",
+      ".custom-calendar-popup",
+      function (e) {
+        e.stopPropagation();
+        if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+      },
+    );
+
+    $modal.on(
+      "click.partnershipCalendar",
+      ".custom-datepicker-wrap input, .custom-datepicker-wrap .custom-cal-icon",
+      function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+        $modal.find(".custom-select-options").hide();
+        $modal.find(".custom-select-trigger").removeClass("active");
+        $modal.find(".custom-select-wrapper").removeClass("active");
+
+        const wrap = $(this).closest(".custom-datepicker-wrap")[0];
+        if (!wrap) return;
+        const pop = wrap.querySelector(".custom-calendar-popup");
+        if (!pop) return;
+
+        $modal.find(".custom-calendar-popup").each(function () {
+          if (this !== pop) {
+            this.style.display = "none";
+            $(this)
+              .closest(".partner-accordion, .partner-accordion-content")
+              .removeClass("calendar-open");
+            resetAccordionCalendarSpace(this);
+          }
+        });
+
+        const isClosed =
+          pop.style.display === "none" || pop.style.display === "";
+        if (isClosed) {
+          openCustomPicker(wrap);
+        } else {
+          pop.style.display = "none";
+          $(pop)
+            .closest(".partner-accordion, .partner-accordion-content")
+            .removeClass("calendar-open");
+          resetAccordionCalendarSpace(pop);
+        }
+      },
+    );
+
+    $modal.on("click.partnershipCalendarOutside", function (e) {
+      if ($(e.target).closest(".custom-datepicker-wrap").length === 0) {
+        $modal.find(".custom-calendar-popup").each(function () {
+          this.style.display = "none";
+          $(this)
+            .closest(".partner-accordion, .partner-accordion-content")
+            .removeClass("calendar-open");
+        });
+        resetAccordionCalendarSpace();
+      }
+    });
+  }
+
+  setupPartnershipCalendarHandlers();
+  $(document).off(
+    "click.partnershipCalendarFallback",
+    "#partnershipStep3Modal .custom-datepicker-wrap input, #partnershipStep3Modal .custom-datepicker-wrap .custom-cal-icon",
+  );
   $(document).on(
-    "click",
-    "#partnershipStep3Modal .custom-datepicker-wrap, #partnershipStep3Modal .custom-datepicker-wrap input, #partnershipStep3Modal .custom-datepicker-wrap .custom-cal-icon",
+    "click.partnershipCalendarFallback",
+    "#partnershipStep3Modal .custom-datepicker-wrap input, #partnershipStep3Modal .custom-datepicker-wrap .custom-cal-icon",
     function (e) {
+      if (e.isPropagationStopped && e.isPropagationStopped()) return;
+      e.preventDefault();
       e.stopPropagation();
+      if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+
+      $("#partnershipStep3Modal .custom-select-options").hide();
+      $("#partnershipStep3Modal .custom-select-trigger").removeClass("active");
+      $("#partnershipStep3Modal .custom-select-wrapper").removeClass("active");
+
       const wrap = $(this).closest(".custom-datepicker-wrap")[0];
       if (!wrap) return;
       const pop = wrap.querySelector(".custom-calendar-popup");
-      document.querySelectorAll(".custom-calendar-popup").forEach(function (p) {
-        if (p !== pop) {
-          p.style.display = "none";
-          $(p)
+      if (!pop) return;
+
+      $("#partnershipStep3Modal .custom-calendar-popup").each(function () {
+        if (this !== pop) {
+          this.style.display = "none";
+          $(this)
             .closest(".partner-accordion, .partner-accordion-content")
             .removeClass("calendar-open");
-          resetAccordionCalendarSpace(p);
+          resetAccordionCalendarSpace(this);
         }
       });
 
-      if (pop.style.display === "none" || pop.style.display === "") {
+      const isClosed = pop.style.display === "none" || pop.style.display === "";
+      if (isClosed) {
         openCustomPicker(wrap);
       } else {
         pop.style.display = "none";
@@ -353,12 +441,12 @@
     },
   );
 
-  // Close calendar when clicking outside
-  $(document).on("click", function (e) {
+  $(document).off("click.partnershipCalendarDocOutside");
+  $(document).on("click.partnershipCalendarDocOutside", function (e) {
     if ($(e.target).closest(".custom-datepicker-wrap").length === 0) {
-      document.querySelectorAll(".custom-calendar-popup").forEach(function (p) {
-        p.style.display = "none";
-        $(p)
+      $("#partnershipStep3Modal .custom-calendar-popup").each(function () {
+        this.style.display = "none";
+        $(this)
           .closest(".partner-accordion, .partner-accordion-content")
           .removeClass("calendar-open");
       });
@@ -367,25 +455,48 @@
   });
 
   // Remove previous conflict handlers
+  $(document).off("click", "#partnershipStep3Modal .custom-select-trigger");
+  $(document).off(
+    "click",
+    "#partnershipStep3Modal .custom-select-options .option-item",
+  );
+  $(document).off(
+    "click",
+    "#partnershipStep3Modal .custom-datepicker-wrap, #partnershipStep3Modal .custom-datepicker-wrap input, #partnershipStep3Modal .custom-datepicker-wrap .custom-cal-icon",
+  );
+  $(document).off(
+    "click",
+    "#partnershipStep3Modal .partner-dob, #partnershipStep3Modal .dobDate",
+  );
+  $(document).off("click.partnershipDropdown");
+  $(document).off("click.partnershipDropdownFallback");
+  $(document).off("click.partnershipCalendar");
+  $(document).off("click.partnershipCalendarFallback");
   $(document).off("click", ".partner-accordion-header");
   $(document).off("click", ".partner-save-btn");
   $(document).off("click", ".partner-edit-btn");
   $(document).off("click", ".partner-reset-btn");
   $(document).off("input change", "#partnerCount");
   $(document).off("focus", "#partnerCount");
+  $(document).off("blur", "#partnerCount"); // fix by ankit Confirmation
   $(document).off("click", "#partnershipStep3NextBtn, #step3NextBtn");
   $(document).off("click", "#cancelPartnershipStep3Btn, #cancelStep3Btn");
   $(document).off("click", "#modalPartnershipStep3CloseBtn");
   $(document).off("click", "#partnershipSaveExitBtn");
+  $(document).off("click", "#confirmPartnerBtn"); // fix by ankit Confirmation
+  $(document).off("click", "#cancelPartnerBtn"); // fix by ankit Confirmation
 
-  // Modal navigation and utilities
   function openPartnershipStep3Modal() {
     $("#partnershipStep3Modal").show();
+    setupPartnershipDropdownHandlers();
+    setupPartnershipCalendarHandlers();
     checkAllPartnersSaved();
   }
 
   function closePartnershipStep3Modal() {
     $("#partnershipStep3Modal").hide();
+    $("#partnerConfirmationModal").removeClass("show").hide();
+    pendingPartnerReductionCount = null;
   }
 
   // Copy application number to clipboard
@@ -439,12 +550,6 @@
     if ($("#saveProgressModal").length) {
       $("#saveProgressModal").show();
     }
-  });
-
-  // Step 2 Next Button -> Open Partnership Step 3
-  $(document).on("click", "#step2NextBtn", function () {
-    $("#step2Modal").hide();
-    openPartnershipStep3Modal();
   });
 
   // Proceed - Next Button
@@ -810,36 +915,161 @@
     }
   }
 
-  // CUSTOM SELECT DROPDOWN
+  function setupPartnershipDropdownHandlers() {
+    const $modal = $("#partnershipStep3Modal");
+    if (!$modal.length) return;
+
+    $modal.off("click.partnershipDropdown", ".custom-select-trigger");
+    $modal.off(
+      "click.partnershipDropdown",
+      ".custom-select-options .option-item",
+    );
+    $modal.off("click.partnershipDropdownClose");
+
+    $modal.on(
+      "click.partnershipDropdown",
+      ".custom-select-trigger",
+      function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+
+        // Close any open custom calendars in the modal
+        $modal.find(".custom-calendar-popup").hide();
+        $modal
+          .find(".partner-accordion, .partner-accordion-content")
+          .removeClass("calendar-open");
+
+        const wrapper = $(this).closest(".custom-select-wrapper");
+        const options = wrapper.find(".custom-select-options");
+        const isOpen = options.is(":visible") || wrapper.hasClass("active");
+
+        // Close any other open dropdowns inside partnershipStep3Modal
+        $modal.find(".custom-select-options").not(options).hide();
+        $modal.find(".custom-select-trigger").not(this).removeClass("active");
+        $modal
+          .find(".custom-select-wrapper")
+          .not(wrapper)
+          .removeClass("active");
+
+        if (isOpen) {
+          options.hide();
+          $(this).removeClass("active");
+          wrapper.removeClass("active");
+        } else {
+          options.show();
+          $(this).addClass("active");
+          wrapper.addClass("active");
+        }
+      },
+    );
+
+    // dropdown fix by Ankit: Option item click handler scoped directly to #partnershipStep3Modal
+    $modal.on(
+      "click.partnershipDropdown",
+      ".custom-select-options .option-item",
+      function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+
+        const wrapper = $(this).closest(".custom-select-wrapper");
+        const trigger = wrapper.find(".custom-select-trigger");
+        const selectedSpan = trigger.find(".selected-option");
+        const hiddenSelect = wrapper.siblings("select");
+        const options = wrapper.find(".custom-select-options");
+        const value = $(this).data("value");
+        const text = $(this).text().trim();
+
+        selectedSpan.text(text).removeClass("placeholder");
+
+        if (hiddenSelect.length) {
+          hiddenSelect.val(value);
+          hiddenSelect.trigger("change");
+        }
+
+        options.find(".option-item").removeClass("selected");
+        $(this).addClass("selected");
+        options.hide();
+        trigger.removeClass("active");
+        wrapper.removeClass("active");
+
+        const $accordion = wrapper.closest(".partner-accordion");
+        if ($accordion.length && !$accordion.hasClass("saved")) {
+          updateValidationState($accordion);
+        }
+      },
+    );
+
+    // dropdown fix by Ankit: Close dropdown when clicking outside inside the modal
+    $modal.on("click.partnershipDropdownClose", function (e) {
+      if (!$(e.target).closest(".custom-select-wrapper").length) {
+        $modal.find(".custom-select-options").hide();
+        $modal.find(".custom-select-trigger").removeClass("active");
+        $modal.find(".custom-select-wrapper").removeClass("active");
+      }
+    });
+  }
+
+  // Initial call to attach directly to #partnershipStep3Modal
+  setupPartnershipDropdownHandlers();
+
+  // dropdown fix by Ankit: Global fallback on document to ensure clicks are caught even if modal was re-rendered
+  $(document).off(
+    "click.partnershipDropdownFallback",
+    "#partnershipStep3Modal .custom-select-trigger",
+  );
   $(document).on(
-    "click",
+    "click.partnershipDropdownFallback",
     "#partnershipStep3Modal .custom-select-trigger",
     function (e) {
+      if (e.isPropagationStopped && e.isPropagationStopped()) return;
+      e.preventDefault();
       e.stopPropagation();
+      if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+
+      $("#partnershipStep3Modal .custom-calendar-popup").hide();
+      $("#partnershipStep3Modal")
+        .find(".partner-accordion, .partner-accordion-content")
+        .removeClass("calendar-open");
+
       const wrapper = $(this).closest(".custom-select-wrapper");
       const options = wrapper.find(".custom-select-options");
-      const isOpen = options.is(":visible");
+      const isOpen = options.is(":visible") || wrapper.hasClass("active");
 
       $("#partnershipStep3Modal .custom-select-options").not(options).hide();
       $("#partnershipStep3Modal .custom-select-trigger")
         .not(this)
         .removeClass("active");
+      $("#partnershipStep3Modal .custom-select-wrapper")
+        .not(wrapper)
+        .removeClass("active");
 
       if (isOpen) {
         options.hide();
         $(this).removeClass("active");
+        wrapper.removeClass("active");
       } else {
         options.show();
         $(this).addClass("active");
+        wrapper.addClass("active");
       }
     },
   );
 
+  $(document).off(
+    "click.partnershipDropdownFallback",
+    "#partnershipStep3Modal .custom-select-options .option-item",
+  );
   $(document).on(
-    "click",
+    "click.partnershipDropdownFallback",
     "#partnershipStep3Modal .custom-select-options .option-item",
     function (e) {
+      if (e.isPropagationStopped && e.isPropagationStopped()) return;
+      e.preventDefault();
       e.stopPropagation();
+      if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+
       const wrapper = $(this).closest(".custom-select-wrapper");
       const trigger = wrapper.find(".custom-select-trigger");
       const selectedSpan = trigger.find(".selected-option");
@@ -859,6 +1089,7 @@
       $(this).addClass("selected");
       options.hide();
       trigger.removeClass("active");
+      wrapper.removeClass("active");
 
       const $accordion = wrapper.closest(".partner-accordion");
       if ($accordion.length && !$accordion.hasClass("saved")) {
@@ -867,13 +1098,16 @@
     },
   );
 
-  $(document).on("click", function (e) {
+  // dropdown fix by Ankit: Document level click-outside handler
+  $(document).off("click.partnershipOutsideClose");
+  $(document).on("click.partnershipOutsideClose", function (e) {
     if (
       !$(e.target).closest("#partnershipStep3Modal .custom-select-wrapper")
         .length
     ) {
       $("#partnershipStep3Modal .custom-select-options").hide();
       $("#partnershipStep3Modal .custom-select-trigger").removeClass("active");
+      $("#partnershipStep3Modal .custom-select-wrapper").removeClass("active");
     }
   });
 
@@ -1684,8 +1918,20 @@
     }
   }
 
-  // Partner count
+  // Prevent some char in partnershipInput
+  $(document).on("keydown", "#partnerCount", function (e) {
+    const blockedKey = ["e", "E", "+", "-", "."];
+    if (blockedKey.includes(e.key)) {
+      e.preventDefault();
+    }
+  });
+
+  // fix by ankit Confirmation: Partner count handler with confirmation modal when reducing count
   $(document).on("input change", "#partnerCount", function () {
+    if ($("#partnerConfirmationModal").is(":visible")) {
+      return;
+    }
+
     let count = parseInt($(this).val()) || 0;
     const $container = $("#partnerAccordionContainer");
     let $errorDiv = $(this).siblings(".error-step3-handle");
@@ -1710,32 +1956,118 @@
       $(this).val(14);
     }
 
-    if (count < 2) {
-      $container.empty();
-      checkAllPartnersSaved();
-      return;
-    }
-
     const currentCount = $container.find(".partner-accordion").length;
-    if (count > currentCount) {
-      for (let i = currentCount + 1; i <= count; i++) {
-        $container.append(getPartnerFormHtml(i));
-      }
-    } else if (count < currentCount) {
-      $container.find(".partner-accordion").each(function () {
-        if ($(this).data("partner") > count) {
-          $(this).remove();
-        }
-      });
-    }
 
-    syncUniquenessAcrossAccordions();
-    checkAllPartnersSaved();
+    // Case 1: Increasing partner count
+    if (count > currentCount) {
+      if (count >= 2) {
+        for (let i = currentCount + 1; i <= count; i++) {
+          $container.append(getPartnerFormHtml(i));
+        }
+        previousPartnerCount = count;
+        syncUniquenessAcrossAccordions();
+        checkAllPartnersSaved();
+      }
+    }
+    // Case 2: Decreasing partner count
+    else if (count >= 2 && count < currentCount && currentCount > 0) {
+      pendingPartnerReductionCount = count;
+      previousPartnerCount = currentCount;
+      const diffCount = currentCount - count;
+      $("#partnerConfirmationModal").show();
+      $(".partner-confirmation-message").text(
+        `Are you sure you want to reduce the number of partners? The below ${diffCount} partner(s) details will be removed.`,
+      );
+    } else if (count === currentCount && count >= 2) {
+      previousPartnerCount = count;
+    }
   });
 
+  // fix by ankit Confirmation: track accordion count on focus
   $(document).on("focus", "#partnerCount", function () {
     $(this).siblings(".error-step3-handle").hide();
     $(this).removeClass("is-error");
+    const current = $("#partnerAccordionContainer .partner-accordion").length;
+    if (current > 0) {
+      previousPartnerCount = current;
+    }
+  });
+
+  // fix by ankit Confirmation: on blur
+  $(document).on("blur", "#partnerCount", function () {
+    if (!$("#partnerConfirmationModal").is(":visible")) {
+      const val = $(this).val();
+      const count = parseInt(val) || 0;
+      const actualCount = $(
+        "#partnerAccordionContainer .partner-accordion",
+      ).length;
+
+      if (count < 2) {
+        if (actualCount >= 2) {
+          $(this).val(actualCount);
+          $(this).siblings(".error-step3-handle").hide();
+          $(this).removeClass("is-error");
+        } else if (val === "") {
+          $(this).siblings(".error-step3-handle").hide();
+          $(this).removeClass("is-error");
+        } else {
+          $(this).siblings(".error-step3-handle").show();
+          $(this).addClass("is-error");
+        }
+      }
+    }
+  });
+
+  // fix by ankit Confirmation: No button click handler - do nothing, keep accordions as-is and revert input
+  $(document).on(
+    "click",
+    "#cancelPartnerBtn, #partnerConfirmationModal [data-close-modal]",
+    function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      $("#partnerConfirmationModal").removeClass("show").hide();
+      const existingCount = $(
+        "#partnerAccordionContainer .partner-accordion",
+      ).length;
+      $("#partnerCount").val(existingCount || previousPartnerCount || "");
+      $("#partnerCount").siblings(".error-step3-handle").hide();
+      $("#partnerCount").removeClass("is-error");
+      pendingPartnerReductionCount = null;
+    },
+  );
+
+  // fix by ankit Confirmation: Yes button click handler - delete extra accordions from bottom
+  $(document).on("click", "#confirmPartnerBtn", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+
+    $("#partnerConfirmationModal").removeClass("show").hide();
+
+    let targetCount =
+      pendingPartnerReductionCount !== null
+        ? pendingPartnerReductionCount
+        : parseInt($("#partnerCount").val()) || 0;
+
+    if (targetCount < 2) {
+      targetCount = 2;
+    }
+    const $container = $("#partnerAccordionContainer");
+    $container.find(".partner-accordion").each(function () {
+      const partnerNum = parseInt($(this).data("partner"), 10);
+      if (partnerNum > targetCount) {
+        $(this).remove();
+      }
+    });
+
+    $("#partnerCount").siblings(".error-step3-handle").hide();
+    $("#partnerCount").removeClass("is-error");
+    $("#partnerCount").val(targetCount);
+    previousPartnerCount = targetCount;
+    pendingPartnerReductionCount = null;
+    syncUniquenessAcrossAccordions();
+    checkAllPartnersSaved();
   });
 
   // Accordion Toggle
@@ -2047,6 +2379,9 @@
 
   // INITIALIZATION ON READY
   function resetPartnershipStep3Form() {
+    pendingPartnerReductionCount = null;
+    previousPartnerCount = 0;
+    $("#partnerConfirmationModal").removeClass("show").hide();
     const $targetModal = $("#partnershipStep3Modal");
     $targetModal.find("#partnerCount").val("");
     $targetModal.find("#partnerAccordionContainer").empty();
@@ -2055,6 +2390,8 @@
   }
 
   $(document).ready(function () {
+    setupPartnershipDropdownHandlers();
+    setupPartnershipCalendarHandlers();
     checkAllPartnersSaved();
   });
 

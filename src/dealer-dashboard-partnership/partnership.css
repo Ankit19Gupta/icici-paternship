@@ -178,7 +178,8 @@
   gap: 12px;
 }
 .partnership-orange-btn,
-.partnership-outline-orange-btn {
+.partnership-outline-orange-btn,
+.partnership-outline-orange-btn-confirmation {
   box-sizing: border-box;
   display: inline-flex;
   align-items: center;
@@ -197,6 +198,13 @@
   cursor: pointer;
   white-space: nowrap;
   flex: 0 1 auto;
+}
+
+.partnership-outline-orange-btn-confirmation {
+  background-color: #e3530f;
+  color: #ffffff;
+  border: none;
+  transition: all 0.2s ease;
 }
 .partnership-orange-btn {
   background-color: #e3530f;
@@ -893,4 +901,24 @@
 #partnershipStep3Modal.custom-modal-overlay,
 #partnerConfirmationModal.custom-modal-overlay {
   cursor: default;
+}
+
+/* dropdown fix by Ankit: Ensure opened custom select dropdown in partnershipStep3Modal appears above other elements */
+#partnershipStep3Modal .custom-select-wrapper {
+  position: relative;
+}
+#partnershipStep3Modal .custom-select-wrapper.active {
+  z-index: 1050 !important;
+}
+#partnershipStep3Modal .custom-select-wrapper.active .custom-select-options {
+  z-index: 1051 !important;
+  display: block;
+}
+#partnershipStep3Modal .custom-select-options {
+  z-index: 1051 !important;
+}
+
+/* fix by ankit Confirmation: Ensure partnerConfirmationModal sits above partnershipStep3Modal */
+#partnerConfirmationModal.custom-modal-overlay {
+  z-index: 1060 !important;
 }
