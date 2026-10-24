@@ -642,36 +642,12 @@ const dummyPartnerData = [
 ];
 
 // Adding default value accordion fix by Ankit
-async function partnershipStep3DataMappingOnLoad($partnershipStep3Modal) {
+async function partnershipStep3DataMappingOnLoad() {
   let allPartners;
   try {
-    allPartners = await callApi(
-      "/supply-chain-finance/sanction/get-all-partners-data",
-      "GET",
-      null,
-      "step3 fetch partners data",
-      true,
-    );
+    allPartners = await callApi("Nhi Pata");
   } catch (e) {
     allPartners = dummyPartnerData;
-  }
-
-  if (!allPartners || !allPartners.length) {
-    allPartners =
-      typeof _entryPointSubmitData !== "undefined" &&
-      _entryPointSubmitData.allPartners
-        ? _entryPointSubmitData.allPartners
-        : dummyPartnerData;
-  }
-
-  if (typeof _entryPointSubmitData !== "undefined") {
-    _entryPointSubmitData.allPartners = allPartners;
-    let extData = _entryPointSubmitData.ext_data;
-    if (extData && extData.PINSTID) {
-      $("#partnershipStep3Modal #partnershipApplicationNumber").text(
-        extData.PINSTID,
-      );
-    }
   }
 
   let partnerCount = allPartners.length;
