@@ -479,10 +479,14 @@ $(document).off("click", "#partnershipSaveExitBtn");
 $(document).off("click", "#confirmPartnerBtn"); // fix by ankit Confirmation
 $(document).off("click", "#cancelPartnerBtn"); // fix by ankit Confirmation
 
+// adding value accordion fix by Ankit
 function openPartnershipStep3Modal() {
   $("#partnershipStep3Modal").show();
   setupPartnershipDropdownHandlers();
   setupPartnershipCalendarHandlers();
+  if ($("#partnerAccordionContainer .partner-accordion").length === 0) {
+    partnershipStep3DataMappingOnLoad($("#partnershipStep3Modal"));
+  }
   checkAllPartnersSaved();
 }
 
@@ -832,9 +836,7 @@ function getPartnerFormHtml(num, data) {
     num +
     '" columns_name="gender">' +
     '<div class="custom-select-trigger">' +
-    '<span class="selected-option' +
-    (gender ? "" : " placeholder") +
-    '" id="partnerGenderSpan_' +
+    '<span class="selected-option" id="partnerGenderSpan_' +
     num +
     '">' +
     (gender || "Select gender") +
@@ -905,9 +907,7 @@ function getPartnerFormHtml(num, data) {
     num +
     '" columns_name="city">' +
     '<div class="custom-select-trigger">' +
-    '<span class="selected-option' +
-    (city ? "" : " placeholder") +
-    '" id="partnerCitySpan_' +
+    '<span class="selected-option" id="partnerCitySpan_' +
     num +
     '">' +
     (city || "Select city") +
@@ -963,9 +963,7 @@ function getPartnerFormHtml(num, data) {
     num +
     '" columns_name="community">' +
     '<div class="custom-select-trigger">' +
-    '<span class="selected-option' +
-    (community ? "" : " placeholder") +
-    '" id="partnerCommunitySpan_' +
+    '<span class="selected-option" id="partnerCommunitySpan_' +
     num +
     '">' +
     (community || "Select community") +
@@ -1037,9 +1035,7 @@ function getPartnerFormHtml(num, data) {
     num +
     '" columns_name="category">' +
     '<div class="custom-select-trigger">' +
-    '<span class="selected-option' +
-    (category ? "" : " placeholder") +
-    '" id="partnerCategorySpan_' +
+    '<span class="selected-option" id="partnerCategorySpan_' +
     num +
     '">' +
     (category || "Select category") +
