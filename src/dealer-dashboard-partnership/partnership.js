@@ -36,6 +36,8 @@ const MIN_YEAR = 1940;
 // variables to manage partner reduction confirmation
 let pendingPartnerReductionCount = null;
 let previousPartnerCount = 0;
+// extarct pancard fix by ANkit: Object to store PAN cards of deleted partners
+let deletedPartnerPans = {};
 
 function pad(n) {
   return n < 10 ? "0" + n : "" + n;
@@ -1217,7 +1219,7 @@ function getPartnerFormHtml(num, data, isSaved) {
   );
 }
 
-// city fix by ankit: Single dummy city and state data in exact backend format (Array of objects)
+// city fix by ankit: Dummy city and state data in exact backend format (used only when callApi is not defined)
 const dummyCityStateData = [
   { CITYNAME: "MUMBAI", STATENAME: "MAHARASHTRA" },
   { CITYNAME: "URAN", STATENAME: "MAHARASHTRA" },
@@ -1225,30 +1227,20 @@ const dummyCityStateData = [
 
 // city fix by ankit: API call to fetch city and state by pincode (api url + pinCode)
 async function fetchCityStateFromApi(cleanPin) {
-  let cityStateData;
   const apiUrl = "/supply-chain-finance/sanction/get-city-state-by-pincode/";
-  if (typeof callApi === "function") {
-    try {
-      cityStateData = await callApi(apiUrl + cleanPin);
-    } catch (e) {
-      try {
-        cityStateData = await callApi(
-          "/supply-chain-finance/sanction/get-city-state-by-pincode?pincode=" +
-            cleanPin,
-        );
-      } catch (err) {
-        console.warn("city fix by ankit: API call error, using dummy data", err);
-        cityStateData = dummyCityStateData;
-      }
+  try {
+    const res = await callApi(apiUrl + cleanPin);
+    if (res && (Array.isArray(res) ? res.length > 0 : true)) {
+      return res;
     }
-  } else {
-    cityStateData = dummyCityStateData;
+  } catch (e) {
+    console.warn("API call error", e);
   }
-  return cityStateData;
+  return null || dummyCityStateData;
 }
 
-// city fix by ankit: Parse city and state from API response or fallback data
-function getCityStateData(response, cleanPin) {
+// city fix by ankit: Parse city and state from API response
+function getCityStateData(response) {
   let list = Array.isArray(response) ? response : [];
   if (!list || list.length === 0) {
     if (response && typeof response === "object") {
@@ -1262,12 +1254,9 @@ function getCityStateData(response, cleanPin) {
       }
     }
   }
-
-  // city fix by ankit: If no data returned, fallback to single dummy data
   if (!list || list.length === 0) {
-    list = dummyCityStateData;
+    return null;
   }
-
   const cities = [];
   let state = "";
   list.forEach(function (item) {
@@ -1277,22 +1266,8 @@ function getCityStateData(response, cleanPin) {
       if (val && cities.indexOf(val) === -1) cities.push(val);
       return;
     }
-    const cityName = (
-      item.CITYNAME ||
-      item.cityName ||
-      item.CityName ||
-      item.city ||
-      item.CITY ||
-      ""
-    ).trim();
-    const stateName = (
-      item.STATENAME ||
-      item.stateName ||
-      item.StateName ||
-      item.state ||
-      item.STATE ||
-      ""
-    ).trim();
+    const cityName = (item.CITYNAME || "").trim();
+    const stateName = (item.STATENAME || "").trim();
 
     if (cityName && cities.indexOf(cityName) === -1) {
       cities.push(cityName);
@@ -1301,6 +1276,10 @@ function getCityStateData(response, cleanPin) {
       state = stateName;
     }
   });
+
+  if (cities.length === 0 && !state) {
+    return null;
+  }
 
   return {
     cities: cities,
@@ -1339,7 +1318,7 @@ async function populateCityAndState($container, pincode, customData) {
           info = getCityStateData(apiRes, cleanPin);
         }
       } catch (e) {
-        console.warn("city fix by ankit: error fetching city/state", e);
+        console.warn("Error fetching city/state", e);
       }
     }
 
@@ -2566,12 +2545,58 @@ $(document).on("click", "#confirmPartnerBtn", function (e) {
     targetCount = 2;
   }
   const $container = $("#partnerAccordionContainer");
+  // extarct pancard fix by ANkit: Extract PAN of partners being deleted on count reduction
   $container.find(".partner-accordion").each(function () {
     const partnerNum = parseInt($(this).data("partner"), 10);
     if (partnerNum > targetCount) {
+      // extarct pancard fix by ANkit: Get PAN from input field or summary card
+      let pan = ($("#partnerPan_" + partnerNum).val() || "")
+        .trim()
+        .toUpperCase();
+      if (!pan) {
+        pan = (
+          $(this)
+            .find(
+              ".partner-pan, input[placeholder='Enter PAN'], input[column-name='partner_pan']",
+            )
+            .val() || ""
+        )
+          .trim()
+          .toUpperCase();
+      }
+      if (!pan) {
+        $(this)
+          .find(".partner-summary-grid > div")
+          .each(function () {
+            const label = $(this)
+              .find(".partner-summary-label")
+              .text()
+              .trim()
+              .toUpperCase();
+            if (label === "PAN") {
+              pan = $(this)
+                .find(".partner-summary-value")
+                .text()
+                .trim()
+                .toUpperCase();
+            }
+          });
+      }
+
+      // extarct pancard fix by ANkit: Store in object only if PAN is not empty
+      if (pan && pan.length > 0) {
+        deletedPartnerPans[partnerNum] = pan;
+      }
+
       $(this).remove();
     }
   });
+
+  // extarct pancard fix by ANkit: Deleted Partner PANs stored in object
+  console.log(
+    "extarct pancard fix by ANkit: Deleted Partner PANs:",
+    deletedPartnerPans,
+  );
 
   $("#partnerCount").siblings(".error-step3-handle").hide();
   $("#partnerCount").removeClass("is-error");
@@ -2914,6 +2939,8 @@ $(document).on(
 function resetPartnershipStep3Form() {
   pendingPartnerReductionCount = null;
   previousPartnerCount = 0;
+  // extarct pancard fix by ANkit: Reset deleted PANs object
+  deletedPartnerPans = {};
   $("#partnerConfirmationModal").removeClass("show").hide();
   const $targetModal = $("#partnershipStep3Modal");
   $targetModal.find("#partnerCount").val("");
@@ -2941,16 +2968,7 @@ window.partnershipStep3 = {
   checkSaved: checkAllPartnersSaved,
   loadData: partnershipStep3DataMappingOnLoad,
   dummyData: dummyPartnerData,
-  // city fix by ankit
-  dummyCityStateData: dummyCityStateData,
-  getCityStateData: getCityStateData,
-  fetchCityStateFromApi: fetchCityStateFromApi,
-  populateCityAndState: populateCityAndState,
 };
 window.partnershipStep3DataMappingOnLoad = partnershipStep3DataMappingOnLoad;
 
-// city fix by ankit
-window.dummyCityStateData = dummyCityStateData;
-window.getCityStateData = getCityStateData;
-window.fetchCityStateFromApi = fetchCityStateFromApi;
-window.populateCityAndState = populateCityAndState;
+// Array of an object mei store krna hai pan number
