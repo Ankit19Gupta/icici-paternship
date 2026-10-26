@@ -648,7 +648,7 @@ function isPartnerDataFilled(data) {
     (data.FIRST_NAME && String(data.FIRST_NAME).trim()) ||
     (data.PARTNER_PAN && String(data.PARTNER_PAN).trim()) ||
     (data.MOBILE_NUMBER && String(data.MOBILE_NUMBER).trim()) ||
-    (data.EMAIL_ID && String(data.EMAIL_ID).trim())
+    (data.EMAIL_ID && String(data.EMAIL_ID).trim()),
   );
 }
 
@@ -769,7 +769,6 @@ async function partnershipStep3DataMappingOnLoad() {
 function getPartnerFormHtml(num, data, isSaved) {
   data = data || {};
   if (typeof isSaved === "undefined") {
-    // saved accordion fix by Ankit: Check if data is pre-filled from backend
     isSaved = isPartnerDataFilled(data);
   }
 
@@ -830,7 +829,7 @@ function getPartnerFormHtml(num, data, isSaved) {
     "<label>Title</label>" +
     '<div class="custom-select-wrapper title-select" id="partnerTitleWrapper_' +
     num +
-    '" columns_name="title">' +
+    '" column-name="title">' +
     '<div class="custom-select-trigger">' +
     '<span class="selected-option" id="partnerTitleSpan_' +
     num +
@@ -856,7 +855,7 @@ function getPartnerFormHtml(num, data, isSaved) {
     "</div>" +
     '<select id="partnerTitle_' +
     num +
-    '" class="partner-title" style="display: none" columns_name="title">' +
+    '" class="partner-title" style="display: none" column-name="title">' +
     '<option value="Mr."' +
     (prefix === "Mr." ? " selected" : "") +
     ">Mr.</option>" +
@@ -877,7 +876,7 @@ function getPartnerFormHtml(num, data, isSaved) {
     num +
     '" class="partner-first-name" placeholder="Enter first name" value="' +
     firstName +
-    '" columns_name="first_name" />' +
+    '" column-name="first_name" />' +
     '<div class="error-step3-handle" style="display: none"><i class="material-icons">info</i><p>First name must be at least 3 characters.</p></div>' +
     "</div>" +
     "</div>" +
@@ -889,7 +888,7 @@ function getPartnerFormHtml(num, data, isSaved) {
     num +
     '" class="partner-middle-name" placeholder="Enter middle name" value="' +
     middleName +
-    '" columns_name="middle_name" />' +
+    '" column-name="middle_name" />' +
     '<div class="error-step3-handle" style="display: none"><i class="material-icons">info</i><p>Middle name must be at least 3 characters.</p></div>' +
     "</div>" +
     '<div class="custom-properties-middle field-wrapper error-state-pan">' +
@@ -898,7 +897,7 @@ function getPartnerFormHtml(num, data, isSaved) {
     num +
     '" class="partner-last-name" placeholder="Enter last name" value="' +
     lastName +
-    '" columns_name="last_name" />' +
+    '" column-name="last_name" />' +
     '<div class="error-step3-handle" style="display: none"><i class="material-icons">info</i><p>Last name must be at least 3 characters.</p></div>' +
     "</div>" +
     "</div>" +
@@ -910,7 +909,7 @@ function getPartnerFormHtml(num, data, isSaved) {
     num +
     '" class="partner-mobile" placeholder="10 digit mobile number" maxlength="14" value="' +
     mobile +
-    '" columns_name="mobile_number" />' +
+    '" column-name="mobile_number" />' +
     "</div>" +
     '<div class="error-step3-handle" style="display: none"><i class="material-icons">info</i><p>Entered mobile number is in wrong format, please enter a valid 10-digit number.</p></div>' +
     "</div>" +
@@ -920,7 +919,7 @@ function getPartnerFormHtml(num, data, isSaved) {
     num +
     '" class="partner-email" placeholder="Enter ID" value="' +
     email +
-    '" columns_name="email_id" />' +
+    '" column-name="email_id" />' +
     '<div class="error-step3-handle" style="display: none"><i class="material-icons">info</i><p>Entered email ID is in wrong format, please enter a valid email id.</p></div>' +
     "</div>" +
     '<div class="field-wrapper">' +
@@ -929,7 +928,7 @@ function getPartnerFormHtml(num, data, isSaved) {
     num +
     '" class="partner-pan" placeholder="Enter PAN" maxlength="10" style="text-transform: uppercase" value="' +
     pan +
-    '" columns_name="pan_number" />' +
+    '" column-name="pan_number" />' +
     '<div class="error-step3-handle" style="display: none"><i class="material-icons">info</i><p>Please enter a valid PAN number.</p></div>' +
     "</div>" +
     '<div class="field-wrapper">' +
@@ -939,7 +938,7 @@ function getPartnerFormHtml(num, data, isSaved) {
     num +
     '" class="partner-ownership ownership-input" placeholder="0" min="1" max="100" value="' +
     ownership +
-    '" columns_name="ownership_percentage" />' +
+    '" column-name="ownership_percentage" />' +
     '<span class="percentage-owner">%</span>' +
     "</div>" +
     '<div class="error-step3-handle" style="display: none"><i class="material-icons">info</i><p>Percentage must be between 1 and 100.</p></div>' +
@@ -949,7 +948,7 @@ function getPartnerFormHtml(num, data, isSaved) {
     '<label>Gender <span class="partner-required">*</span></label>' +
     '<div class="custom-select-wrapper gender-select" id="partnerGenderWrapper_' +
     num +
-    '" columns_name="gender">' +
+    '" column-name="gender">' +
     '<div class="custom-select-trigger">' +
     '<span class="selected-option" id="partnerGenderSpan_' +
     num +
@@ -972,7 +971,7 @@ function getPartnerFormHtml(num, data, isSaved) {
     "</div>" +
     '<select id="partnerGender_' +
     num +
-    '" class="partner-gender" style="display: none" columns_name="gender">' +
+    '" class="partner-gender" style="display: none" column-name="gender">' +
     '<option value="">Select gender</option>' +
     '<option value="Male"' +
     (gender === "Male" ? " selected" : "") +
@@ -994,7 +993,7 @@ function getPartnerFormHtml(num, data, isSaved) {
     num +
     '" class="partner-dob dobDate" placeholder="Select date (yyyy-mm-dd)" readonly value="' +
     dob +
-    '" columns_name="date_of_birth" />' +
+    '" column-name="date_of_birth" />' +
     '<span class="material-icons custom-cal-icon">calendar_today</span>' +
     '<div class="custom-calendar-popup" id="partnerDobPopup_' +
     num +
@@ -1011,7 +1010,7 @@ function getPartnerFormHtml(num, data, isSaved) {
     num +
     '" class="partner-address" placeholder="Enter address" value="' +
     address +
-    '" columns_name="address" />' +
+    '" column-name="address" />' +
     '<div class="error-step3-handle" style="display: none"><i class="material-icons">info</i><p>Please enter a valid Address.</p></div>' +
     "</div>" +
     '<div class="field-wrapper city-field cityAddressBlock" style="display: ' +
@@ -1020,7 +1019,7 @@ function getPartnerFormHtml(num, data, isSaved) {
     '<label>City <span class="urc-p">*</span></label>' +
     '<div class="custom-select-wrapper cityCustomSelect" id="partnerCityWrapper_' +
     num +
-    '" columns_name="city">' +
+    '" column-name="city">' +
     '<div class="custom-select-trigger">' +
     '<span class="selected-option" id="partnerCitySpan_' +
     num +
@@ -1041,7 +1040,7 @@ function getPartnerFormHtml(num, data, isSaved) {
     "</div>" +
     '<select id="partnerCity_' +
     num +
-    '" class="city-select" style="display: none" columns_name="city"><option value="' +
+    '" class="city-select" style="display: none" column-name="city"><option value="' +
     (city || "") +
     '" selected>' +
     (city || "Select city") +
@@ -1055,7 +1054,7 @@ function getPartnerFormHtml(num, data, isSaved) {
     num +
     '" class="partner-pincode pincode-input" placeholder="Enter pin code" maxlength="6" value="' +
     pincode +
-    '" columns_name="pin_code" />' +
+    '" column-name="pin_code" />' +
     '<div class="error-step3-handle" style="display: none"><i class="material-icons">info</i><p>Entered pin code is in wrong format, please enter a valid 6 digit pin.</p></div>' +
     "</div>" +
     '<div class="field-wrapper city-field cityAddressBlock" style="display: ' +
@@ -1067,7 +1066,7 @@ function getPartnerFormHtml(num, data, isSaved) {
     num +
     '" class="partner-state state-input" placeholder="State" readonly value="' +
     state +
-    '" columns_name="state" />' +
+    '" column-name="state" />' +
     "</div>" +
     "</div>" +
     "</div>" +
@@ -1076,7 +1075,7 @@ function getPartnerFormHtml(num, data, isSaved) {
     '<label>Community <span class="partner-required">*</span></label>' +
     '<div class="custom-select-wrapper community-select" id="partnerCommunityWrapper_' +
     num +
-    '" columns_name="community">' +
+    '" column-name="community">' +
     '<div class="custom-select-trigger">' +
     '<span class="selected-option" id="partnerCommunitySpan_' +
     num +
@@ -1114,7 +1113,7 @@ function getPartnerFormHtml(num, data, isSaved) {
     "</div>" +
     '<select id="partnerCommunity_' +
     num +
-    '" class="partner-community" style="display: none" columns_name="community">' +
+    '" class="partner-community" style="display: none" column-name="community">' +
     '<option value="">Select community</option>' +
     '<option value="Hindu"' +
     (community === "Hindu" ? " selected" : "") +
@@ -1148,7 +1147,7 @@ function getPartnerFormHtml(num, data, isSaved) {
     '<label>Category <span class="partner-required">*</span></label>' +
     '<div class="custom-select-wrapper category-select" id="partnerCategoryWrapper_' +
     num +
-    '" columns_name="category">' +
+    '" column-name="category">' +
     '<div class="custom-select-trigger">' +
     '<span class="selected-option" id="partnerCategorySpan_' +
     num +
@@ -1177,7 +1176,7 @@ function getPartnerFormHtml(num, data, isSaved) {
     "</div>" +
     '<select id="partnerCategory_' +
     num +
-    '" class="partner-category" style="display: none" columns_name="category">' +
+    '" class="partner-category" style="display: none" column-name="category">' +
     '<option value="">Select category</option>' +
     '<option value="General"' +
     (category === "General" ? " selected" : "") +
