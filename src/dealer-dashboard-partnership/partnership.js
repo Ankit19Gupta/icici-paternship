@@ -36,8 +36,8 @@ const MIN_YEAR = 1940;
 // variables to manage partner reduction confirmation
 let pendingPartnerReductionCount = null;
 let previousPartnerCount = 0;
-// extarct pancard fix by ANkit: Object to store PAN cards of deleted partners
-let deletedPartnerPans = {};
+// extarct pancard fix by ANkit: Array of objects to store PAN cards of deleted partners
+let deletedPartnerPans = [];
 
 function pad(n) {
   return n < 10 ? "0" + n : "" + n;
@@ -2583,16 +2583,28 @@ $(document).on("click", "#confirmPartnerBtn", function (e) {
           });
       }
 
-      // extarct pancard fix by ANkit: Store in object only if PAN is not empty
+      // extarct pancard fix by ANkit: Store in array of objects only if PAN is not empty
       if (pan && pan.length > 0) {
-        deletedPartnerPans[partnerNum] = pan;
+        const existingIndex = deletedPartnerPans.findIndex(
+          (item) => item.partner === partnerNum,
+        );
+        const partnerPanObj = {
+          partner: partnerNum,
+          pan: pan,
+          PARTNER_PAN: pan,
+        };
+        if (existingIndex > -1) {
+          deletedPartnerPans[existingIndex] = partnerPanObj;
+        } else {
+          deletedPartnerPans.push(partnerPanObj);
+        }
       }
 
       $(this).remove();
     }
   });
 
-  // extarct pancard fix by ANkit: Deleted Partner PANs stored in object
+  // extarct pancard fix by ANkit: Deleted Partner PANs stored in array of objects
   console.log(
     "extarct pancard fix by ANkit: Deleted Partner PANs:",
     deletedPartnerPans,
@@ -2939,8 +2951,8 @@ $(document).on(
 function resetPartnershipStep3Form() {
   pendingPartnerReductionCount = null;
   previousPartnerCount = 0;
-  // extarct pancard fix by ANkit: Reset deleted PANs object
-  deletedPartnerPans = {};
+  // extarct pancard fix by ANkit: Reset deleted PANs array
+  deletedPartnerPans = [];
   $("#partnerConfirmationModal").removeClass("show").hide();
   const $targetModal = $("#partnershipStep3Modal");
   $targetModal.find("#partnerCount").val("");
@@ -2970,5 +2982,3 @@ window.partnershipStep3 = {
   dummyData: dummyPartnerData,
 };
 window.partnershipStep3DataMappingOnLoad = partnershipStep3DataMappingOnLoad;
-
-// Array of an object mei store krna hai pan number
