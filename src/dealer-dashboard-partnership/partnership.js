@@ -561,7 +561,7 @@ $(document).on("click", "#partnershipStep3NextBtn", function (e) {
   }
 });
 
-// Adding default value accordion fix by Ankit
+// saved accordion fix by Ankit
 const dummyPartnerData = [
   {
     ADDRESS: "andheri east 11",
@@ -577,7 +577,7 @@ const dummyPartnerData = [
     MIDDLE_NAME: null,
     MOBILE_NUMBER: "9999546499",
     PARTNER_PAN: "ABCPD0002P",
-    PERCOFCONTROL: 100,
+    PERCOFCONTROL: 25,
     PIN_CODE: "122001",
     PREFIX: "Mr.",
     STATE: "HARYANA",
@@ -596,7 +596,7 @@ const dummyPartnerData = [
     MIDDLE_NAME: null,
     MOBILE_NUMBER: "9999546498",
     PARTNER_PAN: "ABCPD0002M",
-    PERCOFCONTROL: 0,
+    PERCOFCONTROL: 25,
     PIN_CODE: "122001",
     PREFIX: "Mr.",
     STATE: "HARYANA",
@@ -615,7 +615,7 @@ const dummyPartnerData = [
     MIDDLE_NAME: null,
     MOBILE_NUMBER: "9999546497",
     PARTNER_PAN: "ABCPD0002L",
-    PERCOFCONTROL: 50,
+    PERCOFCONTROL: 25,
     PIN_CODE: "122001",
     PREFIX: "Mr.",
     STATE: "HARYANA",
@@ -626,22 +626,120 @@ const dummyPartnerData = [
     CATEGORY: "General",
     CITY: "SOHNA ADDA",
     COMMUNITY: "Hindu",
-    DOB: "1985-11-20",
-    EMAIL_ID: "c@g.csss",
-    FIRST_NAME: "SSSSS",
+    DOB: "1988-12-10",
+    EMAIL_ID: "d@g.csss",
+    FIRST_NAME: "DDDDD",
     GENDER: "Male",
-    LAST_NAME: "JJJJJ",
+    LAST_NAME: "KKKKK",
     MIDDLE_NAME: null,
-    MOBILE_NUMBER: "9999546497",
-    PARTNER_PAN: "ABCPD0002L",
-    PERCOFCONTROL: 55,
+    MOBILE_NUMBER: "9999546496",
+    PARTNER_PAN: "ABCPD0002K",
+    PERCOFCONTROL: 25,
     PIN_CODE: "122001",
     PREFIX: "Mr.",
     STATE: "HARYANA",
   },
 ];
 
-// Adding default value accordion fix by Ankit
+// saved accordion fix by Ankit: Check if partner data from backend is filled
+function isPartnerDataFilled(data) {
+  if (!data || typeof data !== "object") return false;
+  return Boolean(
+    (data.FIRST_NAME && String(data.FIRST_NAME).trim()) ||
+    (data.PARTNER_PAN && String(data.PARTNER_PAN).trim()) ||
+    (data.MOBILE_NUMBER && String(data.MOBILE_NUMBER).trim()) ||
+    (data.EMAIL_ID && String(data.EMAIL_ID).trim())
+  );
+}
+
+// saved accordion fix by Ankit: Build partner summary card HTML
+function buildPartnerSummaryHtml(data) {
+  data = data || {};
+  const prefix = formatPartnerTitle(data.PREFIX || "Mr.");
+  const firstName = (data.FIRST_NAME || "").trim();
+  const middleName =
+    data.MIDDLE_NAME && data.MIDDLE_NAME !== "null"
+      ? data.MIDDLE_NAME.trim()
+      : "";
+  const lastName = (data.LAST_NAME || "").trim();
+  const fullName = (
+    prefix +
+    " " +
+    firstName +
+    (middleName ? " " + middleName : "") +
+    " " +
+    lastName
+  ).trim();
+
+  let mobile = String(data.MOBILE_NUMBER || "").trim();
+  let mobileClean = mobile.replace(/\D/g, "");
+  if (mobileClean.startsWith("91") && mobileClean.length === 12) {
+    mobileClean = mobileClean.slice(2);
+  }
+  if (mobileClean.length === 10) {
+    mobile = "+91 " + mobileClean;
+  }
+
+  const email = (data.EMAIL_ID || "").trim();
+  const pan = (data.PARTNER_PAN || "").trim().toUpperCase();
+  const ownership =
+    data.PERCOFCONTROL !== undefined && data.PERCOFCONTROL !== null
+      ? String(data.PERCOFCONTROL).trim()
+      : "";
+  const gender = (data.GENDER || "").trim();
+  const dob = (data.DOB || "").trim();
+  const community = (data.COMMUNITY || "").trim();
+  const category = (data.CATEGORY || "").trim();
+
+  const address = (data.ADDRESS || "").trim();
+  const pincode = (data.PIN_CODE || "").trim();
+  const city = (data.CITY || "").trim();
+  const state = (data.STATE || "").trim();
+
+  let fullAddress = address;
+  if (city && city !== "Select city") fullAddress += ", " + city;
+  if (state && state !== "Not found") fullAddress += ", " + state;
+  if (pincode) fullAddress += " - " + pincode;
+
+  return (
+    '<div class="partner-summary">' +
+    '<div class="partner-summary-grid">' +
+    '<div><p class="partner-summary-label">Name</p><p class="partner-summary-value">' +
+    fullName +
+    "</p></div>" +
+    '<div><p class="partner-summary-label">Mobile number</p><p class="partner-summary-value">' +
+    mobile +
+    "</p></div>" +
+    '<div><p class="partner-summary-label">Email ID</p><p class="partner-summary-value">' +
+    email +
+    "</p></div>" +
+    '<div><p class="partner-summary-label">PAN</p><p class="partner-summary-value">' +
+    pan +
+    "</p></div>" +
+    '<div><p class="partner-summary-label">Ownership control</p><p class="partner-summary-value">' +
+    ownership +
+    "%</p></div>" +
+    '<div><p class="partner-summary-label">Gender</p><p class="partner-summary-value">' +
+    gender +
+    "</p></div>" +
+    '<div><p class="partner-summary-label">Date of birth</p><p class="partner-summary-value">' +
+    dob +
+    "</p></div>" +
+    '<div><p class="partner-summary-label">Community</p><p class="partner-summary-value">' +
+    community +
+    "</p></div>" +
+    '<div><p class="partner-summary-label">Category</p><p class="partner-summary-value">' +
+    category +
+    "</p></div>" +
+    '<div><p class="partner-summary-label">Address</p><p class="partner-summary-value">' +
+    fullAddress +
+    "</p></div>" +
+    "</div>" +
+    "</div>"
+  );
+}
+
+// saved accordion fix by Ankit: Map backend partner data on load
 async function partnershipStep3DataMappingOnLoad() {
   let allPartners;
   try {
@@ -657,6 +755,7 @@ async function partnershipStep3DataMappingOnLoad() {
 
   for (var i = 1; i <= partnerCount; i++) {
     const partnerData = allPartners[i - 1];
+    // saved accordion fix by Ankit: Backend filled partner rendered as saved card
     $container.append(getPartnerFormHtml(i, partnerData));
   }
 
@@ -665,10 +764,15 @@ async function partnershipStep3DataMappingOnLoad() {
   checkAllPartnersSaved();
 }
 
-// Adding default value accordion fix by Ankit
-// Dynamic Partner Html Page
-function getPartnerFormHtml(num, data) {
+// saved accordion fix by Ankit
+// Dynamic Partner Html Page: renders saved card if backend data is filled, or normal accordion for new partners
+function getPartnerFormHtml(num, data, isSaved) {
   data = data || {};
+  if (typeof isSaved === "undefined") {
+    // saved accordion fix by Ankit: Check if data is pre-filled from backend
+    isSaved = isPartnerDataFilled(data);
+  }
+
   const prefix = data.PREFIX || "Mr.";
   const firstName = data.FIRST_NAME || "";
   const middleName =
@@ -693,16 +797,32 @@ function getPartnerFormHtml(num, data) {
   const hasCityState = Boolean(city || state || pincode);
   const cityDisplay = hasCityState ? "block" : "none";
 
+  // saved accordion fix by Ankit: Saved card state vs normal accordion state
+  const accordionClass = isSaved
+    ? "partner-accordion saved"
+    : "partner-accordion";
+  const iconDisplay = isSaved ? ' style="display: none"' : "";
+  const editBtnHtml = isSaved
+    ? '<span class="partner-edit-btn"><i class="material-icons">edit</i> Edit</span>'
+    : "";
+  const summaryHtml = isSaved ? buildPartnerSummaryHtml(data) : "";
+
   return (
-    '<div class="partner-accordion" data-partner="' +
+    '<div class="' +
+    accordionClass +
+    '" data-partner="' +
     num +
     '">' +
     '<div class="partner-accordion-header">' +
     '<span class="partner-accordion-span">Partner ' +
     num +
     "</span>" +
-    '<i class="material-icons">expand_more</i>' +
+    '<i class="material-icons"' +
+    iconDisplay +
+    ">expand_more</i>" +
+    editBtnHtml +
     "</div>" +
+    summaryHtml +
     '<div class="partner-accordion-content" style="display: none">' +
     '<div class="proprietor-grid custom-margin">' +
     '<div class="proprietor-first-section">' +
@@ -1084,7 +1204,11 @@ function getPartnerFormHtml(num, data) {
     '" class="partner-reset-btn">Reset</button>' +
     '<button type="button" id="partnerSaveBtn_' +
     num +
-    '" class="partner-save-btn" disabled>Save</button>' +
+    '" class="partner-save-btn' +
+    (isSaved ? " enabled" : "") +
+    '"' +
+    (isSaved ? "" : " disabled") +
+    ">Save</button>" +
     "</div>" +
     "</div>" +
     "</div>"
@@ -2192,6 +2316,7 @@ $(document).on("input change", "#partnerCount", function () {
   if (count > currentCount) {
     if (count >= 2) {
       for (let i = currentCount + 1; i <= count; i++) {
+        // saved accordion fix by Ankit: newly added partner rendered as normal accordion
         $container.append(getPartnerFormHtml(i));
       }
       previousPartnerCount = count;
@@ -2467,21 +2592,25 @@ $(document).on(
     if (state && state !== "Not found") fullAddress += ", " + state;
     if (pincode) fullAddress += " - " + pincode;
 
-    const summaryHtml = `
-      <div class="partner-summary">
-        <div class="partner-summary-grid">
-          <div><p class="partner-summary-label">Name</p><p class="partner-summary-value">${fullName}</p></div>
-          <div><p class="partner-summary-label">Mobile number</p><p class="partner-summary-value">${mobile}</p></div>
-          <div><p class="partner-summary-label">Email ID</p><p class="partner-summary-value">${email}</p></div>
-          <div><p class="partner-summary-label">PAN</p><p class="partner-summary-value">${pan}</p></div>
-          <div><p class="partner-summary-label">Ownership control</p><p class="partner-summary-value">${ownership}%</p></div>
-          <div><p class="partner-summary-label">Gender</p><p class="partner-summary-value">${gender}</p></div>
-          <div><p class="partner-summary-label">Date of birth</p><p class="partner-summary-value">${dob}</p></div>
-          <div><p class="partner-summary-label">Community</p><p class="partner-summary-value">${community}</p></div>
-          <div><p class="partner-summary-label">Category</p><p class="partner-summary-value">${category}</p></div>
-          <div><p class="partner-summary-label">Address</p><p class="partner-summary-value">${fullAddress}</p></div>
-        </div>
-      </div>`;
+    // saved accordion fix by Ankit: Save summary using reusable builder
+    const summaryHtml = buildPartnerSummaryHtml({
+      PREFIX: rawTitle,
+      FIRST_NAME: firstName,
+      MIDDLE_NAME: middleName,
+      LAST_NAME: lastName,
+      MOBILE_NUMBER: mobile,
+      EMAIL_ID: email,
+      PARTNER_PAN: pan,
+      PERCOFCONTROL: ownership,
+      GENDER: gender,
+      DOB: dob,
+      COMMUNITY: community,
+      CATEGORY: category,
+      ADDRESS: address,
+      CITY: city,
+      STATE: state,
+      PIN_CODE: pincode,
+    });
 
     $accordion.find(".partner-summary").remove();
     $accordion.find(".partner-edit-btn").remove();
@@ -2502,7 +2631,7 @@ $(document).on(
   },
 );
 
-// Edit Accordion
+// saved accordion fix by Ankit: Edit Accordion
 $(document).on(
   "click",
   "#partnershipStep3Modal .partner-edit-btn",
@@ -2511,6 +2640,24 @@ $(document).on(
     e.stopPropagation();
 
     const $accordion = $(this).closest(".partner-accordion");
+
+    // saved accordion fix by Ankit: Close other non-saved open accordions
+    $("#partnershipStep3Modal .partner-accordion")
+      .not($accordion)
+      .not(".saved")
+      .each(function () {
+        $(this).removeClass("active calendar-open");
+        $(this)
+          .find(".partner-accordion-content")
+          .removeClass("calendar-open")
+          .slideUp(200);
+        $(this).find(".custom-calendar-popup").hide();
+        resetAccordionCalendarSpace($(this).find(".custom-calendar-popup")[0]);
+        $(this)
+          .find(".partner-accordion-header i.material-icons")
+          .text("expand_more");
+      });
+
     $accordion.find(".partner-summary").remove();
     $accordion.find(".partner-edit-btn").remove();
     $accordion
