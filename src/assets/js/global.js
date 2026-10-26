@@ -800,3 +800,10 @@ document.addEventListener(
   },
   true,
 );
+
+
+const getStateData = [
+  {
+    cityname
+  }
+]

@@ -1050,9 +1050,12 @@ function getPartnerFormHtml(num, data, isSaved) {
     "<div>" +
     '<div class="field-wrapper">' +
     '<label>Pin code <span class="partner-required">*</span></label>' +
+    // city fix by ankit: retain loaded pincode attribute
     '<input type="text" inputmode="numeric" id="partnerPincode_' +
     num +
     '" class="partner-pincode pincode-input" placeholder="Enter pin code" maxlength="6" value="' +
+    pincode +
+    '" data-loaded-pincode="' +
     pincode +
     '" column-name="pin_code" />' +
     '<div class="error-step3-handle" style="display: none"><i class="material-icons">info</i><p>Entered pin code is in wrong format, please enter a valid 6 digit pin.</p></div>' +
@@ -1214,8 +1217,137 @@ function getPartnerFormHtml(num, data, isSaved) {
   );
 }
 
-// Pincode, City ad State
-function populateCityAndState($container, pincode) {
+// city fix by ankit: API call to fetch city and state by pincode
+async function fetchCityStateFromApi(cleanPin) {
+  if (typeof callApi === "function") {
+    // 1. Try standard query param ?pincode=
+    try {
+      const res = await callApi(
+        "/supply-chain-finance/sanction/get-city-state-by-pincode?pincode=" +
+          cleanPin,
+      );
+      if (res) return res;
+    } catch (e1) {
+      console.warn("city fix by ankit: callApi with ?pincode= failed", e1);
+    }
+
+    // 2. Try query param ?pinCode=
+    try {
+      const res = await callApi(
+        "/supply-chain-finance/sanction/get-city-state-by-pincode?pinCode=" +
+          cleanPin,
+      );
+      if (res) return res;
+    } catch (e2) {
+      console.warn("city fix by ankit: callApi with ?pinCode= failed", e2);
+    }
+
+    // 3. Try with payload object
+    try {
+      const res = await callApi(
+        "/supply-chain-finance/sanction/get-city-state-by-pincode",
+        { pincode: cleanPin },
+      );
+      if (res) return res;
+    } catch (e3) {
+      console.warn("city fix by ankit: callApi with payload object failed", e3);
+    }
+
+    // 4. Try path param
+    try {
+      const res = await callApi(
+        "/supply-chain-finance/sanction/get-city-state-by-pincode/" + cleanPin,
+      );
+      if (res) return res;
+    } catch (e4) {
+      console.warn("city fix by ankit: callApi with path param failed", e4);
+    }
+  }
+  return null;
+}
+
+// city fix by ankit: Parse city and state from API response or fallback data
+function parseCityStateData(response, cleanPin) {
+  let list = [];
+  if (Array.isArray(response)) {
+    list = response;
+  } else if (response && typeof response === "object") {
+    if (Array.isArray(response.data)) {
+      list = response.data;
+    } else if (Array.isArray(response.result)) {
+      list = response.result;
+    } else if (Array.isArray(response.response)) {
+      list = response.response;
+    } else if (Array.isArray(response.cityStateData)) {
+      list = response.cityStateData;
+    } else if (Array.isArray(response.cities)) {
+      return {
+        cities: response.cities,
+        state: response.state || "",
+      };
+    }
+  }
+
+  if (list && list.length > 0) {
+    const cities = [];
+    let state = "";
+    list.forEach(function (item) {
+      if (!item) return;
+      if (typeof item === "string") {
+        const val = item.trim();
+        if (val && cities.indexOf(val) === -1) cities.push(val);
+        return;
+      }
+      const cityName = (
+        item.CITYNAME ||
+        item.cityName ||
+        item.CityName ||
+        item.city ||
+        item.CITY ||
+        ""
+      ).trim();
+      const stateName = (
+        item.STATENAME ||
+        item.stateName ||
+        item.StateName ||
+        item.state ||
+        item.STATE ||
+        ""
+      ).trim();
+
+      if (cityName && cities.indexOf(cityName) === -1) {
+        cities.push(cityName);
+      }
+      if (!state && stateName) {
+        state = stateName;
+      }
+    });
+
+    if (cities.length > 0 || state) {
+      return {
+        cities: cities,
+        state: state,
+      };
+    }
+  }
+
+  // city fix by ankit: Fallback to static pincodeData
+  if (
+    typeof pincodeData !== "undefined" &&
+    pincodeData &&
+    pincodeData[cleanPin]
+  ) {
+    return {
+      cities: pincodeData[cleanPin].cities || [],
+      state: pincodeData[cleanPin].state || "",
+    };
+  }
+
+  return null;
+}
+
+// city fix by ankit: Pincode, City and State handler
+async function populateCityAndState($container, pincode, customData) {
   const cleanPin = (pincode || "").replace(/\D/g, "");
   const num = $container.closest(".partner-accordion").data("partner");
   const cityBlock = $container.find(".cityAddressBlock");
@@ -1225,59 +1357,117 @@ function populateCityAndState($container, pincode) {
   const stateInput = $("#partnerState_" + num).length
     ? $("#partnerState_" + num)
     : $container.find(".partner-state, .state-input");
+  const pincodeInput = $("#partnerPincode_" + num).length
+    ? $("#partnerPincode_" + num)
+    : $container.find(".partner-pincode, .pincode-input");
 
-  if (cleanPin.length === 6 && pincodeData[cleanPin]) {
-    const info = pincodeData[cleanPin];
-    cityBlock.show();
+  if (cleanPin.length === 6) {
+    const lastLoadedPin = pincodeInput.attr("data-loaded-pincode");
+    const currentSelectedCity = ($("#partnerCity_" + num).val() || "").trim();
 
-    if (stateInput.length) {
-      stateInput.val(info.state).removeClass("is-error").addClass("is-success");
+    let info = null;
+    if (customData) {
+      info = parseCityStateData(customData, cleanPin);
     }
 
-    if (citySelect.length) {
-      const optionsContainer = citySelect.find(".custom-select-options");
-      const triggerSpan = citySelect.find(
-        ".custom-select-trigger .selected-option",
-      );
-      const hiddenSelect = $("#partnerCity_" + num).length
-        ? $("#partnerCity_" + num)
-        : citySelect.siblings("select.city-select");
+    if (!info) {
+      try {
+        const apiRes = await fetchCityStateFromApi(cleanPin);
+        if (apiRes) {
+          info = parseCityStateData(apiRes, cleanPin);
+        }
+      } catch (e) {
+        console.warn("city fix by ankit: error fetching city/state", e);
+      }
+    }
 
-      optionsContainer.empty();
-      info.cities.forEach(function (city) {
-        optionsContainer.append(
-          '<div class="option-item" data-value="' +
-            city +
-            '">' +
-            city +
-            "</div>",
+    if (!info) {
+      info = parseCityStateData(null, cleanPin);
+    }
+
+    if (info && info.cities && info.cities.length > 0) {
+      // city fix by ankit: Cache in pincodeData and mark input
+      if (typeof pincodeData !== "undefined") {
+        pincodeData[cleanPin] = info;
+      }
+      pincodeInput.attr("data-loaded-pincode", cleanPin);
+
+      cityBlock.show();
+
+      if (stateInput.length) {
+        stateInput
+          .val(info.state)
+          .removeClass("is-error")
+          .addClass("is-success");
+      }
+
+      if (citySelect.length) {
+        const optionsContainer = citySelect.find(".custom-select-options");
+        const triggerSpan = citySelect.find(
+          ".custom-select-trigger .selected-option",
         );
-      });
+        const hiddenSelect = $("#partnerCity_" + num).length
+          ? $("#partnerCity_" + num)
+          : citySelect.siblings("select.city-select");
 
-      const selectedCity = info.cities[0] || "";
-      triggerSpan.text(selectedCity).removeClass("placeholder");
-      if (hiddenSelect.length) {
-        hiddenSelect.empty();
+        // city fix by ankit: Retain current city if pincode hasn't changed, else default to first city
+        let selectedCity = info.cities[0] || "";
+        if (
+          lastLoadedPin === cleanPin &&
+          currentSelectedCity &&
+          info.cities.indexOf(currentSelectedCity) !== -1
+        ) {
+          selectedCity = currentSelectedCity;
+        }
+
+        // city fix by ankit: Append all cities to dropdown
+        optionsContainer.empty();
         info.cities.forEach(function (city) {
-          hiddenSelect.append(
-            '<option value="' + city + '">' + city + "</option>",
+          const isSelected = city === selectedCity;
+          optionsContainer.append(
+            '<div class="option-item' +
+              (isSelected ? " selected" : "") +
+              '" data-value="' +
+              city +
+              '">' +
+              city +
+              "</div>",
           );
         });
-        hiddenSelect.val(selectedCity);
+
+        // city fix by ankit: First city selected by default and user can change it
+        triggerSpan.text(selectedCity).removeClass("placeholder");
+
+        if (hiddenSelect.length) {
+          hiddenSelect.empty();
+          info.cities.forEach(function (city) {
+            const isSelected = city === selectedCity;
+            hiddenSelect.append(
+              '<option value="' +
+                city +
+                '"' +
+                (isSelected ? " selected" : "") +
+                ">" +
+                city +
+                "</option>",
+            );
+          });
+          hiddenSelect.val(selectedCity);
+          hiddenSelect.trigger("change");
+        }
       }
-      optionsContainer
-        .find('.option-item[data-value="' + selectedCity + '"]')
-        .addClass("selected");
-    }
-  } else if (cleanPin.length === 6) {
-    cityBlock.show();
-    if (stateInput.length) stateInput.val("Not found").addClass("is-error");
-    if (citySelect.length) {
-      citySelect.find(".selected-option").text("Select city");
-      citySelect.siblings("select").val("");
-      citySelect.find(".custom-select-options").empty();
+    } else {
+      cityBlock.show();
+      pincodeInput.removeAttr("data-loaded-pincode");
+      if (stateInput.length) stateInput.val("Not found").addClass("is-error");
+      if (citySelect.length) {
+        citySelect.find(".selected-option").text("Select city");
+        citySelect.siblings("select").val("");
+        citySelect.find(".custom-select-options").empty();
+      }
     }
   } else {
+    pincodeInput.removeAttr("data-loaded-pincode");
     cityBlock.hide();
     if (stateInput.length)
       stateInput.val("").removeClass("is-error is-success");
@@ -1992,9 +2182,9 @@ $(document).on(
   },
 );
 
-// Pin code: digits only, autofill
+// city fix by ankit: Pin code input and change: digits only, autofill city & state
 $(document).on(
-  "input",
+  "input change",
   '#partnershipStep3Modal input.partner-pincode, #partnershipStep3Modal input.pincode-input, #partnershipStep3Modal input[placeholder="Enter pin code"]',
   function () {
     const clean = $(this).val().replace(/\D/g, "").slice(0, 6);
@@ -2002,12 +2192,16 @@ $(document).on(
     const $container = $(this).closest(".partner-accordion-content");
     if (clean.length === 6) {
       populateCityAndState($container, clean);
+    } else if (clean.length < 6) {
+      $(this).removeAttr("data-loaded-pincode");
+      populateCityAndState($container, clean);
     }
     const $acc = $(this).closest(".partner-accordion");
     if ($acc.length) updateValidationState($acc);
   },
 );
 
+// city fix by ankit: Pin code blur event
 $(document).on(
   "blur",
   '#partnershipStep3Modal input.partner-pincode, #partnershipStep3Modal input.pincode-input, #partnershipStep3Modal input[placeholder="Enter pin code"]',
@@ -2021,6 +2215,7 @@ $(document).on(
     if (val.length > 0 && val.length !== 6) {
       errorDiv.show();
       $(this).addClass("is-error").removeClass("is-success");
+      $(this).removeAttr("data-loaded-pincode");
     } else if (val.length === 6) {
       errorDiv.hide();
       $(this).removeClass("is-error").addClass("is-success");
@@ -2028,6 +2223,7 @@ $(document).on(
     } else {
       errorDiv.hide();
       $(this).removeClass("is-error is-success");
+      $(this).removeAttr("data-loaded-pincode");
     }
 
     const $acc = $(this).closest(".partner-accordion");
@@ -2481,8 +2677,8 @@ $(document).on(
     e.stopPropagation();
     const $accordion = $(this).closest(".partner-accordion");
     const num = $accordion.data("partner");
-    console.log("Accordion", $accordion);
-    console.log("Number", num);
+    // console.log("Accordion", $accordion);
+    // console.log("Number", num);
 
     // Verify uniqueness before saving
     const mobileVal = getCleanMobileNumber($("#partnerMobile_" + num).val());
@@ -2639,6 +2835,7 @@ $(document).on(
     e.stopPropagation();
 
     const $accordion = $(this).closest(".partner-accordion");
+    console.log("Edit Accordion", $accordion);
 
     // saved accordion fix by Ankit: Close other non-saved open accordions
     $("#partnershipStep3Modal .partner-accordion")
