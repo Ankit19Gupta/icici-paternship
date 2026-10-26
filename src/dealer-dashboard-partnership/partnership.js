@@ -1217,133 +1217,95 @@ function getPartnerFormHtml(num, data, isSaved) {
   );
 }
 
-// city fix by ankit: API call to fetch city and state by pincode
+// city fix by ankit: Single dummy city and state data in exact backend format (Array of objects)
+const dummyCityStateData = [
+  { CITYNAME: "MUMBAI", STATENAME: "MAHARASHTRA" },
+  { CITYNAME: "URAN", STATENAME: "MAHARASHTRA" },
+];
+
+// city fix by ankit: API call to fetch city and state by pincode (api url + pinCode)
 async function fetchCityStateFromApi(cleanPin) {
+  let cityStateData;
+  const apiUrl = "/supply-chain-finance/sanction/get-city-state-by-pincode/";
   if (typeof callApi === "function") {
-    // 1. Try standard query param ?pincode=
     try {
-      const res = await callApi(
-        "/supply-chain-finance/sanction/get-city-state-by-pincode?pincode=" +
-          cleanPin,
-      );
-      if (res) return res;
-    } catch (e1) {
-      console.warn("city fix by ankit: callApi with ?pincode= failed", e1);
+      cityStateData = await callApi(apiUrl + cleanPin);
+    } catch (e) {
+      try {
+        cityStateData = await callApi(
+          "/supply-chain-finance/sanction/get-city-state-by-pincode?pincode=" +
+            cleanPin,
+        );
+      } catch (err) {
+        console.warn("city fix by ankit: API call error, using dummy data", err);
+        cityStateData = dummyCityStateData;
+      }
     }
-
-    // 2. Try query param ?pinCode=
-    try {
-      const res = await callApi(
-        "/supply-chain-finance/sanction/get-city-state-by-pincode?pinCode=" +
-          cleanPin,
-      );
-      if (res) return res;
-    } catch (e2) {
-      console.warn("city fix by ankit: callApi with ?pinCode= failed", e2);
-    }
-
-    // 3. Try with payload object
-    try {
-      const res = await callApi(
-        "/supply-chain-finance/sanction/get-city-state-by-pincode",
-        { pincode: cleanPin },
-      );
-      if (res) return res;
-    } catch (e3) {
-      console.warn("city fix by ankit: callApi with payload object failed", e3);
-    }
-
-    // 4. Try path param
-    try {
-      const res = await callApi(
-        "/supply-chain-finance/sanction/get-city-state-by-pincode/" + cleanPin,
-      );
-      if (res) return res;
-    } catch (e4) {
-      console.warn("city fix by ankit: callApi with path param failed", e4);
-    }
+  } else {
+    cityStateData = dummyCityStateData;
   }
-  return null;
+  return cityStateData;
 }
 
 // city fix by ankit: Parse city and state from API response or fallback data
-function parseCityStateData(response, cleanPin) {
-  let list = [];
-  if (Array.isArray(response)) {
-    list = response;
-  } else if (response && typeof response === "object") {
-    if (Array.isArray(response.data)) {
-      list = response.data;
-    } else if (Array.isArray(response.result)) {
-      list = response.result;
-    } else if (Array.isArray(response.response)) {
-      list = response.response;
-    } else if (Array.isArray(response.cityStateData)) {
-      list = response.cityStateData;
-    } else if (Array.isArray(response.cities)) {
-      return {
-        cities: response.cities,
-        state: response.state || "",
-      };
+function getCityStateData(response, cleanPin) {
+  let list = Array.isArray(response) ? response : [];
+  if (!list || list.length === 0) {
+    if (response && typeof response === "object") {
+      if (Array.isArray(response.data)) list = response.data;
+      else if (Array.isArray(response.result)) list = response.result;
+      else if (Array.isArray(response.cities)) {
+        return {
+          cities: response.cities,
+          state: response.state || "",
+        };
+      }
     }
   }
 
-  if (list && list.length > 0) {
-    const cities = [];
-    let state = "";
-    list.forEach(function (item) {
-      if (!item) return;
-      if (typeof item === "string") {
-        const val = item.trim();
-        if (val && cities.indexOf(val) === -1) cities.push(val);
-        return;
-      }
-      const cityName = (
-        item.CITYNAME ||
-        item.cityName ||
-        item.CityName ||
-        item.city ||
-        item.CITY ||
-        ""
-      ).trim();
-      const stateName = (
-        item.STATENAME ||
-        item.stateName ||
-        item.StateName ||
-        item.state ||
-        item.STATE ||
-        ""
-      ).trim();
+  // city fix by ankit: If no data returned, fallback to single dummy data
+  if (!list || list.length === 0) {
+    list = dummyCityStateData;
+  }
 
-      if (cityName && cities.indexOf(cityName) === -1) {
-        cities.push(cityName);
-      }
-      if (!state && stateName) {
-        state = stateName;
-      }
-    });
-
-    if (cities.length > 0 || state) {
-      return {
-        cities: cities,
-        state: state,
-      };
+  const cities = [];
+  let state = "";
+  list.forEach(function (item) {
+    if (!item) return;
+    if (typeof item === "string") {
+      const val = item.trim();
+      if (val && cities.indexOf(val) === -1) cities.push(val);
+      return;
     }
-  }
+    const cityName = (
+      item.CITYNAME ||
+      item.cityName ||
+      item.CityName ||
+      item.city ||
+      item.CITY ||
+      ""
+    ).trim();
+    const stateName = (
+      item.STATENAME ||
+      item.stateName ||
+      item.StateName ||
+      item.state ||
+      item.STATE ||
+      ""
+    ).trim();
 
-  // city fix by ankit: Fallback to static pincodeData
-  if (
-    typeof pincodeData !== "undefined" &&
-    pincodeData &&
-    pincodeData[cleanPin]
-  ) {
-    return {
-      cities: pincodeData[cleanPin].cities || [],
-      state: pincodeData[cleanPin].state || "",
-    };
-  }
+    if (cityName && cities.indexOf(cityName) === -1) {
+      cities.push(cityName);
+    }
+    if (!state && stateName) {
+      state = stateName;
+    }
+  });
 
-  return null;
+  return {
+    cities: cities,
+    state: state,
+  };
 }
 
 // city fix by ankit: Pincode, City and State handler
@@ -1367,14 +1329,14 @@ async function populateCityAndState($container, pincode, customData) {
 
     let info = null;
     if (customData) {
-      info = parseCityStateData(customData, cleanPin);
+      info = getCityStateData(customData, cleanPin);
     }
 
     if (!info) {
       try {
         const apiRes = await fetchCityStateFromApi(cleanPin);
         if (apiRes) {
-          info = parseCityStateData(apiRes, cleanPin);
+          info = getCityStateData(apiRes, cleanPin);
         }
       } catch (e) {
         console.warn("city fix by ankit: error fetching city/state", e);
@@ -1382,7 +1344,7 @@ async function populateCityAndState($container, pincode, customData) {
     }
 
     if (!info) {
-      info = parseCityStateData(null, cleanPin);
+      info = getCityStateData(null, cleanPin);
     }
 
     if (info && info.cities && info.cities.length > 0) {
@@ -2979,5 +2941,16 @@ window.partnershipStep3 = {
   checkSaved: checkAllPartnersSaved,
   loadData: partnershipStep3DataMappingOnLoad,
   dummyData: dummyPartnerData,
+  // city fix by ankit
+  dummyCityStateData: dummyCityStateData,
+  getCityStateData: getCityStateData,
+  fetchCityStateFromApi: fetchCityStateFromApi,
+  populateCityAndState: populateCityAndState,
 };
 window.partnershipStep3DataMappingOnLoad = partnershipStep3DataMappingOnLoad;
+
+// city fix by ankit
+window.dummyCityStateData = dummyCityStateData;
+window.getCityStateData = getCityStateData;
+window.fetchCityStateFromApi = fetchCityStateFromApi;
+window.populateCityAndState = populateCityAndState;
