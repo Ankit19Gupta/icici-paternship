@@ -2590,7 +2590,7 @@ $(document).on("click", "#confirmPartnerBtn", function (e) {
         );
         const partnerPanObj = {
           partner: partnerNum,
-          pan: pan,
+          // pan: pan,
           PARTNER_PAN: pan,
         };
         if (existingIndex > -1) {
