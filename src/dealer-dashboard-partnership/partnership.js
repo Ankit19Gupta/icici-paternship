@@ -831,7 +831,7 @@ function getPartnerFormHtml(num, data, isSaved) {
     "<label>Title</label>" +
     '<div class="custom-select-wrapper title-select" id="partnerTitleWrapper_' +
     num +
-    '" column-name="title">' +
+    '">' +
     '<div class="custom-select-trigger">' +
     '<span class="selected-option" id="partnerTitleSpan_' +
     num +
@@ -950,7 +950,7 @@ function getPartnerFormHtml(num, data, isSaved) {
     '<label>Gender <span class="partner-required">*</span></label>' +
     '<div class="custom-select-wrapper gender-select" id="partnerGenderWrapper_' +
     num +
-    '" column-name="gender">' +
+    '">' +
     '<div class="custom-select-trigger">' +
     '<span class="selected-option" id="partnerGenderSpan_' +
     num +
@@ -1021,7 +1021,7 @@ function getPartnerFormHtml(num, data, isSaved) {
     '<label>City <span class="urc-p">*</span></label>' +
     '<div class="custom-select-wrapper cityCustomSelect" id="partnerCityWrapper_' +
     num +
-    '" column-name="city">' +
+    '">' +
     '<div class="custom-select-trigger">' +
     '<span class="selected-option" id="partnerCitySpan_' +
     num +
@@ -1080,7 +1080,7 @@ function getPartnerFormHtml(num, data, isSaved) {
     '<label>Community <span class="partner-required">*</span></label>' +
     '<div class="custom-select-wrapper community-select" id="partnerCommunityWrapper_' +
     num +
-    '" column-name="community">' +
+    '">' +
     '<div class="custom-select-trigger">' +
     '<span class="selected-option" id="partnerCommunitySpan_' +
     num +
@@ -1152,7 +1152,7 @@ function getPartnerFormHtml(num, data, isSaved) {
     '<label>Category <span class="partner-required">*</span></label>' +
     '<div class="custom-select-wrapper category-select" id="partnerCategoryWrapper_' +
     num +
-    '" column-name="category">' +
+    '">' +
     '<div class="custom-select-trigger">' +
     '<span class="selected-option" id="partnerCategorySpan_' +
     num +
