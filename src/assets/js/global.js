@@ -1,4 +1,4 @@
-console.log("Global JS Loaded");
+// console.log("Global JS Loaded");
 
 function debounce(func, wait) {
   var timeout;
@@ -801,9 +801,8 @@ document.addEventListener(
   true,
 );
 
-
 const getStateData = [
   {
-    cityname
-  }
-]
+    cityname,
+  },
+];

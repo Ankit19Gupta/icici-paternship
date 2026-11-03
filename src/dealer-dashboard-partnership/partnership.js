@@ -679,7 +679,8 @@ function buildPartnerSummaryHtml(data) {
     mobileClean = mobileClean.slice(2);
   }
   if (mobileClean.length === 10) {
-    mobile = "+91 " + mobileClean;
+    // mobile = "+91 " + mobileClean;
+    mobile = mobileClean;
   }
 
   const email = (data.EMAIL_ID || "").trim();
@@ -1948,7 +1949,8 @@ $(document).on(
       } else {
         errorDiv.hide();
         $(this)
-          .val("+91 " + clean)
+          // .val("+91 " + clean)
+          .val(clean)
           .removeClass("is-error")
           .addClass("is-success");
       }
@@ -2452,7 +2454,6 @@ $(document).on("input change", "#partnerCount", function () {
   if (count > currentCount) {
     if (count >= 2) {
       for (let i = currentCount + 1; i <= count; i++) {
-        // saved accordion fix by Ankit: newly added partner rendered as normal accordion
         $container.append(getPartnerFormHtml(i));
       }
       previousPartnerCount = count;
@@ -2676,8 +2677,7 @@ $(document).on(
     e.stopPropagation();
     const $accordion = $(this).closest(".partner-accordion");
     const num = $accordion.data("partner");
-    // console.log("Accordion", $accordion);
-    // console.log("Number", num);
+    // console.log("accordion", accordion);
 
     // Verify uniqueness before saving
     const mobileVal = getCleanMobileNumber($("#partnerMobile_" + num).val());
@@ -2748,7 +2748,8 @@ $(document).on(
     let mobileClean = mobile.replace(/\D/g, "");
     if (mobileClean.startsWith("91") && mobileClean.length === 12)
       mobileClean = mobileClean.slice(2);
-    if (mobileClean.length === 10) mobile = "+91 " + mobileClean;
+    // if (mobileClean.length === 10) mobile = "+91 " + mobileClean;
+    if (mobileClean.length === 10) mobile = mobileClean;
 
     const email = ($("#partnerEmail_" + num).val() || "").trim();
     const pan = ($("#partnerPan_" + num).val() || "").trim().toUpperCase();
