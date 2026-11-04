@@ -3052,8 +3052,9 @@ $(document).on("change", ".incorporationDate", function () {
     lastName: function (v) {
       return /^[a-zA-Z\s]{2,}$/.test(v.trim());
     },
+    // mobile no fix by ankit
     mobile: function (v) {
-      return /^\d{10}$/.test(v);
+      return /^\d{10}$/.test(v) && !/^0+$/.test(v) && v !== "0000000000" && !v.startsWith("0");
     },
     email: function (v) {
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
@@ -6381,10 +6382,13 @@ function validatePartnerAccordion(accordion) {
 
   var mobileDigits = mobileClean.replace(/\D/g, "");
 
+  // mobile no fix by ankit
+  var isMobileValid = mobileDigits.length === 10 && !/^0+$/.test(mobileDigits) && mobileDigits !== "0000000000" && !mobileDigits.startsWith("0");
+
   var isValid =
     firstName !== "" &&
     lastName !== "" &&
-    mobileDigits.length === 10 &&
+    isMobileValid &&
     email !== "" &&
     email.indexOf("@") !== -1 &&
     email.indexOf(".") !== -1 &&
@@ -6466,13 +6470,15 @@ $(document).on(
       }
     }
 
-    if (val.length > 0 && val.length < 10) {
+    // mobile no fix by ankit
+    var isValValid = val.length === 10 && !/^0+$/.test(val) && val !== "0000000000" && !val.startsWith("0");
+    if ((val.length > 0 && val.length < 10) || (val.length === 10 && !isValValid)) {
       errorDiv.show();
-      $(this).addClass("is-error");
+      $(this).addClass("is-error").removeClass("is-success");
     } else if (val.length === 0) {
       errorDiv.hide();
-      $(this).removeClass("is-error");
-    } else if (val.length === 10) {
+      $(this).removeClass("is-error is-success");
+    } else if (isValValid) {
       errorDiv.hide();
       $(this).removeClass("is-error").addClass("is-success");
     }

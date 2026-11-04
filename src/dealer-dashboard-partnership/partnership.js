@@ -678,7 +678,8 @@ function buildPartnerSummaryHtml(data) {
   if (mobileClean.startsWith("91") && mobileClean.length === 12) {
     mobileClean = mobileClean.slice(2);
   }
-  if (mobileClean.length === 10) {
+  // mobile no fix by ankit
+  if (isValidMobileNumber(mobileClean)) {
     // mobile = "+91 " + mobileClean;
     mobile = mobileClean;
   }
@@ -1627,6 +1628,17 @@ function getCleanMobileNumber(val) {
   return digits;
 }
 
+// mobile no fix by ankit
+function isValidMobileNumber(val) {
+  const clean = getCleanMobileNumber(val);
+  if (!clean || clean.length !== 10) return false;
+  // Ten digit zero or all zeros or starting with 0 is invalid
+  if (/^0+$/.test(clean) || clean === "0000000000" || clean.startsWith("0")) {
+    return false;
+  }
+  return true;
+}
+
 function getCleanPanNumber(val) {
   return (val || "").replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
 }
@@ -1658,7 +1670,12 @@ function isFieldUniqueAcrossPartners(field, value, currentNum) {
         const otherMobile = getCleanMobileNumber(
           $("#partnerMobile_" + otherNum).val(),
         );
-        if (otherMobile && otherMobile.length === 10 && otherMobile === value) {
+        // mobile no fix by ankit
+        if (
+          otherMobile &&
+          isValidMobileNumber(otherMobile) &&
+          otherMobile === value
+        ) {
           isUnique = false;
           return false;
         }
@@ -1684,6 +1701,7 @@ function syncUniquenessAcrossAccordions(fieldToSync) {
     const isSaved = $acc.hasClass("saved");
 
     // Check Mobile
+    // mobile no fix by ankit
     if (!fieldToSync || fieldToSync === "mobile") {
       const $mobileInput = $("#partnerMobile_" + num);
       if ($mobileInput.length) {
@@ -1691,7 +1709,7 @@ function syncUniquenessAcrossAccordions(fieldToSync) {
           .closest(".field-wrapper")
           .find(".error-step3-handle");
         const mobileVal = getCleanMobileNumber($mobileInput.val());
-        if (mobileVal.length === 10) {
+        if (isValidMobileNumber(mobileVal)) {
           const isUnique = isFieldUniqueAcrossPartners(
             "mobile",
             mobileVal,
@@ -1703,10 +1721,22 @@ function syncUniquenessAcrossAccordions(fieldToSync) {
               .text("Mobile number is already used for another partner.");
             $err.show();
             $mobileInput.addClass("is-error").removeClass("is-success");
-          } else if ($err.find("p").text().indexOf("already used") !== -1) {
+          } else if (
+            $err.find("p").text().indexOf("already used") !== -1 ||
+            $err.find("p").text().indexOf("wrong format") !== -1
+          ) {
             $err.hide();
             $mobileInput.removeClass("is-error").addClass("is-success");
           }
+        } else if (mobileVal.length === 10 && !isValidMobileNumber(mobileVal)) {
+          // mobile no fix by ankit: handle ten digit zero error in sync
+          $err
+            .find("p")
+            .text(
+              "Entered mobile number is in wrong format, please enter a valid 10-digit number.",
+            );
+          $err.show();
+          $mobileInput.addClass("is-error").removeClass("is-success");
         }
       }
     }
@@ -1896,19 +1926,36 @@ $(document).on(
       .closest(".field-wrapper")
       .find(".error-step3-handle");
 
+    // mobile no fix by ankit: validate ten digit zero on input
     if (clean.length === 10) {
-      const isUnique = isFieldUniqueAcrossPartners("mobile", clean, num);
-      if (!isUnique) {
+      if (!isValidMobileNumber(clean)) {
         errorDiv
           .find("p")
-          .text("Mobile number is already used for another partner.");
+          .text(
+            "Entered mobile number is in wrong format, please enter a valid 10-digit number.",
+          );
         errorDiv.show();
         $(this).addClass("is-error").removeClass("is-success");
-      } else if (errorDiv.find("p").text().indexOf("already used") !== -1) {
-        errorDiv.hide();
-        $(this).removeClass("is-error");
+      } else {
+        const isUnique = isFieldUniqueAcrossPartners("mobile", clean, num);
+        if (!isUnique) {
+          errorDiv
+            .find("p")
+            .text("Mobile number is already used for another partner.");
+          errorDiv.show();
+          $(this).addClass("is-error").removeClass("is-success");
+        } else if (
+          errorDiv.find("p").text().indexOf("already used") !== -1 ||
+          errorDiv.find("p").text().indexOf("wrong format") !== -1
+        ) {
+          errorDiv.hide();
+          $(this).removeClass("is-error");
+        }
       }
-    } else if (errorDiv.find("p").text().indexOf("already used") !== -1) {
+    } else if (
+      errorDiv.find("p").text().indexOf("already used") !== -1 ||
+      errorDiv.find("p").text().indexOf("wrong format") !== -1
+    ) {
       errorDiv.hide();
       $(this).removeClass("is-error");
     }
@@ -1918,7 +1965,7 @@ $(document).on(
   },
 );
 
-// Append +91 in mobile number input
+//  Mobile number input
 $(document).on(
   "blur",
   '#partnershipStep3Modal input.partner-mobile, #partnershipStep3Modal input[placeholder="10 digit mobile number"]',
@@ -1930,7 +1977,8 @@ $(document).on(
     const $acc = $(this).closest(".partner-accordion");
     const num = $acc.data("partner");
 
-    if (clean.length > 0 && clean.length !== 10) {
+    // mobile no fix by ankit: handle ten digit zero and wrong format error
+    if (clean.length > 0 && !isValidMobileNumber(clean)) {
       errorDiv
         .find("p")
         .text(
@@ -1938,7 +1986,7 @@ $(document).on(
         );
       errorDiv.show();
       $(this).addClass("is-error").removeClass("is-success");
-    } else if (clean.length === 10) {
+    } else if (clean.length === 10 && isValidMobileNumber(clean)) {
       const isUnique = isFieldUniqueAcrossPartners("mobile", clean, num);
       if (!isUnique) {
         errorDiv
@@ -2259,8 +2307,9 @@ function isAccordionDataValid($accordion) {
   ).trim();
 
   // Mobile verification (10 digits & unique across partners)
+  // mobile no fix by ankit: ten digit zero not allowed
   let mobileDigits = getCleanMobileNumber(rawMobile);
-  const mobileValid = mobileDigits.length === 10;
+  const mobileValid = isValidMobileNumber(mobileDigits);
   const mobileUnique = isFieldUniqueAcrossPartners("mobile", mobileDigits, num);
 
   // Email verification (valid format & unique across partners)
@@ -2373,6 +2422,11 @@ function validatePartnershipStep3() {
     const pan = getCleanPanNumber($("#partnerPan_" + num).val());
     const mobile = getCleanMobileNumber($("#partnerMobile_" + num).val());
     const email = getCleanEmail($("#partnerEmail_" + num).val());
+
+    // mobile no fix by ankit: validate mobile format
+    if (!isValidMobileNumber(mobile)) {
+      return false;
+    }
 
     if (pans.has(pan) || mobiles.has(mobile) || emails.has(email)) {
       return false;
@@ -2685,7 +2739,22 @@ $(document).on(
     const panVal = getCleanPanNumber($("#partnerPan_" + num).val());
 
     let hasDuplicate = false;
-    if (!isFieldUniqueAcrossPartners("mobile", mobileVal, num)) {
+    // mobile no fix by ankit: check mobile format before saving
+    if (!isValidMobileNumber(mobileVal)) {
+      const $err = $("#partnerMobile_" + num)
+        .closest(".field-wrapper")
+        .find(".error-step3-handle");
+      $err
+        .find("p")
+        .text(
+          "Entered mobile number is in wrong format, please enter a valid 10-digit number.",
+        );
+      $err.show();
+      $("#partnerMobile_" + num)
+        .addClass("is-error")
+        .removeClass("is-success");
+      hasDuplicate = true;
+    } else if (!isFieldUniqueAcrossPartners("mobile", mobileVal, num)) {
       const $err = $("#partnerMobile_" + num)
         .closest(".field-wrapper")
         .find(".error-step3-handle");
@@ -2749,7 +2818,8 @@ $(document).on(
     if (mobileClean.startsWith("91") && mobileClean.length === 12)
       mobileClean = mobileClean.slice(2);
     // if (mobileClean.length === 10) mobile = "+91 " + mobileClean;
-    if (mobileClean.length === 10) mobile = mobileClean;
+    // mobile no fix by ankit
+    if (isValidMobileNumber(mobileClean)) mobile = mobileClean;
 
     const email = ($("#partnerEmail_" + num).val() || "").trim();
     const pan = ($("#partnerPan_" + num).val() || "").trim().toUpperCase();
