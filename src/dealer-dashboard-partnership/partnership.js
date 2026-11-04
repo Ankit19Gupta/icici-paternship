@@ -1633,7 +1633,16 @@ function isValidMobileNumber(val) {
   const clean = getCleanMobileNumber(val);
   if (!clean || clean.length !== 10) return false;
   // Ten digit zero or all zeros or starting with 0 is invalid
-  if (/^0+$/.test(clean) || clean === "0000000000" || clean.startsWith("0")) {
+  if (
+    /^0+$/.test(clean) ||
+    clean === "0000000000" ||
+    clean.startsWith("0") ||
+    clean.startsWith("1") ||
+    clean.startsWith("2") ||
+    clean.startsWith("3") ||
+    clean.startsWith("4") ||
+    clean.startsWith("5")
+  ) {
     return false;
   }
   return true;
@@ -2765,6 +2774,7 @@ $(document).on(
         .removeClass("is-success");
       hasDuplicate = true;
     }
+    
     if (!isFieldUniqueAcrossPartners("email", emailVal, num)) {
       const $err = $("#partnerEmail_" + num)
         .closest(".field-wrapper")
