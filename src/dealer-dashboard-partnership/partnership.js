@@ -1807,6 +1807,86 @@ function syncUniquenessAcrossAccordions(fieldToSync) {
   });
 }
 
+// ownership fix by ankit
+function validOwnershipControl(accordion) {
+  let totalOwnership = 0;
+  let hasIndividualError = false;
+  const $accordions = $("#partnershipStep3Modal .partner-accordion");
+
+  $accordions.each(function () {
+    const $acc = $(this);
+    const num = $acc.data("partner");
+    const $input = num
+      ? $("#partnerOwnership_" + num)
+      : $acc.find("input.partner-ownership, input.ownership-input");
+    const valStr = ($input.val() || "").trim();
+
+    if (valStr === "") {
+      return;
+    }
+
+    const val = parseFloat(valStr);
+    if (!isNaN(val)) {
+      if (val > 100 || val < 1) {
+        hasIndividualError = true;
+      }
+      totalOwnership += val;
+    }
+  });
+
+  const isTotalValid = totalOwnership <= 100 && !hasIndividualError;
+
+  $accordions.each(function () {
+    const $acc = $(this);
+    const num = $acc.data("partner");
+    const $input = num
+      ? $("#partnerOwnership_" + num)
+      : $acc.find("input.partner-ownership, input.ownership-input");
+    if (!$input.length) return;
+
+    const $errorDiv = $input
+      .closest(".field-wrapper")
+      .find(".error-step3-handle");
+    const valStr = ($input.val() || "").trim();
+    if (valStr === "") {
+      if (
+        $errorDiv.find("p").text().indexOf("100") !== -1 ||
+        $errorDiv.find("p").text().indexOf("exceed") !== -1
+      ) {
+        $errorDiv.hide();
+        $input.removeClass("is-error");
+      }
+      return;
+    }
+
+    const val = parseFloat(valStr);
+
+    if (val > 100 || val < 1) {
+      $errorDiv.find("p").text("Percentage must be between 1 and 100.");
+      $errorDiv.show();
+      $input.addClass("is-error").removeClass("is-success");
+    } else if (totalOwnership > 100) {
+      if (!$acc.hasClass("saved") || (accordion && $(accordion).is($acc))) {
+        $errorDiv
+          .find("p")
+          .text("Total ownership percentage cannot exceed 100%.");
+        $errorDiv.show();
+        $input.addClass("is-error").removeClass("is-success");
+      }
+    } else {
+      if (
+        $errorDiv.find("p").text().indexOf("100") !== -1 ||
+        $errorDiv.find("p").text().indexOf("exceed") !== -1
+      ) {
+        $errorDiv.hide();
+        $input.removeClass("is-error");
+      }
+    }
+  });
+
+  return isTotalValid;
+}
+
 // Input Vaidation
 // Contains Names: letters only, min 3 characters
 $(document).on(
@@ -2247,15 +2327,18 @@ $(document).on(
 );
 
 // Ownership: 1 to 100
+// ownership fix by ankit
 $(document).on(
-  "input",
+  "input blur",
   "#partnershipStep3Modal input.partner-ownership, #partnershipStep3Modal input.ownership-input",
   function () {
-    let val = parseFloat($(this).val());
-    if (val > 100) $(this).val(100);
-    if (val < 0) $(this).val(0);
     const $acc = $(this).closest(".partner-accordion");
-    if ($acc.length) updateValidationState($acc);
+    validOwnershipControl($acc);
+    $("#partnershipStep3Modal .partner-accordion").each(function () {
+      if (!$(this).hasClass("saved")) {
+        updateValidationState($(this));
+      }
+    });
   },
 );
 
@@ -2335,9 +2418,14 @@ function isAccordionDataValid($accordion) {
   const panUnique = isFieldUniqueAcrossPartners("pan", cleanPan, num);
 
   // Ownership verification (1-100)
+  // ownership fix by ankit
   const ownershipNum = parseFloat(ownership);
+  const isOwnershipTotalValid = validOwnershipControl($accordion);
   const ownershipValid =
-    !isNaN(ownershipNum) && ownershipNum > 0 && ownershipNum <= 100;
+    !isNaN(ownershipNum) &&
+    ownershipNum > 0 &&
+    ownershipNum <= 100 &&
+    isOwnershipTotalValid;
 
   // Dropdown verifications
   const genderValid =
@@ -2418,6 +2506,11 @@ function validatePartnershipStep3() {
   const saved = $accordions.filter(".saved").length;
 
   if (!(count >= 2 && count <= 14 && total === count && saved === count)) {
+    return false;
+  }
+
+  // ownership fix by ankit: check total ownership <= 100
+  if (!validOwnershipControl()) {
     return false;
   }
 
@@ -2798,7 +2891,12 @@ $(document).on(
       hasDuplicate = true;
     }
 
-    if (hasDuplicate || !isAccordionDataValid($accordion)) {
+    // ownership fix by ankit: validate ownership before saving
+    if (
+      !validOwnershipControl($accordion) ||
+      hasDuplicate ||
+      !isAccordionDataValid($accordion)
+    ) {
       updateValidationState($accordion);
       return;
     }
