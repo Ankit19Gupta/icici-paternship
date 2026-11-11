@@ -31,7 +31,7 @@ const MONTHS = [
   "Nov",
   "Dec",
 ];
-const MIN_YEAR = 1940;
+const MIN_YEAR = 1900;
 
 // variables to manage partner reduction confirmation
 let pendingPartnerReductionCount = null;
@@ -1652,6 +1652,12 @@ function getCleanPanNumber(val) {
   return (val || "").replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
 }
 
+// pan fix by ankit
+function isValidPanNumber(val) {
+  const clean = getCleanPanNumber(val);
+  return /^[A-Z]{3}P[A-Z][0-9]{4}[A-Z]$/.test(clean);
+}
+
 function getCleanEmail(val) {
   return (val || "").trim().toLowerCase();
 }
@@ -1671,7 +1677,8 @@ function isFieldUniqueAcrossPartners(field, value, currentNum) {
     if (otherNum && String(otherNum) !== String(currentNum)) {
       if (field === "pan") {
         const otherPan = getCleanPanNumber($("#partnerPan_" + otherNum).val());
-        if (otherPan && otherPan.length === 10 && otherPan === value) {
+        // pan fix by ankit
+        if (otherPan && isValidPanNumber(otherPan) && otherPan === value) {
           isUnique = false;
           return false;
         }
@@ -1776,6 +1783,7 @@ function syncUniquenessAcrossAccordions(fieldToSync) {
     }
 
     // Check PAN
+    // pan fix by ankit
     if (!fieldToSync || fieldToSync === "pan") {
       const $panInput = $("#partnerPan_" + num);
       if ($panInput.length) {
@@ -1783,9 +1791,8 @@ function syncUniquenessAcrossAccordions(fieldToSync) {
           .closest(".field-wrapper")
           .find(".error-step3-handle");
         const panVal = getCleanPanNumber($panInput.val());
-        const isValidPan =
-          /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(panVal) || panVal.length === 10;
-        if (isValidPan && panVal.length === 10) {
+        const isValidPan = isValidPanNumber(panVal);
+        if (isValidPan) {
           const isUnique = isFieldUniqueAcrossPartners("pan", panVal, num);
           if (!isUnique) {
             $err
@@ -1793,10 +1800,18 @@ function syncUniquenessAcrossAccordions(fieldToSync) {
               .text("PAN number is already used for another partner.");
             $err.show();
             $panInput.addClass("is-error").removeClass("is-success");
-          } else if ($err.find("p").text().indexOf("already used") !== -1) {
+          } else if (
+            $err.find("p").text().indexOf("already used") !== -1 ||
+            $err.find("p").text().indexOf("valid PAN") !== -1
+          ) {
             $err.hide();
             $panInput.removeClass("is-error").addClass("is-success");
           }
+        } else if (panVal.length === 10 && !isValidPan) {
+          // pan fix by ankit: show error if 10 chars but invalid format
+          $err.find("p").text("Please enter a valid PAN number.");
+          $err.show();
+          $panInput.addClass("is-error").removeClass("is-success");
         }
       }
     }
@@ -2180,6 +2195,7 @@ $(document).on(
 );
 
 // PAN: uppercase, alphanumeric, 10 chars
+// pan fix by ankit
 $(document).on(
   "input",
   '#partnershipStep3Modal input.partner-pan, #partnershipStep3Modal input[placeholder="Enter PAN"]',
@@ -2198,10 +2214,14 @@ $(document).on(
       .closest(".field-wrapper")
       .find(".error-step3-handle");
 
+    // pan fix by ankit: validate PAN format on input when 10 chars
     if (val.length === 10) {
-      const isValid =
-        /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(val) || val.length === 10;
-      if (isValid) {
+      const isValid = isValidPanNumber(val);
+      if (!isValid) {
+        errorDiv.find("p").text("Please enter a valid PAN number.");
+        errorDiv.show();
+        $(this).addClass("is-error").removeClass("is-success");
+      } else {
         const isUnique = isFieldUniqueAcrossPartners("pan", val, num);
         if (!isUnique) {
           errorDiv
@@ -2209,12 +2229,18 @@ $(document).on(
             .text("PAN number is already used for another partner.");
           errorDiv.show();
           $(this).addClass("is-error").removeClass("is-success");
-        } else if (errorDiv.find("p").text().indexOf("already used") !== -1) {
+        } else if (
+          errorDiv.find("p").text().indexOf("already used") !== -1 ||
+          errorDiv.find("p").text().indexOf("valid PAN") !== -1
+        ) {
           errorDiv.hide();
           $(this).removeClass("is-error");
         }
       }
-    } else if (errorDiv.find("p").text().indexOf("already used") !== -1) {
+    } else if (
+      errorDiv.find("p").text().indexOf("already used") !== -1 ||
+      errorDiv.find("p").text().indexOf("valid PAN") !== -1
+    ) {
       errorDiv.hide();
       $(this).removeClass("is-error");
     }
@@ -2224,6 +2250,7 @@ $(document).on(
   },
 );
 
+// pan fix by ankit
 $(document).on(
   "blur",
   '#partnershipStep3Modal input.partner-pan, #partnershipStep3Modal input[placeholder="Enter PAN"]',
@@ -2234,9 +2261,10 @@ $(document).on(
       .find(".error-step3-handle");
     const $acc = $(this).closest(".partner-accordion");
     const num = $acc.data("partner");
-    const isValid = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(val) || val.length === 10;
+    // pan fix by ankit: validate 5 alphabet (4th is P), 4 digit, 1 alphabet
+    const isValid = isValidPanNumber(val);
 
-    if (val.length > 0 && (!isValid || val.length !== 10)) {
+    if (val.length > 0 && !isValid) {
       errorDiv.find("p").text("Please enter a valid PAN number.");
       errorDiv.show();
       $(this).addClass("is-error").removeClass("is-success");
@@ -2411,10 +2439,9 @@ function isAccordionDataValid($accordion) {
   const emailUnique = isFieldUniqueAcrossPartners("email", cleanMail, num);
 
   // PAN verification (10 chars, format & unique across partners)
+  // pan fix by ankit: 5 alphabet (4th is P), 4 digit, 1 alphabet
   const cleanPan = getCleanPanNumber(pan);
-  const panValid =
-    cleanPan.length === 10 &&
-    (/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(cleanPan) || cleanPan.length === 10);
+  const panValid = isValidPanNumber(cleanPan);
   const panUnique = isFieldUniqueAcrossPartners("pan", cleanPan, num);
 
   // Ownership verification (1-100)
@@ -2530,6 +2557,10 @@ function validatePartnershipStep3() {
       return false;
     }
 
+    // pan fix by ankit: validate PAN format
+    if (!isValidPanNumber(pan)) {
+      return false;
+    }
     if (pans.has(pan) || mobiles.has(mobile) || emails.has(email)) {
       return false;
     }
@@ -2867,7 +2898,7 @@ $(document).on(
         .removeClass("is-success");
       hasDuplicate = true;
     }
-    
+
     if (!isFieldUniqueAcrossPartners("email", emailVal, num)) {
       const $err = $("#partnerEmail_" + num)
         .closest(".field-wrapper")
@@ -2879,7 +2910,18 @@ $(document).on(
         .removeClass("is-success");
       hasDuplicate = true;
     }
-    if (!isFieldUniqueAcrossPartners("pan", panVal, num)) {
+    // pan fix by ankit: check PAN validity before saving
+    if (!isValidPanNumber(panVal)) {
+      const $err = $("#partnerPan_" + num)
+        .closest(".field-wrapper")
+        .find(".error-step3-handle");
+      $err.find("p").text("Please enter a valid PAN number.");
+      $err.show();
+      $("#partnerPan_" + num)
+        .addClass("is-error")
+        .removeClass("is-success");
+      hasDuplicate = true;
+    } else if (!isFieldUniqueAcrossPartners("pan", panVal, num)) {
       const $err = $("#partnerPan_" + num)
         .closest(".field-wrapper")
         .find(".error-step3-handle");

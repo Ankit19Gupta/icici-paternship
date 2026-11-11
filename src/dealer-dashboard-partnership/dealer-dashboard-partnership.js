@@ -6392,7 +6392,8 @@ function validatePartnerAccordion(accordion) {
     email !== "" &&
     email.indexOf("@") !== -1 &&
     email.indexOf(".") !== -1 &&
-    pan.length === 10 &&
+    // pan fix by ankit
+    /^[A-Z]{3}P[A-Z][0-9]{4}[A-Z]$/.test(pan) &&
     ownership !== "" &&
     gender !== "Select gender" &&
     dob !== "" &&
