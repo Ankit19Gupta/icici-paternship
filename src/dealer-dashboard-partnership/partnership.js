@@ -57,14 +57,16 @@ function sameDay(a, b) {
   );
 }
 
+// calender fix bt ankit
 function initCalState() {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
+  const maxYear = today.getFullYear() - 18;
   return {
     view: "year",
     viewMonth: today.getMonth(),
-    viewYear: today.getFullYear(),
-    centerYear: today.getFullYear(),
+    viewYear: maxYear,
+    centerYear: maxYear,
     selected: null,
   };
 }
@@ -94,6 +96,14 @@ function buildDaysGrid(state, pop) {
     grid.appendChild(e);
   }
 
+  // calender fix bt ankit: 18 years max allowed date
+  const maxAllowedDate = new Date(
+    today.getFullYear() - 18,
+    today.getMonth(),
+    today.getDate(),
+  );
+  maxAllowedDate.setHours(0, 0, 0, 0);
+
   for (let d = 1; d <= totalDays; d++) {
     (function (day) {
       const cellDate = new Date(state.viewYear, state.viewMonth, day);
@@ -101,12 +111,15 @@ function buildDaysGrid(state, pop) {
       const cell = document.createElement("div");
       cell.className = "day";
       cell.textContent = day;
-      if (cellDate > today) cell.classList.add("disabled");
+
+      // calender fix bt ankit: current year se 18 wala pehle allow ho, baki sb disable and fade
+      const isDisallowed = cellDate > maxAllowedDate;
+      if (isDisallowed) cell.classList.add("disabled", "fade", "faded");
       if (sameDay(cellDate, today)) cell.classList.add("today");
       if (state.selected && sameDay(cellDate, state.selected))
         cell.classList.add("selected");
 
-      if (!cell.classList.contains("disabled")) {
+      if (!isDisallowed) {
         cell.addEventListener("click", function (e) {
           e.stopPropagation();
           state.selected = cellDate;
@@ -132,9 +145,12 @@ function buildDaysGrid(state, pop) {
   return grid;
 }
 
+// calender fix bt ankit
 function buildMonthsGrid(state, pop) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
+  const maxYear = today.getFullYear() - 18;
+  const maxMonth = today.getMonth();
   const grid = document.createElement("div");
   grid.className = "months";
   MONTHS.forEach(function (m, idx) {
@@ -142,17 +158,19 @@ function buildMonthsGrid(state, pop) {
     item.className = "month-item";
     item.textContent = m;
 
-    const isFuture =
-      (state.viewYear === today.getFullYear() && idx > today.getMonth()) ||
-      state.viewYear > today.getFullYear();
+    // calender fix bt ankit: check if month is beyond 18 years limit
+    const isDisallowed =
+      state.viewYear > maxYear ||
+      (state.viewYear === maxYear && idx > maxMonth);
 
-    if (isFuture) item.classList.add("disabled");
+    if (isDisallowed) item.classList.add("disabled", "fade", "faded");
     if (idx === state.viewMonth && state.selected)
       item.classList.add("selected");
-    if (idx === today.getMonth() && state.viewYear === today.getFullYear())
+    // calender fix bt ankit: current month border
+    if (idx === today.getMonth() && (state.viewYear === maxYear || state.viewYear === today.getFullYear()))
       item.classList.add("current");
 
-    if (!isFuture) {
+    if (!isDisallowed) {
       item.addEventListener("click", function (e) {
         e.stopPropagation();
         state.viewMonth = idx;
@@ -165,9 +183,11 @@ function buildMonthsGrid(state, pop) {
   return grid;
 }
 
+// calender fix bt ankit
 function buildYearsGrid(state, pop) {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
+  const maxYear = today.getFullYear() - 18;
   const grid = document.createElement("div");
   grid.className = "years";
   const start = MIN_YEAR;
@@ -179,11 +199,14 @@ function buildYearsGrid(state, pop) {
       item.className = "year-item";
       item.textContent = yr;
 
-      if (yr > today.getFullYear()) item.classList.add("faded");
+      // calender fix bt ankit: current year se 18 saal pehle allow ho, baki sb disable and fade
+      const isDisallowed = yr > maxYear;
+      if (isDisallowed) item.classList.add("disabled", "fade", "faded");
       if (yr === state.viewYear && state.selected)
         item.classList.add("selected");
-      if (yr === today.getFullYear()) item.classList.add("current");
-      if (yr <= today.getFullYear()) {
+      // calender fix bt ankit: 2008 (maxYear) pe border add ho
+      if (yr === maxYear) item.classList.add("current");
+      if (!isDisallowed) {
         item.addEventListener("click", function (e) {
           e.stopPropagation();
           state.viewYear = yr;
@@ -242,8 +265,10 @@ function renderCalendar(state, pop) {
     pop.appendChild(buildMonthsGrid(state, pop));
   } else {
     pop.appendChild(buildYearsGrid(state, pop));
+    // calender fix bt ankit: scroll to selected or last enabled year
     const scrollTarget =
       pop.querySelector(".year-item.selected") ||
+      pop.querySelector(".year-item:not(.disabled):last-of-type") ||
       pop.querySelector(".year-item.current");
     if (scrollTarget) {
       setTimeout(() => scrollTarget.scrollIntoView({ block: "center" }), 10);
@@ -2465,7 +2490,26 @@ function isAccordionDataValid($accordion) {
     category !== "" && category !== "Select category" && category !== "Select";
 
   // DOB verification
-  const dobValid = dob !== "" && dob !== "Select date (yyyy-mm-dd)";
+  // calender fix bt ankit: must be at least 18 years old
+  let dobValid = dob !== "" && dob !== "Select date (yyyy-mm-dd)";
+  if (dobValid) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const maxAllowedDob = new Date(
+      today.getFullYear() - 18,
+      today.getMonth(),
+      today.getDate(),
+    );
+    maxAllowedDob.setHours(0, 0, 0, 0);
+    const dobParts = dob.split("-");
+    if (dobParts.length === 3) {
+      const dobDate = new Date(+dobParts[0], +dobParts[1] - 1, +dobParts[2]);
+      dobDate.setHours(0, 0, 0, 0);
+      if (dobDate > maxAllowedDob) {
+        dobValid = false;
+      }
+    }
+  }
 
   // Pin code verification
   const cleanPin = pincode.replace(/\D/g, "");

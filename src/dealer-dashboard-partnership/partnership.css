@@ -922,3 +922,20 @@
 #partnerConfirmationModal.custom-modal-overlay {
   z-index: 1060 !important;
 }
+
+/* calender fix bt ankit: disabled and fade state for calendar items (< 18 years) */
+.custom-calendar-popup .year-item.fade,
+.custom-calendar-popup .year-item.disabled,
+.custom-calendar-popup .year-item.faded,
+.custom-calendar-popup .month-item.fade,
+.custom-calendar-popup .month-item.disabled,
+.custom-calendar-popup .month-item.faded,
+.custom-calendar-popup .day.fade,
+.custom-calendar-popup .day.disabled,
+.custom-calendar-popup .day.faded {
+  color: #c8c8c8 !important;
+  opacity: 0.45 !important;
+  background: #fbfbfb !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+}
